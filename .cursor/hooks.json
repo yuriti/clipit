@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      { "command": "python3 \"$(git rev-parse --show-toplevel)/scripts/hooks/agent_gate.py\"", "matcher": "\\b(git|gh)\\s", "timeout": 600, "failClosed": true }
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+# The maintainers' private word list (names, hosts) lives only in the secret SMTV_PRIVATE_WORDS: in the repository it
+# would be the leak itself. Secrets never reach code from a fork, so this workflow runs from the base branch
+# (pull_request_target), never checks out or runs the PR's code, and only reads the PR's diff and commit authors as
+# text. A match is reported by its line number in the list, never by the word.
+name: private-words
+
+on:
+  pull_request_target:  # zizmor: ignore[dangerous-triggers] -- needs the secret; never checks out or runs the PR's code
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}    # our scripts, not the PR's
+          persist-credentials: false
+      - name: the PR as text
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          gh pr diff "$PR" --repo "$GITHUB_REPOSITORY" > "$RUNNER_TEMP/pr.diff"
+          gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/$PR/commits" \
+            --jq '.[] | [.sha, .commit.author.name, .commit.author.email, .commit.committer.name, .commit.committer.email] | join("\u0000")' \
+            > "$RUNNER_TEMP/authors.txt"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - name: scan
+        env:
+          SMTV_PRIVATE_WORDS: ${{ secrets.SMTV_PRIVATE_WORDS }}
+        run: python scripts/check.py --ci --diff "$RUNNER_TEMP/pr.diff" --authors "$RUNNER_TEMP/authors.txt"

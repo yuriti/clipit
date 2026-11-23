@@ -1,0 +1,15 @@
+**
+!packages/smtv/pyproject.toml
+!packages/smtv/README.md
+!packages/smtv/LICENSE
+!packages/smtv/src
+!packages/smtv-core/pyproject.toml
+!packages/smtv-core/README.md
+!packages/smtv-core/LICENSE
+!packages/smtv-core/src
+!packages/vodcut/pyproject.toml
+!packages/vodcut/README.md
+!packages/vodcut/LICENSE
+!packages/vodcut/src
+**/__pycache__
+**/.DS_Store

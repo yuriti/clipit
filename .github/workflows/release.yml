@@ -1,0 +1,91 @@
+# For every release: build smtv, smtv-core and vodcut and put them on PyPI, all three under the release's version, then
+# give the release the update channel: the wheels, the desktop apps (apps.yml: the .dmg, the Windows installer and ZIP,
+# with SHA256SUMS.txt), latest.json and its Ed25519 signature (scripts/release_manifest.py; SMTV reads
+# releases/latest/download/latest.json and believes it only with a valid signature).
+# PyPI trusted publishing: PyPI trusts this workflow in the `pypi` environment of this repository, so no token is kept
+# anywhere. The maintainers set it up once on pypi.org (each project → Publishing → GitHub: this repository,
+# release.yml, environment pypi). The private key of the update channel is the secret SMTV_UPDATE_SIGNING_KEY of the same
+# environment, and lives nowhere else.
+name: release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  apps:
+    uses: ./.github/workflows/apps.yml
+
+  pypi:
+    needs: apps                # nothing is published until every app was built and passed its check
+    runs-on: ubuntu-latest
+    environment: pypi          # its protection rule asks a maintainer to approve before anything is published
+    permissions:
+      contents: write          # the wheels, latest.json and its signature are added to this release
+      id-token: write          # the short-lived identity PyPI checks instead of a token
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+        with:
+          python-version: "3.12"
+      - name: The tag and all three packages carry one version
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          want="${TAG#v}"
+          for p in smtv smtv-core vodcut; do
+            got="$(sed -n 's/^version = "\(.*\)"/\1/p' "packages/$p/pyproject.toml")"
+            if [ "$got" != "$want" ]; then echo "packages/$p is $got, the tag says $want"; exit 1; fi
+          done
+      # The checks already ran on main (workflow «checks»); a release is cut only from a green main.
+      - run: uv build --all-packages --out-dir dist
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: apps-*
+          path: dist
+          merge-multiple: true
+      - name: The apps carry the tag's version; their sums for the release page
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          v="${TAG#v}"
+          for f in "SMTV-$v-mac.dmg" "SMTV-$v-windows-x64-setup.exe" "SMTV-$v-windows-x64.zip"; do
+            if [ ! -f "dist/$f" ]; then echo "dist/$f is missing"; ls dist; exit 1; fi
+          done
+          # the same files under names without the version: README and the guides link to
+          # releases/latest/download/<name>, which then always gives the newest one
+          mkdir -p dist/latest
+          cp "dist/SMTV-$v-mac.dmg" dist/latest/SMTV-mac.dmg
+          cp "dist/SMTV-$v-windows-x64-setup.exe" dist/latest/SMTV-windows-setup.exe
+          cp "dist/SMTV-$v-windows-x64.zip" dist/latest/SMTV-windows.zip
+          (cd dist && sha256sum SMTV-* > SHA256SUMS.txt && cat SHA256SUMS.txt)
+      # Signed before anything is published: without the key the release stops here and nothing goes out.
+      - name: The update channel's manifest, signed
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+          REPO: ${{ github.repository }}
+          SMTV_UPDATE_SIGNING_KEY: ${{ secrets.SMTV_UPDATE_SIGNING_KEY }}
+        run: |
+          SMTV_RELEASE_TIME="$(date -u +%Y-%m-%dT%H:%M:%SZ)" python3 scripts/release_manifest.py dist --apps \
+            --version "${TAG#v}" --base-url "https://github.com/$REPO/releases/download/$TAG"
+      # The channel's files first, then PyPI, the manifest last: SMTV finds latest.json only when everything it names is
+      # out (a failed PyPI upload never leaves the apps announcing a version uv and pip cannot get).
+      - name: The files of the update channel go to the release
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+          REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "$TAG" dist/*.whl dist/SMTV-* dist/latest/SMTV-* dist/SHA256SUMS.txt --clobber --repo "$REPO"
+      - run: uv publish --trusted-publishing always dist/*.whl dist/*.tar.gz
+      - name: The manifest, last
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+          REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$TAG" dist/latest.json.sig dist/latest.json --clobber --repo "$REPO"

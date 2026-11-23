@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta name="smtv-token" content="{{SMTV_TOKEN}}">
+<meta name="smtv-languages" content="{{SMTV_LANGUAGES}}">
+<title>SMTV</title>
+<meta name="theme-color" content="#181818">
+<link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<div class="app" id="app">
+  <header class="top" id="top">
+    <div class="top-title" id="top-title" hidden></div>
+    <div class="top-right"><span class="activity" id="activity" role="status" aria-live="polite"></span></div>
+  </header>
+  <nav class="rail" id="rail" aria-label="SMTV">
+    <div class="rail-main" id="rail-main"></div>
+    <div class="rail-foot" id="rail-foot"></div>
+  </nav>
+  <main id="view" class="view"></main>
+</div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<script type="module" src="/static/app.js"></script>
+</body>
+</html>

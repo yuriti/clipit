@@ -1,0 +1,119 @@
+{
+  "type": "object",
+  "properties": {
+    "windows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "window_id": {
+            "type": "string"
+          },
+          "episodes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "start_segment_id": {
+                  "type": "string"
+                },
+                "end_segment_id": {
+                  "type": "string"
+                },
+                "anchor_segment_id": {
+                  "type": "string"
+                },
+                "episode_type": {
+                  "type": "string",
+                  "enum": [
+                    "story",
+                    "confession",
+                    "conflict",
+                    "joke",
+                    "hot_take",
+                    "reaction_to_event",
+                    "explanation",
+                    "other"
+                  ]
+                },
+                "why_interesting": {
+                  "type": "string",
+                  "maxLength": 240
+                },
+                "one_liner": {
+                  "type": "boolean"
+                },
+                "has_setup": {
+                  "type": "boolean"
+                },
+                "has_payoff": {
+                  "type": "boolean"
+                },
+                "continues_before": {
+                  "type": "boolean"
+                },
+                "continues_after": {
+                  "type": "boolean"
+                },
+                "needs_context_before": {
+                  "type": "boolean"
+                },
+                "needs_context_after": {
+                  "type": "boolean"
+                },
+                "depends_on_video": {
+                  "type": "string",
+                  "enum": [
+                    "no",
+                    "partly",
+                    "yes"
+                  ]
+                },
+                "asr_quality_concern": {
+                  "type": "boolean"
+                },
+                "standalone_clip_candidate": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "start_segment_id",
+                "end_segment_id",
+                "anchor_segment_id",
+                "episode_type",
+                "why_interesting",
+                "one_liner",
+                "has_setup",
+                "has_payoff",
+                "continues_before",
+                "continues_after",
+                "needs_context_before",
+                "needs_context_after",
+                "depends_on_video",
+                "asr_quality_concern",
+                "standalone_clip_candidate"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 4
+          },
+          "window_has_nothing": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "window_id",
+          "episodes",
+          "window_has_nothing"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 8
+    }
+  },
+  "required": [
+    "windows"
+  ],
+  "additionalProperties": false
+}

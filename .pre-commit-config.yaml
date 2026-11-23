@@ -1,0 +1,11 @@
+# pre-commit: the quick checks before every commit. Install once: uv run pre-commit install
+# The same checks run in GitHub Actions on every pull request, so skipping them locally only delays the failure.
+repos:
+  - repo: local
+    hooks:
+      - id: smtv-check-fast
+        name: SMTV quick checks (traces, secrets, hosts, sources, sync, ruff, supply)
+        entry: uv run --frozen python scripts/check.py --fast
+        language: system
+        pass_filenames: false
+        always_run: true

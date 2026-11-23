@@ -1,0 +1,1015 @@
+{
+  "$comment": "Event contract of smtv jobs. A new field or type: minor version. A renamed or removed field or type, or a changed meaning: major version. Readers ignore fields they do not know.",
+  "version": "1.6",
+  "envelope": {
+    "type": "object",
+    "required": [
+      "n",
+      "t",
+      "type",
+      "v",
+      "job",
+      "tool",
+      "data"
+    ],
+    "properties": {
+      "n": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "t": {
+        "type": "number"
+      },
+      "type": {
+        "enum": [
+          "stage",
+          "source_ready",
+          "progress",
+          "episode_found",
+          "episode_rated",
+          "layout_chosen",
+          "ads_found",
+          "clip_ready",
+          "clip_failed",
+          "model_call",
+          "error",
+          "done",
+          "cancelled",
+          "clip_fitted",
+          "recap_ready",
+          "recap_failed",
+          "clip_checked",
+          "clip_fixed",
+          "clip_reviewed",
+          "queued"
+        ]
+      },
+      "v": {
+        "type": "string",
+        "pattern": "^[0-9]+\\.[0-9]+$"
+      },
+      "job": {
+        "type": "string"
+      },
+      "tool": {
+        "type": "string"
+      },
+      "data": {
+        "type": "object"
+      }
+    }
+  },
+  "types": {
+    "stage": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "step": {
+          "type": "integer"
+        },
+        "steps": {
+          "type": "integer"
+        },
+        "source": {
+          "type": "string"
+        },
+        "engine": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "duration_s": {
+          "type": "number"
+        },
+        "segments": {
+          "type": "integer"
+        },
+        "episodes": {
+          "type": "integer"
+        },
+        "clips": {
+          "type": "integer"
+        },
+        "options": {
+          "type": "object"
+        },
+        "model": {
+          "type": "boolean"
+        }
+      }
+    },
+    "progress": {
+      "type": "object",
+      "required": [
+        "stage"
+      ],
+      "properties": {
+        "stage": {
+          "type": "string"
+        },
+        "percent": {
+          "type": "integer"
+        },
+        "done": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "clip": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "step": {
+          "type": "string"
+        },
+        "duration_s": {
+          "type": "number"
+        },
+        "seconds": {
+          "type": "number"
+        }
+      }
+    },
+    "episode_found": {
+      "type": "object",
+      "required": [
+        "episode_id",
+        "start_s",
+        "end_s"
+      ],
+      "properties": {
+        "episode_id": {
+          "type": "string"
+        },
+        "start_s": {
+          "type": "number"
+        },
+        "end_s": {
+          "type": "number"
+        },
+        "episode_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "why_interesting": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "text_preview": {
+          "type": "string"
+        }
+      }
+    },
+    "episode_rated": {
+      "type": "object",
+      "required": [
+        "episode_id",
+        "status"
+      ],
+      "properties": {
+        "episode_id": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "no_verdict"
+          ]
+        },
+        "verdict": {
+          "type": "string"
+        },
+        "score": {
+          "type": "integer"
+        },
+        "format": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "trim": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "start_s": {
+              "type": "number"
+            },
+            "end_s": {
+              "type": "number"
+            },
+            "duration_s": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "layout_chosen": {
+      "type": "object",
+      "required": [
+        "clip",
+        "mode",
+        "by"
+      ],
+      "properties": {
+        "clip": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string"
+        },
+        "by": {
+          "type": "string"
+        },
+        "frames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "votes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "$comment": "the choice of each usable answer of the vote (stage 14): streamer_scene_split, streamer_scene_split_equal, streamer_only or scene_only"
+        },
+        "cached": {
+          "type": "boolean",
+          "$comment": "the same frames were already decided: the earlier choice is used, the model is not asked"
+        }
+      }
+    },
+    "ads_found": {
+      "type": "object",
+      "required": [
+        "clip",
+        "count",
+        "by"
+      ],
+      "properties": {
+        "clip": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer"
+        },
+        "by": {
+          "type": "string"
+        },
+        "boxes": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 4,
+            "maxItems": 4
+          }
+        }
+      }
+    },
+    "clip_ready": {
+      "type": "object",
+      "required": [
+        "clip",
+        "file"
+      ],
+      "properties": {
+        "clip": {
+          "type": "string"
+        },
+        "file": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "existing": {
+          "type": "boolean"
+        },
+        "start_s": {
+          "type": "number"
+        },
+        "end_s": {
+          "type": "number"
+        },
+        "layout": {
+          "type": "string"
+        },
+        "layout_by": {
+          "type": "string"
+        },
+        "ads_blurred": {
+          "type": "integer"
+        },
+        "ads_by": {
+          "type": "string"
+        },
+        "bleeps": {
+          "type": "integer"
+        },
+        "peak": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "loudness": {
+          "type": "boolean"
+        },
+        "critic": {
+          "type": "object",
+          "required": [
+            "outcome",
+            "reason"
+          ],
+          "$comment": "what the critic did with the clip (the «critic» switch), as in clip_reviewed",
+          "properties": {
+            "outcome": {
+              "enum": [
+                "passed",
+                "fixed",
+                "kept",
+                "unchecked"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "fix": {
+              "type": "string"
+            },
+            "verdict": {
+              "enum": [
+                "pass",
+                "fix",
+                "reject"
+              ]
+            },
+            "score": {
+              "type": "integer"
+            },
+            "score_before": {
+              "type": "integer"
+            },
+            "wish": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "clip_failed": {
+      "type": "object",
+      "required": [
+        "clip",
+        "error"
+      ],
+      "properties": {
+        "clip": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "error": {
+          "type": "string"
+        }
+      }
+    },
+    "model_call": {
+      "type": "object",
+      "required": [
+        "purpose",
+        "model"
+      ],
+      "properties": {
+        "purpose": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "images": {
+          "type": "integer"
+        },
+        "seconds": {
+          "type": "number"
+        },
+        "tokens_in": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "tokens_out": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "error": {
+          "type": "string"
+        },
+        "schema_errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cost_usd": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "stage": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "subscriber": {
+          "type": "string"
+        },
+        "exit_code": {
+          "type": "integer"
+        }
+      }
+    },
+    "done": {
+      "type": "object",
+      "required": [
+        "stage"
+      ],
+      "properties": {
+        "stage": {
+          "type": "string"
+        },
+        "file": {
+          "type": "string"
+        },
+        "folder": {
+          "type": "string"
+        },
+        "duration_s": {
+          "type": "number"
+        },
+        "episodes_found": {
+          "type": "integer"
+        },
+        "episodes_rated": {
+          "type": "integer"
+        },
+        "tokens": {
+          "type": "object",
+          "properties": {
+            "in": {
+              "type": "integer"
+            },
+            "out": {
+              "type": "integer"
+            }
+          }
+        },
+        "timings": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "clips": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "start_s",
+              "end_s"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "start_s": {
+                "type": "number"
+              },
+              "end_s": {
+                "type": "number"
+              },
+              "duration_s": {
+                "type": "number"
+              },
+              "score": {
+                "type": "integer"
+              },
+              "title": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "report": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "status"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "done",
+                  "failed"
+                ]
+              },
+              "file": {
+                "type": "string"
+              },
+              "error": {
+                "type": "string"
+              },
+              "start_s": {
+                "type": "number"
+              },
+              "end_s": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "skipped": {
+          "type": "boolean"
+        },
+        "failed": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "$comment": ""
+    },
+    "cancelled": {
+      "type": "object",
+      "required": [
+        "by"
+      ],
+      "properties": {
+        "by": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "graceful": {
+          "type": "boolean"
+        }
+      }
+    },
+    "source_ready": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "channel": {
+          "type": "string"
+        },
+        "platform": {
+          "type": "string"
+        },
+        "duration_s": {
+          "type": "number"
+        },
+        "source": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        }
+      }
+    },
+    "clip_fitted": {
+      "type": "object",
+      "required": [
+        "clip",
+        "by",
+        "status",
+        "before",
+        "after",
+        "cut_start_s",
+        "cut_end_s",
+        "cut_s"
+      ],
+      "$comment": "Fit (the «precise» switch) cut one clip. before: the bounds pass 2 picked; after: the bounds the clip has now (the same when by=kept). cut_start_s / cut_end_s: seconds taken off the start / the end (negative: added); cut_s: seconds shorter in all. title: the clip's title now (Fit's, naming the interval it cut, when by=model); title_before: pass 2's, when it differs.",
+      "properties": {
+        "clip": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "by": {
+          "enum": [
+            "model",
+            "kept"
+          ]
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "invalid",
+            "error",
+            "skipped"
+          ]
+        },
+        "before": {
+          "type": "object",
+          "required": [
+            "start_s",
+            "end_s"
+          ],
+          "properties": {
+            "start_s": {
+              "type": "number"
+            },
+            "end_s": {
+              "type": "number"
+            }
+          }
+        },
+        "after": {
+          "type": "object",
+          "required": [
+            "start_s",
+            "end_s"
+          ],
+          "properties": {
+            "start_s": {
+              "type": "number"
+            },
+            "end_s": {
+              "type": "number"
+            }
+          }
+        },
+        "cut_start_s": {
+          "type": "number"
+        },
+        "cut_end_s": {
+          "type": "number"
+        },
+        "cut_s": {
+          "type": "number"
+        },
+        "fit_score": {
+          "type": "integer"
+        },
+        "repaired": {
+          "type": "boolean"
+        },
+        "seconds": {
+          "type": "number"
+        },
+        "cached": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "title_before": {
+          "type": "string"
+        }
+      }
+    },
+    "recap_ready": {
+      "type": "object",
+      "required": [
+        "file",
+        "cover",
+        "duration_s",
+        "parts"
+      ],
+      "$comment": "VodCut's recap (the «recap» switch) is made: a 16:9 video of the whole stream. Paths are job files. chapters: their start in the video. source_s: seconds of the recording it is made of. shots: webcam punch-ins and focus shots. existing: every part was encoded before (a rerun). Nothing is published.",
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "cover": {
+          "type": "string"
+        },
+        "chapters_file": {
+          "type": "string"
+        },
+        "description_file": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "duration_s": {
+          "type": "number"
+        },
+        "source_s": {
+          "type": "number"
+        },
+        "parts": {
+          "type": "integer"
+        },
+        "chapters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "start_s",
+              "title"
+            ],
+            "properties": {
+              "start_s": {
+                "type": "number"
+              },
+              "title": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "shots": {
+          "type": "object",
+          "properties": {
+            "punch": {
+              "type": "integer"
+            },
+            "focus": {
+              "type": "integer"
+            }
+          }
+        },
+        "ads_blurred": {
+          "type": "integer"
+        },
+        "music_risk": {
+          "type": "integer"
+        },
+        "encoder": {
+          "type": "string"
+        },
+        "fps": {
+          "type": "integer"
+        },
+        "encoded": {
+          "type": "integer"
+        },
+        "kept": {
+          "type": "integer"
+        },
+        "seconds": {
+          "type": "number"
+        },
+        "existing": {
+          "type": "boolean"
+        }
+      }
+    },
+    "recap_failed": {
+      "type": "object",
+      "required": [
+        "error"
+      ],
+      "$comment": "The recap could not be made; the clips stay. A `done` with stage recap and failed: true follows.",
+      "properties": {
+        "error": {
+          "type": "string"
+        }
+      }
+    },
+    "clip_checked": {
+      "type": "object",
+      "required": [
+        "clip",
+        "round",
+        "by"
+      ],
+      "$comment": "The critic looked at a finished clip. round 1: the clip as rendered; round 2: after its one edit. by=error: no usable verdict (error says why).",
+      "properties": {
+        "clip": {
+          "type": "string"
+        },
+        "round": {
+          "enum": [
+            1,
+            2
+          ]
+        },
+        "by": {
+          "enum": [
+            "model",
+            "error"
+          ]
+        },
+        "verdict": {
+          "enum": [
+            "pass",
+            "fix",
+            "reject"
+          ]
+        },
+        "score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "fix": {
+          "type": "string"
+        },
+        "wish": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "error": {
+          "type": "string"
+        }
+      }
+    },
+    "clip_fixed": {
+      "type": "object",
+      "required": [
+        "clip",
+        "fix",
+        "before",
+        "after"
+      ],
+      "$comment": "The critic's one edit was rendered: what the clip had and what the new version has. Whether the new version stays is told by clip_reviewed.",
+      "properties": {
+        "clip": {
+          "type": "string"
+        },
+        "fix": {
+          "type": "string"
+        },
+        "wish": {
+          "type": "string"
+        },
+        "before": {
+          "type": "object",
+          "properties": {
+            "layout": {
+              "type": "string"
+            },
+            "captions": {
+              "enum": [
+                "lower",
+                "center",
+                "upper"
+              ]
+            },
+            "hook": {
+              "type": "boolean"
+            }
+          }
+        },
+        "after": {
+          "type": "object",
+          "properties": {
+            "layout": {
+              "type": "string"
+            },
+            "captions": {
+              "enum": [
+                "lower",
+                "center",
+                "upper"
+              ]
+            },
+            "hook": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "clip_reviewed": {
+      "type": "object",
+      "required": [
+        "clip",
+        "outcome",
+        "reason"
+      ],
+      "$comment": "The critic's outcome for a clip. passed: nothing to change; fixed: the edited version stays; kept: the clip stays as it was (reject, no edit possible, or the edit made it worse); unchecked: no usable verdict. Never «waits for a person».",
+      "properties": {
+        "clip": {
+          "type": "string"
+        },
+        "outcome": {
+          "enum": [
+            "passed",
+            "fixed",
+            "kept",
+            "unchecked"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "fix": {
+          "type": "string"
+        },
+        "verdict": {
+          "enum": [
+            "pass",
+            "fix",
+            "reject"
+          ]
+        },
+        "score": {
+          "type": "integer"
+        },
+        "score_before": {
+          "type": "integer"
+        },
+        "wish": {
+          "type": "string"
+        }
+      }
+    },
+    "queued": {
+      "type": "object",
+      "required": [
+        "by"
+      ],
+      "properties": {
+        "by": {
+          "type": "string",
+          "enum": [
+            "page",
+            "terminal",
+            "restart"
+          ]
+        },
+        "first": {
+          "type": "boolean"
+        },
+        "position": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "after": {
+          "type": "string"
+        }
+      },
+      "$comment": "The job waits for another job of the same tool: SMTV starts it by itself when that one ends, pauses or fails. Written by SMTV, not by the job. by: who asked (the window, or a command in a terminal handed to the running SMTV); position: its place in the queue then (1: next); after: the job it waits for; by restart with first: true — the job ran when SMTV quit or updated, and it goes on before every other one when SMTV starts. Taken out of the queue: a cancelled event with stage queue."
+    }
+  }
+}

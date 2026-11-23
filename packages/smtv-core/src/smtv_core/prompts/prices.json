@@ -1,0 +1,94 @@
+{
+  "updated": "2026-11-21",
+  "about": "US dollars per million tokens, as the provider bills them; updated with each release of the prompts. Source: the public list of OpenRouter (openrouter.ai/api/v1/models) on the date above; it passes on each provider's own price, so the same model bought directly costs the same. A model missing here has its price unknown; the CLIs (Codex, Claude Code) are paid by the person's subscription.",
+  "prices": {
+    "openai": {
+      "gpt-6.2-astra": {
+        "in": 8,
+        "out": 40
+      },
+      "gpt-6.2-sol": {
+        "in": 2,
+        "out": 10
+      },
+      "gpt-6.1-terra": {
+        "in": 1,
+        "out": 5
+      },
+      "gpt-6-luna": {
+        "in": 0.1,
+        "out": 0.5
+      }
+    },
+    "anthropic": {
+      "claude-opus-5-5": {
+        "in": 4,
+        "out": 20
+      },
+      "claude-sonnet-5-5": {
+        "in": 2,
+        "out": 10
+      },
+      "claude-haiku-5-5": {
+        "in": 0.1,
+        "out": 0.5
+      }
+    },
+    "gemini": {
+      "gemini-2.5-pro": {
+        "in": 1.25,
+        "out": 10
+      },
+      "gemini-3.7-flash": {
+        "in": 0.75,
+        "out": 3.75
+      },
+      "gemini-3.5-flash-lite": {
+        "in": 0.3,
+        "out": 2.5
+      }
+    },
+    "openrouter": {
+      "openai/gpt-6.2-astra": {
+        "in": 8,
+        "out": 40
+      },
+      "openai/gpt-6.2-sol": {
+        "in": 2,
+        "out": 10
+      },
+      "openai/gpt-6.1-terra": {
+        "in": 1,
+        "out": 5
+      },
+      "openai/gpt-6-luna": {
+        "in": 0.1,
+        "out": 0.5
+      },
+      "anthropic/claude-opus-5.5": {
+        "in": 4,
+        "out": 20
+      },
+      "anthropic/claude-sonnet-5.5": {
+        "in": 2,
+        "out": 10
+      },
+      "anthropic/claude-haiku-5.5": {
+        "in": 0.1,
+        "out": 0.5
+      },
+      "google/gemini-2.5-pro": {
+        "in": 1.25,
+        "out": 10
+      },
+      "google/gemini-3.7-flash": {
+        "in": 0.75,
+        "out": 3.75
+      },
+      "google/gemini-3.5-flash-lite": {
+        "in": 0.3,
+        "out": 2.5
+      }
+    }
+  }
+}

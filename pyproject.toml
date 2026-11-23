@@ -1,0 +1,72 @@
+# Workspace root: not a package itself. Each folder in packages/ is published to PyPI on its own.
+[tool.uv.workspace]
+members = ["packages/smtv", "packages/smtv-core", "packages/vodcut"]
+
+[tool.uv.sources]
+smtv = { workspace = true }
+smtv-core = { workspace = true }
+vodcut = { workspace = true }
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "packages/smtv/tests", "packages/smtv-core/tests", "packages/vodcut/tests"]
+markers = ["doctor: keeps the stage 24 blocking of new requests by failed checks"]
+
+# Tools for working on SMTV, never installed for users: `uv sync` installs them. Why each:
+# ruff (lint: one fast tool instead of flake8 + isort), mypy (types; nothing here checked them before), vulture (dead
+# code), pip-audit (known vulnerabilities from the PyPI advisory database, free), pre-commit (runs the quick checks
+# before every commit), zizmor (finds injection and token mistakes in the GitHub workflows). gitleaks is a separate program (brew install gitleaks); CI installs it.
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.15", "mypy>=1.18", "vulture>=2.14", "pip-audit>=2.9", "pre-commit>=4", "packaging>=24", "zizmor>=1.0"]
+
+[tool.ruff]
+line-length = 130
+extend-exclude = ["packages/smtv-core/src/smtv_core/prompts"]
+
+[tool.ruff.lint]
+# Real errors (syntax, undefined and unused names, bare except, comparisons to None), not style: the code keeps short
+# one-line branches on purpose.
+select = ["E4", "E9", "F", "E711", "E712", "E721", "E722"]
+
+[tool.mypy]
+ignore_missing_imports = true
+check_untyped_defs = false
+python_version = "3.10"
+
+[tool.vulture]
+# Arguments a signature must have (signal handlers, context managers, logging overrides, pywebview callbacks).
+ignore_names = ["exc", "exc_type", "tb", "signum", "frame", "fmt", "controller", "poll_interval"]
+
+# python scripts/check.py: what the repository-wide checks allow. Each entry is a decision; say why.
+[tool.smtv-check]
+mypy-errors = 157              # the ratchet: may only go down (python scripts/check.py types)
+duplicate-lines = 12
+own-sources = ["prompts repository"]
+placeholder-users = ["O'Brien Smith"]
+# made-up paths and e-mails: the tests of this check (private words still searched); the YuNet license kept word for
+# word, its author's address in the copyright line included (MIT asks for the notice as it is)
+traces-skip = ["tests/test_repo_checks.py", "packages/smtv-core/src/smtv_core/render/models/LICENSE-YuNet.txt"]
+# MPL-2.0 is copyleft per file: using tqdm unchanged is fine, changing its files would have to stay MPL. Comes with
+# huggingface_hub (speech model downloads). Owner's call before a release.
+license-exceptions = { tqdm = { license = "MPL-2.0 AND MIT", why = "progress bars inside huggingface_hub; used unchanged, file-level copyleft" } }
+hosts = [
+  # Where the code connects
+  "pypi.org", "github.com", "*.githubusercontent.com", "huggingface.co", "*.huggingface.co", "*.hf.co",
+  "streammoment.tv", "*.streammoment.tv",                         # our account, our key, links (stage 22, 23)
+  "www.twitch.tv", "*.jtvnw.net", "www.youtube.com", "*.ggpht.com", "*.googleusercontent.com", "kick.com",  # a stream's page and avatar
+  "api.openai.com", "api.anthropic.com", "generativelanguage.googleapis.com", "openrouter.ai", "api.deepseek.com",
+  "api.groq.com", "api.mistral.ai", "api.x.ai", "api.together.xyz", "api.together.ai", "api.fireworks.ai",
+  "dashscope-intl.aliyuncs.com", "api.moonshot.ai", "api.z.ai", "api.cerebras.ai",   # model providers the person picks
+  "ollama.com",                                                    # Ollama's model library (names, sizes)
+  "astral.sh",                                                     # uv's official installer, fetched by install/install.sh and install.ps1
+  "ffmpeg.martin-riedl.de",                                        # ffmpeg with captions for the macOS app, fetched by install/app/build.py (pinned, SHA-256)
+  # Links shown to a person (help, keys, prices, licenses); SMTV does not fetch them
+  "platform.openai.com", "openai.com", "platform.claude.com", "www.anthropic.com", "aistudio.google.com",
+  "learn.chatgpt.com", "code.claude.com", "platform.deepseek.com", "console.groq.com", "groq.com", "console.mistral.ai",
+  "console.x.ai", "fireworks.ai", "modelstudio.console.alibabacloud.com", "platform.moonshot.ai", "z.ai",
+  "cloud.cerebras.ai", "lmstudio.ai", "docs.vllm.ai", "brew.sh", "formulae.brew.sh", "learn.microsoft.com",
+  "apps.microsoft.com", "ffmpeg.org", "www.gyan.dev", "boosty.to", "scripts.sil.org", "docs.github.com",
+  "www.w3.org",                                                    # XML namespaces (SVG), never fetched
+  "www.gnu.org",                                                   # the GPL text named in the app's ffmpeg/README.txt
+  "hosted.weblate.org",                                            # where SMTV is translated (docs/translations.md, .weblate)
+  "www.rfc-editor.org", "trustee.ietf.org",                        # the source and license of the Ed25519 code (ed25519.py)
+]

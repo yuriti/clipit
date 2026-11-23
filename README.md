@@ -1,0 +1,266 @@
+<!-- Translations: README.<language>.md, the same structure. A change here changes README.ru.md in the same PR;
+     the other languages follow (each says it was translated automatically and links Weblate). Pictures: docs/images/. -->
+<div align="center">
+
+# SMTV
+
+**Turn a long stream into short clips and a recap. Free, on your own computer.**
+
+<!-- languages -->
+**English** · [Русский](README.ru.md) · [Қазақша](README.kk.md) · [Oʻzbekcha](README.uz.md) · [Azərbaycanca](README.az.md) · [Кыргызча](README.ky.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [বাংলা](README.bn.md) · [Español](README.es.md) · [Português](README.pt-BR.md) · [Deutsch](README.de.md)
+
+[![Latest release](https://img.shields.io/github/v/release/streammomenttv/smtv?label=release)](https://github.com/streammomenttv/smtv/releases/latest)
+[![Downloads](https://img.shields.io/pepy/dt/smtv?label=downloads)](https://pepy.tech/projects/smtv)
+[![Stars](https://img.shields.io/github/stars/streammomenttv/smtv?style=flat)](https://github.com/streammomenttv/smtv/stargazers)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Python](https://img.shields.io/pypi/pyversions/smtv)](https://pypi.org/project/smtv/)
+[![Translate on Weblate](https://hosted.weblate.org/widget/smtv/svg-badge.svg)](https://hosted.weblate.org/engage/smtv/)
+
+<img src="docs/images/demo.gif" alt="SMTV: a stream recording goes in, SMTV finds the best moments and makes vertical clips one by one" width="820">
+
+[**Download SMTV**](#download) · [Step-by-step guides](docs/guide/README.md) · [How it compares](#how-smtv-compares) · [Questions](#questions)
+
+</div>
+
+---
+
+You streamed for six hours. Somewhere in there are the ten moments worth posting — but finding them means watching it
+all again. **SMTV watches it for you.** Paste a link to a Twitch or YouTube recording, or pick a video file, and SMTV
+listens to the whole stream, picks the best moments and gives you **ready-to-post vertical clips** for TikTok, Shorts
+and Reels, with captions and the webcam on top, plus a **20–30 minute recap** of the whole stream for YouTube.
+
+## What it does
+
+| | |
+|---|---|
+| 🎬 **Clips that are ready to post** | Vertical 9:16, with big captions, a short title card at the start and the streamer's webcam on top of the game. |
+| ⏱️ **Long streams are fine** | A 6–12 hour recording in, up to 30 clips out. Clips appear one by one: start posting before the rest are done. |
+| 📺 **A recap of the whole stream** | A 20–30 minute video for YouTube: the stream itself, cut down to the parts worth watching. |
+| 🗣️ **Many languages** | Russian, 25 European languages and dozens more. SMTV turns speech into text right on your computer. |
+| 🔒 **Your files stay with you** | Clips are made and kept on your computer. Nothing is uploaded to a website. |
+| 💸 **Free and open** | MIT license: use it, share it, use it for clients. No watermark, no limit on minutes. |
+
+## See it work
+
+**Paste a link or pick a file — and watch the steps.** Every step is on screen: speech to text, finding moments,
+rating them, editing each clip.
+
+<img src="docs/images/new-request.gif" alt="A new request: a video file is picked, SMTV starts and shows every step" width="820">
+
+**Clips appear one by one.** Watch them right in SMTV, download them, post them.
+
+<img src="docs/images/clips.png" alt="Finished clips of a stream in a grid" width="820">
+
+**Every clip comes with its text.** Read what was said and why SMTV picked the moment.
+
+<img src="docs/images/viewer.png" alt="A clip playing next to its transcript" width="820">
+
+**And a recap of the whole stream** for YouTube, made after the clips.
+
+<img src="docs/images/recap.png" alt="The recap of the stream in SMTV" width="820">
+
+**Light or dark** — as on your computer.
+
+<img src="docs/images/dark.png" alt="SMTV in the dark theme" width="820">
+
+<sub>The stream in these pictures is made up for the demo: a little game, a cartoon mascot instead of a webcam and a
+computer voice. Nobody real is on screen.</sub>
+
+## Free and open source
+
+- **SMTV is free.** The whole program is open source under the [MIT license](LICENSE): use it for yourself, for your
+  channel or for clients, change it and share it.
+- **No watermark, no minute limits, no subscription to SMTV.**
+- **You pay only for the AI, and only if you want to.** SMTV needs an AI to read the stream's text and choose the
+  moments. That can be a free AI on your own computer, or a service you choose — see below.
+- **Your data stays with you.** Clips are made and kept on your computer. Only the text of the stream goes to the AI
+  you chose. With a free AI on your computer, nothing leaves it at all.
+
+## Choose your AI: three ways
+
+SMTV turns the speech into text on your computer by itself. To pick the best moments it asks an AI. Choose one way —
+one is enough, and you can change it any time in **Settings → AI**.
+
+| | How | Costs | Good for |
+|---|---|---|---|
+| ⭐ **Through the account** | Sign in to a StreamMoment account (Google, Twitch or Telegram) and top up the balance. That's all: no keys, no setup. | Pay as you go from the balance | Everyone: the simplest way. Also needed to paste **links** to recordings. [Guide](docs/guide/account.md) |
+| 🔑 **Your own key** | Already use OpenAI, Claude, Gemini or OpenRouter? Paste your key, and SMTV uses it directly. | You pay that service directly; some have a free plan | People who already use an AI service. [Where to get a key](docs/guide/get-a-key.md) |
+| 💻 **Free, on your computer** | Install Ollama or LM Studio and a Qwen model; SMTV finds it by itself. | Free | A computer with a strong graphics card. Clips come out weaker. [Guide](docs/guide/free-ai-on-your-computer.md) |
+
+## Download
+
+| Your computer | Download | Size |
+|---|---|---|
+| **Windows 10 or 11** (64-bit) | [**SMTV for Windows**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe) (installer) | about 130 MB |
+| **Mac** — Apple silicon (M1 and newer) or Intel, macOS 13+ | [**SMTV for Mac**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | about 270 MB |
+
+One file for every Mac: SMTV starts the version made for your Mac's processor by itself. Windows without installing
+anything:
+[the ZIP](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip) — unzip it and open
+**Start SMTV**.
+
+Everything SMTV needs is inside: the program, Python and ffmpeg with captions. Speech recognition is downloaded on the
+first start, only for your language (0.9–2.5 GB, once): SMTV offers it with one button, **Fix**.
+
+**The first time, the system warns you.** SMTV does not have a digital signature yet: the one for Windows comes a little
+later, the one for macOS as soon as possible, and then this warning goes away. Until then:
+
+- **Windows** («Windows protected your PC»): **More info** → **Run anyway**.
+- **Mac**: open SMTV once, then **System Settings → Privacy & Security** → **Open Anyway**.
+- **Windows 11 with Smart App Control** blocks programs without a signature completely, and there is no button to let
+  one through. Use the one-line install below: it works with Smart App Control on. When SMTV is signed, the download
+  will work there too.
+
+[Every step with pictures](docs/guide/install.md).
+
+### For experienced users: one line in a terminal
+
+The same SMTV, installed with [uv](https://astral.sh/uv) into your user folder. It also works on **Linux** and with
+**Smart App Control**, and updates from the window the same way.
+
+**Windows** — press Start, type **PowerShell**, open it and paste:
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+```
+
+**Mac or Linux** — open **Terminal** and paste:
+
+```bash
+curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+```
+
+Press Enter and wait a few minutes. No administrator password is needed. An **SMTV** icon appears — on the desktop and
+in the Start menu on Windows, in Applications on a Mac, in the applications menu on Linux.
+
+## Your first clip in three steps
+
+1. **Choose an AI** — the window shows the three ways the first time ([which one?](docs/guide/connect-ai.md)).
+2. **Paste a link** to a Twitch or YouTube recording, or pick a video file from your computer.
+3. **Wait.** Clips appear one by one: watch, download, post.
+
+The first time, SMTV checks your computer and offers to fix what is missing with one button, **Fix**.
+[The first clip, step by step](docs/guide/first-clip.md).
+
+## Step-by-step guides
+
+For people who are new to all this — every step, with pictures:
+
+| | |
+|---|---|
+| [Install on Windows, Mac or Linux](docs/guide/install.md) | and what to do when the system warns you |
+| [Your first clip](docs/guide/first-clip.md) | from a link or a file to a finished clip |
+| [Which AI to choose](docs/guide/connect-ai.md) | the three ways, side by side |
+| [A free AI on your computer](docs/guide/free-ai-on-your-computer.md) | Ollama or LM Studio with Qwen: which model fits your graphics card |
+| [Where to get a key](docs/guide/get-a-key.md) | which services have a free or cheap plan, step by step |
+| [The StreamMoment account](docs/guide/account.md) | sign in, balance |
+| [SMTV on your phone](docs/guide/phone.md) | scan a QR code and watch the clips on the phone |
+| [Speech and languages](docs/guide/speech-and-languages.md) | which languages SMTV understands |
+| [Update and remove](docs/guide/update-and-remove.md) | |
+| [Something went wrong](docs/guide/troubleshooting.md) | computer check, **Fix**, **Report a problem** |
+
+## How SMTV compares
+
+The open-source clippers people use most, from each project's own code and documentation, **as of November 2026**.
+They are good projects, each made for its own job; this table only shows where SMTV is different. Something changed?
+[Tell us](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) and we will fix the table.
+
+| | **SMTV** | [openshorts](https://github.com/mutonby/openshorts) | [SupoClip](https://github.com/FujiwaraChoki/supoclip) | [PeakCut](https://github.com/haziqahmedqasmi/PeakCut) | [FunClip](https://github.com/modelscope/FunClip) |
+|---|---|---|---|---|---|
+| License | **MIT** | MIT (the `cloud/` folder has its own license) | Noncommercial source license | MIT | MIT |
+| A whole 6–12 hour stream | **Yes** | 60 minutes per job by default | 90 minutes by default | No length limit stated | Not made for streams |
+| A long recap of the whole stream | **Yes, 20–30 minutes** | No | No (its «recap» is one short clip) | No | No |
+| Russian speech | **GigaAM-v3, made for Russian** | Whisper or Parakeet v3 | AssemblyAI or Whisper | No (Parakeet v2, English only) | No (Chinese and English) |
+| Streamer's webcam in the vertical frame | **Yes** | No | Gaming mode, off by default | Yes | No vertical clips |
+| Speech to text by default | **On your computer, free** | On your computer | AssemblyAI, a paid service | On your computer | On your computer |
+| How you start it | **Its own window and icon: a download for Windows and Mac, or one line** | Web page in Docker | Web page in Docker | Web page | Web page |
+
+## Questions
+
+<details>
+<summary><b>Is it really free?</b></summary>
+
+Yes. SMTV itself costs nothing and has no limits. The only possible cost is the AI that picks the moments: free on
+your own computer, or paid to the service you choose (through the StreamMoment account or your own key).
+</details>
+
+<details>
+<summary><b>Do I need a powerful computer?</b></summary>
+
+No graphics card is needed: SMTV works on an ordinary computer, just slower. An NVIDIA card makes speech to text
+faster. A free AI on your own computer is the exception — it needs a strong graphics card
+([which one](docs/guide/free-ai-on-your-computer.md)). Free disk space: 5 GB at least, 20 GB for a 6-hour stream.
+</details>
+
+<details>
+<summary><b>How long does it take?</b></summary>
+
+Measured on a Mac with Apple silicon, without a graphics card: a 2.35-hour Twitch recording took about 6 minutes to
+find the moments, then about 1 minute per clip; a 10.7-minute recap took 6.5 minutes. Before a request starts, SMTV
+shows how long it should take.
+</details>
+
+<details>
+<summary><b>Which systems does it run on?</b></summary>
+
+Windows 10 (version 1809) or newer, 64-bit; macOS 13 or newer on Apple silicon and Intel (on Apple silicon SMTV runs
+natively from macOS 14; on macOS 13 it runs its Intel version through Rosetta, slower); Linux (one-line install). Checked on Windows 11 and on Macs with Apple silicon; Intel Macs (only under Rosetta) and Linux
+desktops are not tested yet.
+</details>
+
+<details>
+<summary><b>Which languages does it understand?</b></summary>
+
+Russian, 25 European languages and dozens of others. SMTV finds the language of the stream by itself.
+[Details](docs/guide/speech-and-languages.md).
+</details>
+
+<details>
+<summary><b>Can I use the clips for my clients?</b></summary>
+
+Yes. The MIT license allows any use, including commercial: clipping for streamers, agencies, your own channels.
+Respect the rights of the streamer whose stream you clip.
+</details>
+
+<details>
+<summary><b>Where do my clips go? Does anything get uploaded?</b></summary>
+
+Clips stay on your computer. A video file of your own never leaves it. A link is fetched through the StreamMoment
+account: its server passes the recording to SMTV in pieces and stores nothing. The text of the stream goes only to
+the AI you chose. Keys to AI services stay on your computer and never appear in logs or problem reports.
+</details>
+
+<details>
+<summary><b>Does it post to TikTok or YouTube by itself?</b></summary>
+
+Not yet: you download the clips and post them yourself. Settings → About → «Coming» shows what is planned.
+</details>
+
+<details>
+<summary><b>Something does not work.</b></summary>
+
+Settings → **Computer check** → **Fix** solves most problems. Still stuck? Settings → Computer check → **Report…**: SMTV
+prepares a report without your keys and opens a page on GitHub; nothing is sent by itself.
+[What to try](docs/guide/troubleshooting.md).
+</details>
+
+## Help translate SMTV
+
+SMTV's window speaks the language of your computer. Translations are made by people on
+[Weblate](https://hosted.weblate.org/engage/smtv/) — no programming needed: open the page, pick your language,
+translate a few lines. The translations of this page were made automatically; if you see a mistake, fix it in a pull
+request. [How translations work](docs/translations.md).
+
+[![Translation status](https://hosted.weblate.org/widget/smtv/multi-auto.svg)](https://hosted.weblate.org/engage/smtv/)
+
+## StreamMoment
+
+SMTV is made by the [StreamMoment](https://streammoment.tv) team. The StreamMoment account is the simplest way to
+give SMTV an AI and to paste links to recordings; SMTV works without it too.
+
+- [Report a problem](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) · [Suggest an idea](https://github.com/streammomenttv/smtv/issues/new?template=feature.yml)
+- [For advanced users](docs/advanced.md): Docker, every AI service, speech models, keys, commands
+- [Changes](CHANGELOG.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
+- Like SMTV? [Support it on Boosty](https://boosty.to/smtv) and give the repository a ⭐ — it helps others find it.
+
+License: [MIT](LICENSE).

@@ -1,0 +1,96 @@
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "hook": {
+      "type": "string",
+      "maxLength": 400
+    },
+    "chapters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60
+          },
+          "parts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "start": {
+                  "type": "string",
+                  "pattern": "^[0-9]+:[0-5][0-9]:[0-5][0-9]$"
+                },
+                "end": {
+                  "type": "string",
+                  "pattern": "^[0-9]+:[0-5][0-9]:[0-5][0-9]$"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "highlight",
+                    "context"
+                  ]
+                },
+                "pace": {
+                  "type": "string",
+                  "enum": [
+                    "tight",
+                    "loose"
+                  ]
+                },
+                "why": {
+                  "type": "string",
+                  "maxLength": 240
+                },
+                "peaks": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[0-9]+:[0-5][0-9]:[0-5][0-9]$"
+                  },
+                  "maxItems": 3
+                },
+                "music": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "start",
+                "end",
+                "role",
+                "pace",
+                "why",
+                "peaks",
+                "music"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "title",
+          "parts"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 12
+    }
+  },
+  "required": [
+    "title",
+    "hook",
+    "chapters"
+  ],
+  "additionalProperties": false
+}

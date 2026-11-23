@@ -1,0 +1,14 @@
+# Words covered by a tone in the sound of a clip: slurs against groups of people. Ordinary swearing is not here.
+# One regular expression per line, matched against the whole word after normalize() (lower case, no punctuation).
+# Lines starting with # are comments.
+n[i1]g{1,2}(?:er|a)s?
+fag(?:got)?s?
+trann(?:y|ies)
+shemales?
+kikes?
+chinks?
+gooks?
+spics?
+wetbacks?
+ragheads?
+zipperheads?

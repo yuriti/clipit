@@ -1,0 +1,34 @@
+# SMTV in Docker (stage 21). Start: `docker compose up -d --build`, then open the link from
+# `docker compose logs smtv | grep token=` — the browser remembers the key; Chrome or Edge offer «Install SMTV».
+# Stop: `docker compose stop`. Remove (clips and settings stay in the volume): `docker compose down`; with them: `down -v`.
+services:
+  smtv:
+    image: smtv-vodcut:local
+    build:
+      context: .
+      args:
+        TOOLS: vodcut
+    ports:
+      # Only this computer sees the page. A home server (NAS) on purpose: "8642:8642", and list the names it is opened
+      # by in SMTV_HOSTS; every browser still needs the key from the log.
+      - "127.0.0.1:8642:8642"
+    volumes:
+      - smtv-data:/data          # settings, keys (encrypted), speech models (~1 GB), clips: a new container loses nothing
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # Ollama and other model servers on the host (Linux needs this line)
+    environment: {}
+      # SMTV_PUBLIC_PORT: "9000"            # when the host port is not 8642 ("127.0.0.1:9000:8642")
+      # SMTV_HOSTS: "nas.local,192.168.1.20" # a home server: the names the page is opened by
+      # SMTV_LAN_ADDRESS: "192.168.1.20"    # «Phone»: the host's address in the home network (publish the port on it)
+    restart: unless-stopped
+    # An NVIDIA card on Linux or Windows with WSL (NVIDIA Container Toolkit): uncomment. Not on a Mac.
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu, video]
+
+volumes:
+  smtv-data:

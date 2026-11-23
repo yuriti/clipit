@@ -1,0 +1,50 @@
+name: Report a problem
+description: Something failed or works wrong. SMTV fills in the summary and saves an archive with logs for you.
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The easiest way: in SMTV open **Settings → System → Report a problem** (or the button under a failed request),
+        or run `smtv report` in a terminal. SMTV saves `smtv-report-<time>.zip` without keys and tokens and opens this
+        page with the summary filled in. Nothing is sent by SMTV itself: you attach the archive below.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary from SMTV
+      description: Versions, system and the error. Filled in by SMTV; edit anything you do not want to share.
+      render: text
+    validations:
+      required: false
+  - type: textarea
+    id: what_did
+    attributes:
+      label: What did you do?
+      description: The steps, e.g. "pasted a Twitch link of a 6-hour stream and pressed Start".
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead?
+      description: The message you saw, the step where it stopped. A screenshot helps.
+    validations:
+      required: true
+  - type: textarea
+    id: archive
+    attributes:
+      label: Report archive
+      description: |
+        Drag `smtv-report-<time>.zip` here (GitHub takes zip files up to 25 MB). It holds the versions, `smtv doctor`,
+        settings without keys, the request's event journal and the end of the logs. Links to streams and file names are
+        in it only if you ticked that box. You can open it and look before attaching.
+      placeholder: Drop the archive here
+    validations:
+      required: false

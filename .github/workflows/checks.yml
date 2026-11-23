@@ -1,0 +1,91 @@
+# Every check on every pull request: the same `scripts/check.py` people and AI assistants run locally.
+# Runs the contributor's code, so it gets no secrets and a read-only token. A first-time contributor's run waits for a
+# maintainer's approval (repository setting «Require approval for first-time contributors»).
+name: checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GITLEAKS_VERSION: "8.30.1"
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: smtv
+          fetch-depth: 0               # commit authors and gitleaks read the history
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ github.repository_owner }}/prompts
+          path: prompts                # the bundled prompts must match it (check «sync»)
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+        with:
+          python-version: "3.12"
+      - name: ffmpeg with libass, gitleaks
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q ffmpeg
+          curl -fsSLo /tmp/gl.tgz "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -fsSLo /tmp/gl.txt "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_checksums.txt"
+          grep "_linux_x64.tar.gz$" /tmp/gl.txt | sed "s|gitleaks_.*_linux_x64.tar.gz|/tmp/gl.tgz|" | sha256sum -c -
+          sudo tar -xzf /tmp/gl.tgz -C /usr/local/bin gitleaks
+      - name: install (from uv.lock, hashes checked)
+        working-directory: smtv
+        run: uv sync --frozen --all-packages
+      - name: check everything
+        working-directory: smtv
+        env:
+          SMTV_CHECK_RANGE: ${{ github.event.pull_request && format('{0}..{1}', github.event.pull_request.base.sha, github.event.pull_request.head.sha) || '' }}
+        run: uv run --frozen python scripts/check.py --ci
+
+  licenses:
+    # Platform-only dependencies (pyobjc on macOS, pythonnet on Windows) are checked where they install; Linux also
+    # installs every extra (NVIDIA build of onnxruntime, keyring, yt-dlp), which macOS cannot.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, sync: "--all-extras" }
+          - { os: macos-latest, sync: "" }
+          - { os: windows-latest, sync: "" }
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+        with:
+          python-version: "3.12"
+      - run: uv sync --frozen --all-packages ${{ matrix.sync }}
+      - run: uv run --frozen python scripts/check.py licenses --ci
+
+  dependency-review:
+    # New dependencies in a PR: known vulnerabilities and licenses, from GitHub's own database.
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/dependency-review-action@bbc44d14a204704ccc493733616cd1e93a0321ec # v5.0.1
+        with:
+          fail-on-severity: moderate
+          allow-licenses: MIT, MIT-CMU, BSD-2-Clause, BSD-3-Clause, 0BSD, Apache-2.0, ISC, PSF-2.0, Python-2.0, Unlicense, Zlib, CC0-1.0, HPND
+          allow-dependencies-licenses: pkg:pypi/tqdm

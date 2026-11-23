@@ -1,0 +1,380 @@
+/* VodCut's places in SMTV's window: built on the window's tokens (app.css). Sizes follow the work area (container
+   "work"), not the whole window: the rail and the list of requests take part of it. */
+.vc-job { gap: 16px; }
+.vc-form-title { margin: 0; font: 600 clamp(22px, 3vw, 30px)/1.1 var(--display); }
+
+/* the new request: one field, a file button and «Start», nothing around them */
+.vc-new { display: grid; gap: 10px; }
+.vc-field { display: flex; align-items: center; gap: 6px; padding: 6px 6px 6px 18px; border-radius: 26px; background: var(--panel); border: 1px solid var(--line-2); }
+.vc-field:focus-within { border-color: color-mix(in oklab, var(--text) 35%, transparent); }
+.vc-src { flex: 1; min-width: 0; height: 40px; border: 0; outline: none; background: transparent; font-size: 15px; color: var(--text); }
+.vc-src::placeholder { color: var(--text-3); }
+.vc-round { display: grid; place-items: center; flex: none; width: 38px; height: 38px; border-radius: 50%; border: 0; background: none; color: var(--text-2); cursor: pointer; }
+.vc-round svg { width: 18px; height: 18px; }
+.vc-round:hover { color: var(--text); background: var(--accent-soft); }
+.vc-go { background: var(--grad); color: var(--grad-ink); }
+.vc-go:hover { background: var(--grad); opacity: .88; color: var(--grad-ink); }
+.vc-go:disabled { opacity: .25; cursor: default; }
+/* the line under the field starts where the field's text starts (18 px + its border) */
+.vc-under { min-height: 26px; padding-left: 19px; display: flex; align-items: center; }
+.vc-hints { display: flex; flex-wrap: wrap; gap: 6px; }
+.vc-hint { height: 26px; padding: 0 11px; border-radius: 13px; border: 1px solid var(--line); background: none; color: var(--text-3); font-size: 12.5px; cursor: pointer; }
+.vc-hint:first-child { margin-left: -12px; }   /* the chip's text, not its edge, lines up with the field's text */
+.vc-hint:hover { color: var(--text); border-color: var(--line-2); }
+.vc-under .vc-est { display: none; }
+.vc-under.filled .vc-hints { display: none; }
+.vc-under.filled .vc-est { display: block; }
+.vc-est { font-size: 12.5px; color: var(--text-3); overflow-wrap: anywhere; }
+.vc-est-err { color: var(--bad); }
+/* a file over the window: the whole window takes it */
+.vc-veil { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; pointer-events: none;
+  background: color-mix(in oklab, var(--bg) 70%, transparent); }
+.vc-veil > div { display: grid; justify-items: center; gap: 10px; padding: 28px 36px; border-radius: 20px; border: 1px dashed var(--line-2); background: var(--panel); color: var(--text-2); }
+.vc-veil svg { width: 28px; height: 28px; }
+.vc-veil b { font-weight: 500; color: var(--text); }
+
+/* the open request: clips in the middle on the window's own background, widgets on the right */
+.page.vc-job { max-width: none; padding: 20px 20px 28px 28px; }
+.vc-board { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+.vc-center { min-width: 0; display: grid; gap: 14px; align-content: start; }
+.vc-center-head { display: flex; gap: 12px; align-items: baseline; justify-content: space-between; }
+.vc-title { margin: 0; font: 600 19px/1.3 var(--font); overflow-wrap: anywhere; }
+.vc-clip-count { white-space: nowrap; font-size: 12.5px; }
+
+/* widgets: small floating blocks; the column keeps its place while the clips scroll and scrolls on its own */
+.vc-widgets { position: sticky; top: 20px; max-height: calc(100vh - var(--top-h, 46px) - 40px); overflow-y: auto; overscroll-behavior: contain;
+  display: grid; gap: 10px; align-content: start; scrollbar-width: thin; }
+.vc-w { border-radius: 14px; background: var(--panel); border: 1px solid var(--line); }
+.vc-w-head { list-style: none; display: flex; gap: 8px; align-items: center; padding: 11px 14px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-2); user-select: none; }
+.vc-w-head::-webkit-details-marker { display: none; }
+.vc-w-head > span:first-of-type { flex: 1; }
+.vc-w-count { color: var(--text-3); font-weight: 500; font-size: 12px; }
+.vc-w-chev { display: grid; color: var(--text-3); transition: transform .15s; }
+.vc-w-chev svg { width: 14px; height: 14px; }
+.vc-w[open] .vc-w-chev { transform: rotate(90deg); }
+.vc-w-body { padding: 0 14px 14px; display: grid; gap: 10px; min-width: 0; }
+.vc-channel { display: flex; gap: 8px; align-items: center; font-size: 13.5px; min-width: 0; }
+.vc-channel b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vc-avatar { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; flex: none; }
+.vc-meta { color: var(--text-2); font-size: 12.5px; display: grid; gap: 2px; min-width: 0; }
+.vc-source { display: block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-3); }
+.vc-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.vc-actions:empty { display: none; }
+.vc-actions .btn { height: 32px; padding: 0 12px; font-size: 13px; border-radius: 9px; }
+.vc-conn { font-size: 12px; font-weight: 600; color: var(--text-3); }
+.vc-conn.open::before { content: "● "; animation: blink-live 1.6s ease-in-out infinite; }
+@keyframes blink-live { 50% { opacity: .3; } }
+.vc-now-row { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.vc-now { font-size: 13px; color: var(--text); min-width: 0; overflow-wrap: anywhere; }
+.vc-clock { font: 600 13px/1 var(--mono); color: var(--text-2); font-variant-numeric: tabular-nums; }
+.vc-overall { height: 4px; }
+.vc-error { display: flex; gap: 8px; align-items: flex-start; padding: 9px 10px; border-radius: 10px; background: var(--bad-soft); color: var(--bad); font-size: 12.5px; overflow-wrap: anywhere; }
+.vc-error-text { display: grid; gap: 2px; min-width: 0; justify-items: start; }
+.vc-error-text .report-btn { color: var(--text); }
+.vc-error svg { width: 15px; height: 15px; flex: none; margin-top: 1px; }
+.vc-stages-box summary { cursor: pointer; font-size: 12.5px; color: var(--text-3); }
+.vc-stages { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 2px; }
+/* every stage the same: the icon level with its name, a second line always (data, or «waiting»), the bar only while it runs */
+.vc-stage { display: grid; grid-template-columns: 20px 1fr; gap: 0 10px; align-items: start; padding: 5px 0; font-size: 12.5px; min-width: 0; }
+.vc-stage-icon { width: 20px; height: 20px; border-radius: 6px; display: grid; place-items: center; color: var(--text-3); grid-row: 1; margin-top: -1px; }
+.vc-stage-icon svg { width: 14px; height: 14px; }
+.vc-stage-text { min-width: 0; }
+.vc-stage-text b { display: block; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vc-stage-n { display: none; }
+.vc-stage-text small { display: block; color: var(--text-3); font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vc-stage-bar { grid-column: 2; height: 3px; margin-top: 4px; }
+.vc-stage.wait, .vc-stage.skip { opacity: .5; }
+.vc-stage.done .vc-stage-icon { color: var(--ok); }
+.vc-stage.active .vc-stage-icon { color: var(--text); }
+.vc-stage.failed .vc-stage-icon { color: var(--bad); }
+.vc-stage.cancelled .vc-stage-icon { color: var(--warn); }
+.vc-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 8px; }
+.vc-stat { display: grid; gap: 1px; min-width: 0; }
+.vc-stat small { font-size: 11px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vc-stat b { font: 600 17px/1.2 var(--font); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vc-stat span { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vc-empty { margin: 2px 0; font-size: 12.5px; }
+.vc-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-3); }
+
+/* episodes */
+.vc-episodes { display: grid; gap: 6px; }
+.vc-ep { padding: 11px 13px; border-radius: 13px; background: var(--bg-2); border: 1px solid var(--line); display: grid; gap: 6px; }
+.vc-ep.new { animation: arrive .6s ease; }
+.vc-ep.strong, .vc-ep.good { border-color: color-mix(in oklab, var(--ok) 35%, transparent); }
+.vc-ep.skip, .vc-ep.no_verdict { opacity: .6; }
+.vc-ep-top { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.vc-ep-time { color: var(--text-2); margin-right: 2px; }
+.vc-ep-title { margin: 0; font-weight: 650; overflow-wrap: anywhere; }
+.vc-ep-why { margin: 0; color: var(--text-2); font-size: 12.5px; overflow-wrap: anywhere; }
+.vc-ep.pending .vc-ep-title { font-weight: 500; color: var(--text-2); }
+.vc-score { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+.vc-score b { font: 600 15px/1 var(--display); min-width: 26px; text-align: right; }
+.chip.v-strong { color: var(--grad-ink); background: var(--grad); border-color: transparent; }
+.chip.v-good { color: var(--ok); background: var(--ok-soft); border-color: transparent; }
+.chip.v-maybe { color: var(--warn); background: var(--warn-soft); border-color: transparent; }
+.chip.v-skip, .chip.v-no_verdict { color: var(--text-3); }
+@keyframes arrive { from { background: color-mix(in oklab, var(--accent) 20%, var(--bg-2)); } }
+
+/* feed */
+.vc-feed { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; max-height: 420px; overflow-y: auto; }
+.vc-line { display: grid; grid-template-columns: 22px 1fr auto; gap: 7px; align-items: start; padding: 5px 0; font-size: 12.5px; }
+.vc-line.new { animation: arrive .8s ease; }
+.vc-line-icon { width: 22px; height: 22px; border-radius: 8px; display: grid; place-items: center; background: var(--panel-2); color: var(--text-3); }
+.vc-line-icon svg { width: 14px; height: 14px; }
+.vc-line-text { padding-top: 3px; overflow-wrap: anywhere; }
+.vc-line time { padding-top: 4px; font-size: 11px; }
+.vc-line.stage .vc-line-text { font-weight: 700; }
+.vc-line.stage .vc-line-icon { background: var(--accent-soft); color: var(--accent); }
+.vc-line.good .vc-line-icon { background: var(--ok-soft); color: var(--ok); }
+.vc-line.bad .vc-line-icon { background: var(--bad-soft); color: var(--bad); }
+.vc-line.bad .vc-line-text { color: var(--bad); }
+.vc-line.model .vc-line-icon { background: color-mix(in oklab, var(--accent-2) 16%, transparent); color: var(--accent-2); }
+
+/* model calls */
+.vc-calls { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.vc-calls li { display: flex; gap: 8px; align-items: center; padding: 8px 10px; border-radius: 11px; background: var(--bg-2); border: 1px solid var(--line); font-size: 12.5px; min-width: 0; }
+.vc-calls li.bad { border-color: color-mix(in oklab, var(--bad) 40%, transparent); }
+.vc-call-model { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11.5px; }
+.vc-call-num { font-variant-numeric: tabular-nums; font-weight: 650; white-space: nowrap; }
+.vc-call-err { color: var(--bad); font-weight: 500; white-space: normal; }
+
+/* clips */
+/* exact track widths, not 1fr: WebKit squeezed fr columns to nothing next to the three-wide recap */
+.vc-clips { --cols: 5; --gap: 14px; display: grid; gap: var(--gap); grid-template-columns: repeat(var(--cols), calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols))); }
+.vc-clip { background: transparent !important; border: 0 !important; box-shadow: none !important; border-radius: 12px; overflow: visible !important; }
+.vc-clip-acts { display: flex; gap: 6px; }
+.vc-clip-acts .vc-dl { flex: 1; min-width: 0; }
+.vc-icon-btn { width: 32px; padding: 0; flex: none; }
+.vc-state-row { display: flex; gap: 10px; align-items: center; }
+.vc-state { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text-2); }
+.vc-state::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--text-3); }
+.vc-state.running::before { background: var(--accent-3); }
+.vc-state.failed::before { background: var(--bad); }
+.vc-state.cancelled::before, .vc-state.unfinished::before { background: var(--warn); }
+.vc-state.done::before { background: var(--ok); opacity: .8; }
+.vc-clip .vc-clip-media { border-radius: 12px; overflow: hidden; }
+.vc-clip .vc-clip-body { padding: 8px 2px 0; }
+.vc-clip.vc-recap-tile { grid-column: span 3; display: flex; flex-direction: column; }
+.vc-recap-tile .vc-clip-media { flex: 1; aspect-ratio: auto; min-height: 220px; background: var(--panel-2); }
+.vc-recap-ph { position: relative; display: grid; justify-items: center; gap: 6px; text-align: center; padding: 20px; color: var(--text-3); font-size: 12.5px; max-width: 34ch; }
+.vc-recap-ph svg { width: 26px; height: 26px; }
+.vc-recap-ph b { color: var(--text-2); font-size: 14px; font-weight: 600; }
+.vc-clips-empty { grid-column: span 2; align-self: center; }
+.vc-clip { display: grid; grid-template-rows: auto 1fr; border-radius: 16px; overflow: hidden; background: var(--bg-2); border: 1px solid var(--line); min-width: 0; transition: border-color .4s, box-shadow .4s; }
+.vc-clip.ready { border-color: color-mix(in oklab, var(--ok) 30%, var(--line)); }
+.vc-clip.fresh { animation: ready-glow 2.4s ease; }
+.vc-clip.working { border-color: color-mix(in oklab, var(--accent) 50%, transparent); box-shadow: 0 0 0 4px var(--accent-soft); }
+.vc-clip.failed { border-color: color-mix(in oklab, var(--bad) 45%, transparent); }
+@keyframes ready-glow { 0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--ok) 60%, transparent); } 30% { box-shadow: 0 0 0 6px color-mix(in oklab, var(--ok) 25%, transparent); } 100% { box-shadow: none; } }
+.vc-clip-media { position: relative; aspect-ratio: 9 / 16; background: #000; }
+.vc-clip-media video { width: 100%; height: 100%; object-fit: cover; display: block; background: #000; }
+.vc-clip-ph { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden;
+  background: var(--panel-2); }
+.vc-clip.working .vc-clip-ph::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.09) 50%, transparent 70%);
+  background-size: 250% 100%; animation: sheen 1.8s linear infinite; }
+@keyframes sheen { from { background-position: 120% 0; } to { background-position: -120% 0; } }
+.vc-clip-num { font: 600 64px/1 var(--display); color: color-mix(in oklab, var(--text) 14%, transparent); }
+.vc-frames { position: absolute; inset: 0; display: grid; grid-template-rows: repeat(5, 1fr); gap: 2px; }
+.vc-frames img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: .82; animation: fade .5s ease both; }
+.vc-frames img:nth-child(2) { animation-delay: .1s; } .vc-frames img:nth-child(3) { animation-delay: .2s; } .vc-frames img:nth-child(4) { animation-delay: .3s; } .vc-frames img:nth-child(5) { animation-delay: .4s; }
+.vc-clip-step { position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 1; display: flex; gap: 8px; align-items: center; padding: 8px 10px; border-radius: 11px;
+  font-size: 12px; font-weight: 700; color: #fff; background: rgba(12, 10, 24, .8); }
+.vc-clip-step.dim { color: rgba(255,255,255,.7); font-weight: 600; }
+.vc-clip-step.bad { color: #fecaca; }
+.vc-clip-step svg { width: 14px; height: 14px; }
+.vc-spinner { width: 13px; height: 13px; border-radius: 50%; border: 2px solid rgba(255,255,255,.25); border-top-color: #fff; animation: spin .8s linear infinite; flex: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.vc-clip-score { position: absolute; top: 8px; left: 8px; z-index: 1; min-width: 30px; height: 24px; padding: 0 7px; border-radius: 8px; display: grid; place-items: center;
+  font: 600 13px/1 var(--display); color: var(--grad-ink); background: var(--grad); }
+.vc-clip-body { padding: 10px 12px 12px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.vc-clip-id { display: flex; justify-content: space-between; gap: 8px; font-size: 11.5px; color: var(--text-2); }
+.vc-clip-title { margin: 0; font-weight: 700; font-size: 13.5px; line-height: 1.3; overflow-wrap: anywhere; }
+.vc-clip-err { margin: 0; font-size: 12px; color: var(--bad); overflow-wrap: anywhere; }
+.vc-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.vc-dl { justify-self: start; margin-top: 2px; }
+
+@container work (max-width: 1240px) { .vc-clips { --cols: 4; } }
+@container work (max-width: 1040px) {
+  .vc-clips { --cols: 3; }
+  .vc-recap-tile .vc-clip-media { flex: none; aspect-ratio: 16 / 9; min-height: 0; }   /* alone in its row: no clip to match */
+}
+@container work (max-width: 900px) {
+  .vc-board { grid-template-columns: minmax(0, 1fr); }
+  .vc-widgets { position: static; max-height: none; order: -1; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); align-items: start; }
+}
+@container work (max-width: 560px) {
+  .vc-clips { --cols: 2; --gap: 10px; }
+  .vc-clip.vc-recap-tile { grid-column: 1 / -1; }
+  .vc-recap-tile .vc-clip-media { aspect-ratio: 16 / 9; min-height: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* nothing travels; colour fades and the blinking dots stay */
+  .vc-clip.working .vc-clip-ph::after { animation: none; background: rgba(255,255,255,.04); }
+  .vc-spinner { animation: blink-live 1.2s ease-in-out infinite; border-top-color: rgba(255,255,255,.25); background: rgba(255,255,255,.5); }
+}
+.vc-calls .chip svg { width: 12px; height: 12px; }
+
+/* a clip card: only the picture, and a round «play» in its middle (owner, 20.11; blurred only under glass) */
+.vc-clip.ready .vc-clip-media { cursor: pointer; }
+.vc-play { position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; border: 0; display: grid; place-items: center;
+  color: #fff; background: rgba(20, 20, 20, .42); cursor: pointer; transition: background .2s; }
+.vc-play svg { width: 30px; height: 30px; }   /* the triangle is drawn with its centroid in the middle: no extra shift */
+/* hover over the card: the picture comes a little closer and brighter, the button darkens */
+.vc-clip.ready .vc-clip-media video { transition: transform .35s ease, filter .25s ease; }
+.vc-clip.ready .vc-clip-media:hover video { transform: scale(1.04); filter: brightness(1.08); }
+.vc-clip.ready .vc-clip-media:hover .vc-play { background: rgba(20, 20, 20, .5); }
+@media (prefers-reduced-motion: reduce) {
+  .vc-clip.ready .vc-clip-media:hover video { transform: none; filter: brightness(1.15); }
+}
+.vc-clip.ready .vc-clip-media .vc-play { z-index: 1; }
+
+/* the viewer: large, the clip on the left, what goes with it on the right */
+/* The viewer fits the window, below its top bar: its height is what the window has, the clip keeps 9:16 and is always
+   seen whole (top to bottom); a narrow window gives the clip less width, never cuts it. */
+.vc-v-back { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: calc(var(--top-h, 46px) + 8px) 68px 24px; background: rgba(0, 0, 0, .6); }   /* room at the sides for the close button */
+.vc-v { --side: 340px; position: relative; height: min(calc(100vh - var(--top-h, 46px) - 32px), 920px); max-width: 100%; display: grid; grid-template-columns: auto var(--side);
+  grid-template-rows: 100%;   /* a definite row: the clip's height:100% resolves to it, and 9:16 gives its width */
+  border-radius: 18px; overflow: hidden; background: var(--panel-solid); border: 1px solid var(--line-2); }
+.vc-v-media { height: 100%; aspect-ratio: 9 / 16; max-width: calc(100vw - 136px - var(--side)); background: #000; }
+.vc-v-video { width: 100%; height: 100%; display: block; object-fit: contain; background: #000; }
+/* the whole right side scrolls as one; the strip of clips stays on top (sticky); nothing in it is squeezed */
+.vc-v-side { min-width: 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.vc-v-info { padding: 16px 22px 22px; display: flex; flex-direction: column; gap: 18px; }
+.vc-v-info > * { flex-shrink: 0; }
+/* every clip of the request, small, to jump between them without leaving the viewer */
+.vc-v-strip { position: sticky; top: 0; z-index: 1; display: flex; gap: 6px; overflow-x: auto; padding: 14px 22px 10px 22px; scrollbar-width: thin; border-bottom: 1px solid var(--line); background: var(--panel-solid); }
+.vc-v-thumb { position: relative; flex: none; width: 46px; aspect-ratio: 9 / 16; padding: 0; border: 0; border-radius: 7px; overflow: hidden; background: #000; cursor: pointer; opacity: .6;
+  transition: opacity .15s; }
+.vc-v-thumb video { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+.vc-v-thumb:hover { opacity: .9; }
+.vc-v-thumb[aria-current="true"] { opacity: 1; box-shadow: inset 0 0 0 2px var(--text); }
+.vc-v-thumb:not(.got) .vc-v-got { display: none; }
+.vc-v-got, .vc-got { position: absolute; right: 4px; bottom: 4px; width: 16px; height: 16px; border-radius: 50%; display: grid; place-items: center; background: var(--ok); color: #fff; }
+.vc-v-got svg, .vc-got svg { width: 11px; height: 11px; stroke-width: 3; }
+.vc-got { right: 8px; bottom: 8px; width: 22px; height: 22px; z-index: 2; }   /* bottom right: the top right corner is the heart's */
+.vc-got svg { width: 13px; height: 13px; }
+/* the critic edited this clip: a quiet mark in the bottom left corner, why is in the viewer */
+.vc-critic { position: absolute; left: 8px; bottom: 8px; z-index: 2; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(20, 20, 20, .38); color: rgba(255, 255, 255, .85); }
+.vc-critic svg { width: 13px; height: 13px; stroke-width: 2; }
+.vc-v-critic p { margin: 0; }
+.vc-v-critic p + p { margin-top: 4px; font-size: 13px; }
+/* previous / next beside the clip */
+.vc-v-media { position: relative; }
+.vc-v-nav { position: absolute; top: 50%; width: 40px; height: 40px; margin-top: -20px; border-radius: 50%; border: 0; display: grid; place-items: center; z-index: 2;
+  color: #fff; background: rgba(20, 20, 20, .35); cursor: pointer; transition: background .15s, opacity .15s; }
+.vc-v-nav.prev { left: 10px; } .vc-v-nav.next { right: 10px; }
+.vc-v-nav svg { width: 20px; height: 20px; stroke-width: 2.2; }
+.vc-v-nav:hover { background: rgba(20, 20, 20, .55); }
+.vc-v-nav:disabled { opacity: 0; pointer-events: none; }
+/* the AI score: one number, quiet */
+.vc-v-score { display: flex; align-items: baseline; gap: 8px; font-size: 12px; color: var(--text-3); font-weight: 600; }
+.vc-v-score b { font: 600 22px/1 var(--font); color: var(--text); font-variant-numeric: tabular-nums; }
+.vc-v-dl.got { color: var(--text-2); }
+/* the close button hangs just outside the viewer's top right corner: close by, never over the strip of clips */
+.vc-v-wrap { position: relative; max-width: 100%; }
+.vc-v-close { position: absolute; top: 0; right: -48px; z-index: 2; width: 36px; height: 36px; border-radius: 50%; border: 0;
+  display: grid; place-items: center; background: rgba(255, 255, 255, .14); color: #fff; cursor: pointer; transition: background .15s; }
+.vc-v-close:hover { background: rgba(255, 255, 255, .22); }
+.vc-v-close svg { width: 18px; height: 18px; stroke-width: 2; }
+.vc-v-block { display: grid; gap: 6px; min-width: 0; }
+.vc-v-block > p { margin: 0; font-size: 14px; line-height: 1.5; color: var(--text); overflow-wrap: anywhere; }
+.vc-v-block > p.faint { color: var(--text-3); font-size: 13px; }
+.vc-v-head { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--text-3); }
+.vc-v-copy { display: grid; place-items: center; width: 24px; height: 24px; border: 0; border-radius: 6px; background: none; color: var(--text-3); cursor: pointer; }
+.vc-v-copy:hover { color: var(--text); background: var(--accent-soft); }
+.vc-v-copy svg { width: 14px; height: 14px; }
+.vc-v-title { font-size: 17px !important; font-weight: 600; }
+.vc-v-dl { justify-self: start; align-self: flex-start; }
+.vc-v-lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.vc-v-lines li { display: grid; grid-template-columns: 44px 1fr; gap: 8px; padding: 6px 8px; border-radius: 8px; font-size: 13.5px; line-height: 1.45; color: var(--text-2); cursor: pointer; }
+.vc-v-lines li:hover { background: var(--accent-soft); }
+.vc-v-lines li time { font: 12px/1.6 var(--mono); color: var(--text-3); }
+@media (max-width: 760px) {
+  .vc-v { --side: 0px; grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); width: 100%; }
+  .vc-v-media { height: 56vh; max-width: 100%; justify-self: center; }
+}
+/* the word being said: lit as it is said, with a short fade; its line a little */
+.vc-v-lines .w { border-radius: 4px; transition: color .18s ease, background-color .18s ease; }
+.vc-v-lines .w.now { color: var(--text); background: color-mix(in oklab, var(--text) 16%, transparent); }
+.vc-v-lines li.now { background: var(--accent-soft); color: var(--text-2); }
+.vc-v-lines li { scroll-margin-top: 120px; scroll-margin-bottom: 24px; }   /* the lit line never hides under the sticky strip */
+/* the strip's scrollbar is always there (macOS hides overlay scrollbars until touched): many clips are clearly scrollable */
+.vc-v-strip { scrollbar-width: auto; padding-bottom: 8px; }
+.vc-v-strip::-webkit-scrollbar { height: 6px; -webkit-appearance: none; }
+.vc-v-strip::-webkit-scrollbar-track { background: var(--accent-soft); border-radius: 3px; margin: 0 22px; }
+.vc-v-strip::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 3px; }
+.vc-v-strip::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
+
+/* favourites: a heart in the card's top right corner — filled white when set and always seen; an outline on hover */
+.vc-heart { position: absolute; top: 8px; right: 8px; z-index: 2; width: 34px; height: 34px; border-radius: 50%; border: 0; padding: 0; display: grid; place-items: center;
+  color: #fff; background: rgba(20, 20, 20, .42); cursor: pointer; opacity: 0; transition: opacity .15s, background .15s; }
+.vc-heart svg { width: 18px; height: 18px; stroke-width: 2; }
+.vc-clip-media:hover .vc-heart, .vc-heart:focus-visible, .vc-heart.on { opacity: 1; }
+.vc-heart:hover { background: rgba(20, 20, 20, .5); }
+.vc-heart.on svg, .vc-v-heart.on svg, .vc-v-fav svg { fill: currentColor; }
+/* in the viewer: next to the score */
+.vc-v-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-right: 0; }
+.vc-v-heart { width: 34px; height: 34px; border-radius: 50%; border: 0; padding: 0; display: grid; place-items: center; background: var(--accent-soft); color: var(--text-2); cursor: pointer; }
+.vc-v-heart svg { width: 18px; height: 18px; stroke-width: 2; }
+.vc-v-heart:hover, .vc-v-heart.on { color: var(--text); }
+/* in the strip: a small filled heart on favourites */
+.vc-v-fav { position: absolute; top: 3px; right: 3px; display: none; color: #fff; }
+.vc-v-fav svg { width: 12px; height: 12px; stroke-width: 2; }
+.vc-v-thumb.fav .vc-v-fav { display: block; }
+/* the empty card that waits for the first clip: a clip's size, quiet */
+.vc-clip-empty .vc-clip-media { background: var(--panel-2); }
+.vc-clip-empty .vc-clip-ph { background: var(--panel-2); }
+.vc-empty-ph { display: grid; justify-items: center; gap: 8px; color: var(--text-3); font-size: 12.5px; text-align: center; padding: 12px; }
+.vc-empty-ph svg { width: 22px; height: 22px; }
+/* while a clip is being made: one of its frames fills the card */
+.vc-frames { grid-template-rows: 1fr !important; }
+.vc-frames img { animation: none; }
+.vc-v-src { display: inline-flex; align-items: center; gap: 6px; color: var(--text); text-decoration: none; font-size: 14px; }
+.vc-v-src svg { width: 14px; height: 14px; color: var(--text-3); }
+.vc-v-src:hover { text-decoration: underline; }
+/* «Pause» waits for a safe point and says so; «Stop now» is the quiet second choice */
+.vc-stop-now { color: var(--text-3); }
+.vc-stop-now:hover { color: var(--bad); }
+.vc-pause-note { flex-basis: 100%; margin: 2px 0 0; font-size: 12.5px; line-height: 1.45; color: var(--text-2); }
+@media (max-width: 760px) { .vc-v-close { right: 8px; top: 8px; background: rgba(20, 20, 20, .55); } }   /* no room beside it: inside the corner */
+
+/* the recap (stage 12): a 16:9 tile three clips wide before the clips — its cover, «play», the title over a soft shade */
+.vc-recap-tile .vc-clip-media { overflow: hidden; }
+.vc-recap-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .35s ease, filter .25s ease; }
+.vc-recap-tile.ready .vc-clip-media { cursor: pointer; }
+.vc-recap-tile.ready .vc-clip-media:hover .vc-recap-poster { transform: scale(1.03); filter: brightness(1.08); }
+.vc-recap-tile.ready .vc-clip-media:hover .vc-play { background: rgba(20, 20, 20, .5); }
+.vc-recap-cap { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; display: grid; gap: 4px; padding: 28px 14px 12px; color: #fff;
+  background: linear-gradient(to top, rgba(0, 0, 0, .62), rgba(0, 0, 0, 0)); pointer-events: none; }
+.vc-recap-cap b { font-size: 14px; font-weight: 600; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vc-recap-cap > span:last-child { font-size: 12px; opacity: .85; }
+.vc-recap-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; opacity: .9; }
+.vc-recap-badge svg { width: 14px; height: 14px; }
+.vc-recap-badge.on-panel { color: var(--text-2); opacity: 1; }
+.vc-recap-ph .btn { margin-top: 6px; }
+.vc-recap-ph .vc-clip-step { position: static; margin-top: 4px; }
+.vc-recap-err { color: var(--bad); overflow-wrap: anywhere; max-height: 5.5em; overflow: hidden; }
+@media (prefers-reduced-motion: reduce) { .vc-recap-tile.ready .vc-clip-media:hover .vc-recap-poster { transform: none; filter: brightness(1.15); } }
+
+/* the recap's viewer: the same modal, the video 16:9 on the left, as wide as the window allows; the side as tall as it */
+.vc-v.vc-v-wide { --vw: min(calc(100vw - 136px - var(--side)), 1180px, calc((100vh - var(--top-h, 46px) - 40px) * 16 / 9)); height: calc(var(--vw) * 9 / 16); }
+.vc-v-wide .vc-v-media { height: 100%; width: var(--vw); aspect-ratio: 16 / 9; max-width: none; }
+.vc-v-acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.vc-v-chapters li { grid-template-columns: 58px 1fr; }
+.vc-v-desc { white-space: pre-line; font-size: 13.5px !important; color: var(--text-2) !important; }
+@media (max-width: 760px) {
+  .vc-v.vc-v-wide { height: auto; max-height: calc(100vh - var(--top-h, 46px) - 32px); grid-template-rows: auto minmax(0, 1fr); }
+  .vc-v-wide .vc-v-media { width: 100%; height: auto; }
+}
+
+/* Blur only in SMTV's own window on macOS (`.glass`, see app.css): in a browser the round buttons over the clips are
+   plain, slightly darker circles. One blurred circle per card at most, and none while the viewer is open: the grid
+   under the viewer is paused and flat (owner, 21.11: Chrome mixed blurred layers over playing videos into the viewer). */
+.glass .vc-play, .glass .vc-heart { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.glass .vc-play, .glass .vc-heart { background: rgba(20, 20, 20, .28); }
+.glass .vc-heart:hover { background: rgba(20, 20, 20, .5); }
+.vc-viewing .vc-play, .vc-viewing .vc-heart { backdrop-filter: none; -webkit-backdrop-filter: none; }
+@media (prefers-reduced-transparency: reduce) {
+  .glass .vc-play, .glass .vc-heart { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(20, 20, 20, .55); }
+}

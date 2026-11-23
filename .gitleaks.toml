@@ -1,0 +1,7 @@
+# gitleaks: the default rules, plus folders that are never part of the repository (when it scans files, not git).
+[extend]
+useDefault = true
+
+[allowlist]
+description = "local folders"
+paths = ['''(^|/)\.venv/''', '''(^|/)__pycache__/''', '''(^|/)\.pytest_cache/''', '''(^|/)\.mypy_cache/''', '''(^|/)\.ruff_cache/''', '''(^|/)\.check/''', '''\.DS_Store$''']

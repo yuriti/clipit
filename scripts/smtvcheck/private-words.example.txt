@@ -1,0 +1,8 @@
+# Example of the private word list for `python scripts/check.py traces`. The real list never goes into the repository:
+# keep it in ~/.config/smtv/private-words.txt (or point SMTV_PRIVATE_WORDS_FILE at it); GitHub gets its contents as the
+# secret SMTV_PRIVATE_WORDS. One entry per line, matched case-insensitively as a whole word; «re:» starts a regular
+# expression; lines starting with # are comments.
+Jane Placeholder
+jplaceholder
+internal-gateway.example
+re:\bhost-\d+\.corp\.example\b

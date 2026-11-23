@@ -1,0 +1,450 @@
+{
+  "version": 1,
+  "updated": "2026-11-21",
+  "prompts": {
+    "version": "1.1.0",
+    "date": "2026-11-21"
+  },
+  "about": "Which model each agent should use with each provider, and what was actually tested. 'model' is the recommendation; 'tested' lists only runs that really happened. A recommendation without a tested entry is a recommendation without a check. Model ids are exactly as the provider names them; an empty id with codex means the Codex CLI's own default model. Prices are in prices.json. openrouter: the same models through OpenRouter, ids as OpenRouter names them. claude_code: the Claude Code CLI signed in with the person's own subscription; frames are not passed to it, so agents that read frames do not use it. ollama: local models in Ollama on the person's own computer (stage 20): ids as `ollama pull` takes them; size_gb is the download, vram_gb the video memory it wants; local models are weaker than the cloud ones and none was tested yet. Models smaller than 7B are not recommended: they break the JSON.",
+  "levels": [
+    "light",
+    "medium",
+    "strong"
+  ],
+  "models": {
+    "codex": {
+      "": {
+        "label": "Codex default",
+        "level": null,
+        "images": true
+      },
+      "gpt-6.2-astra": {
+        "level": "strong",
+        "images": true
+      },
+      "gpt-6.2-sol": {
+        "level": "medium",
+        "images": true
+      },
+      "gpt-6.1-terra": {
+        "level": "medium",
+        "images": true
+      },
+      "gpt-6-luna": {
+        "level": "light",
+        "images": true
+      }
+    },
+    "claude_code": {
+      "": {
+        "label": "Claude Code default",
+        "level": null,
+        "images": false
+      },
+      "claude-opus-5-5": {
+        "level": "strong",
+        "images": false
+      },
+      "claude-sonnet-5-5": {
+        "level": "medium",
+        "images": false
+      },
+      "claude-haiku-5-5": {
+        "level": "light",
+        "images": false
+      }
+    },
+    "openai": {
+      "gpt-6.2-astra": {
+        "level": "strong",
+        "images": true
+      },
+      "gpt-6.2-sol": {
+        "level": "medium",
+        "images": true
+      },
+      "gpt-6.1-terra": {
+        "level": "medium",
+        "images": true
+      },
+      "gpt-6-luna": {
+        "level": "light",
+        "images": true
+      }
+    },
+    "openrouter": {
+      "openai/gpt-6.2-astra": {
+        "level": "strong",
+        "images": true
+      },
+      "openai/gpt-6.2-sol": {
+        "level": "medium",
+        "images": true
+      },
+      "openai/gpt-6.1-terra": {
+        "level": "medium",
+        "images": true
+      },
+      "openai/gpt-6-luna": {
+        "level": "light",
+        "images": true
+      },
+      "anthropic/claude-opus-5.5": {
+        "level": "strong",
+        "images": true
+      },
+      "anthropic/claude-sonnet-5.5": {
+        "level": "medium",
+        "images": true
+      },
+      "anthropic/claude-haiku-5.5": {
+        "level": "light",
+        "images": true
+      },
+      "google/gemini-2.5-pro": {
+        "level": "strong",
+        "images": true
+      },
+      "google/gemini-3.7-flash": {
+        "level": "medium",
+        "images": true
+      },
+      "google/gemini-3.5-flash-lite": {
+        "level": "light",
+        "images": true
+      }
+    },
+    "anthropic": {
+      "claude-opus-5-5": {
+        "level": "strong",
+        "images": true
+      },
+      "claude-sonnet-5-5": {
+        "level": "medium",
+        "images": true
+      },
+      "claude-haiku-5-5": {
+        "level": "light",
+        "images": true
+      }
+    },
+    "gemini": {
+      "gemini-2.5-pro": {
+        "level": "strong",
+        "images": true
+      },
+      "gemini-3.7-flash": {
+        "level": "medium",
+        "images": true
+      },
+      "gemini-3.5-flash-lite": {
+        "level": "light",
+        "images": true
+      }
+    },
+    "ollama": {
+      "qwen3:14b": {
+        "label": "Qwen3 14B",
+        "level": "medium",
+        "images": false,
+        "local": true,
+        "size_gb": 9.3,
+        "vram_gb": 16
+      },
+      "qwen3:8b": {
+        "label": "Qwen3 8B",
+        "level": "light",
+        "images": false,
+        "local": true,
+        "size_gb": 5.2,
+        "vram_gb": 8
+      },
+      "qwen3-vl:8b": {
+        "label": "Qwen3-VL 8B",
+        "level": "light",
+        "images": true,
+        "local": true,
+        "size_gb": 6.1,
+        "vram_gb": 10
+      },
+      "gemma3:12b": {
+        "label": "Gemma 3 12B",
+        "level": "light",
+        "images": true,
+        "local": true,
+        "size_gb": 8.1,
+        "vram_gb": 12
+      }
+    }
+  },
+  "agents": {
+    "scan": {
+      "codex": {
+        "model": "gpt-6-luna",
+        "tested": [
+          {
+            "model": "gpt-6-luna",
+            "date": "2026-11-21",
+            "with": "Codex CLI 0.163.0, gpt-6-luna, reasoning medium (as in production)",
+            "how": "the same transcript side by side",
+            "result": "Twitch VOD 5.7 h (Buster), Russian: 104 episodes against 32 with the Codex default model on the same transcript; production finds 90"
+          },
+          {
+            "model": "",
+            "date": "2026-11-20",
+            "with": "Codex CLI 0.163.0, its default model",
+            "how": "live run",
+            "result": "Twitch VOD 2 h 21 min, Russian: 17 windows in 3 calls, no repairs, 11 episodes; every answer matched the schema"
+          }
+        ]
+      },
+      "claude_code": {
+        "model": "claude-opus-5-5",
+        "tested": []
+      },
+      "openai": {
+        "model": "gpt-6.2-astra",
+        "tested": []
+      },
+      "openrouter": {
+        "model": "anthropic/claude-opus-5.5",
+        "tested": []
+      },
+      "anthropic": {
+        "model": "claude-opus-5-5",
+        "tested": []
+      },
+      "gemini": {
+        "model": "gemini-2.5-pro",
+        "tested": []
+      },
+      "ollama": {
+        "model": "qwen3:14b",
+        "tested": []
+      }
+    },
+    "rating": {
+      "codex": {
+        "model": "",
+        "tested": [
+          {
+            "model": "",
+            "date": "2026-11-20",
+            "with": "Codex CLI 0.163.0, its default model",
+            "how": "live run",
+            "result": "11 episodes of the same VOD rated in 2 batches: 6 good, 3 maybe, 2 skip; every answer matched the schema"
+          }
+        ]
+      },
+      "claude_code": {
+        "model": "claude-sonnet-5-5",
+        "tested": []
+      },
+      "openai": {
+        "model": "gpt-6.2-sol",
+        "tested": []
+      },
+      "openrouter": {
+        "model": "anthropic/claude-sonnet-5.5",
+        "tested": []
+      },
+      "anthropic": {
+        "model": "claude-sonnet-5-5",
+        "tested": []
+      },
+      "gemini": {
+        "model": "gemini-3.7-flash",
+        "tested": []
+      },
+      "ollama": {
+        "model": "qwen3:14b",
+        "tested": []
+      }
+    },
+    "fit": {
+      "codex": {
+        "model": "",
+        "tested": [
+          {
+            "model": "",
+            "date": "2026-11-21",
+            "with": "Codex CLI 0.163.0, its default model, reasoning medium; packets built on the processor (no speakers, no sound events)",
+            "how": "live run",
+            "result": "Twitch VOD 2 h 21 min, Russian: 6 clips in 2 calls of 12–13 s, no repairs, every trim valid; idle lead-ins of 2.7–13.3 s cut on 3 clips, ends moved within −22.8…+2.4 s. Synthetic 62 s story: the 3.7 s lead-in cut exactly to the story's first word"
+          }
+        ]
+      },
+      "claude_code": {
+        "model": "claude-sonnet-5-5",
+        "tested": []
+      },
+      "openai": {
+        "model": "gpt-6.2-sol",
+        "tested": []
+      },
+      "openrouter": {
+        "model": "anthropic/claude-sonnet-5.5",
+        "tested": []
+      },
+      "anthropic": {
+        "model": "claude-sonnet-5-5",
+        "tested": []
+      },
+      "gemini": {
+        "model": "gemini-3.7-flash",
+        "tested": []
+      },
+      "ollama": {
+        "model": "qwen3:14b",
+        "tested": []
+      }
+    },
+    "recap": {
+      "codex": {
+        "model": "",
+        "tested": [
+          {
+            "model": "",
+            "date": "2026-11-21",
+            "with": "Codex CLI 0.163.0, its default model, reasoning medium",
+            "how": "live run",
+            "result": "Twitch VOD 2 h 21 min, Russian, 11 rated episodes: one call of 34 s, the answer matched the schema at once; 13 parts in 6 chapters, 11.2 min of the stream in stream order, every timestamp inside the recording, the streamer's goodbye found; a 10.7 min recap"
+          }
+        ]
+      },
+      "claude_code": {
+        "model": "claude-opus-5-5",
+        "tested": []
+      },
+      "openai": {
+        "model": "gpt-6.2-astra",
+        "tested": []
+      },
+      "openrouter": {
+        "model": "anthropic/claude-opus-5.5",
+        "tested": []
+      },
+      "anthropic": {
+        "model": "claude-opus-5-5",
+        "tested": []
+      },
+      "gemini": {
+        "model": "gemini-2.5-pro",
+        "tested": []
+      },
+      "ollama": {
+        "model": "qwen3:14b",
+        "tested": []
+      }
+    },
+    "layout": {
+      "codex": {
+        "model": "",
+        "tested": [
+          {
+            "model": "",
+            "date": "2026-11-20",
+            "with": "Codex CLI 0.163.0, its default model",
+            "how": "live run",
+            "result": "6 clips of the same VOD: split (webcam on top, game below) chosen for all six, which was right; a repeat chose split_equal once"
+          },
+          {
+            "model": "",
+            "date": "2026-11-21",
+            "with": "Codex CLI 0.163.0, its default model",
+            "how": "live run, the same two clips five times",
+            "result": "one answer at a time: 20 different layouts in 20 answers (split or split_equal, scene crop width 0.40–0.72); a vote of three with the size of a crop by rule: one clip the same layout 5 of 5, the other the same mode and webcam crop 5 of 5 and the scene crop moved by up to 0.1"
+          }
+        ]
+      },
+      "openai": {
+        "model": "gpt-6.1-terra",
+        "tested": []
+      },
+      "openrouter": {
+        "model": "anthropic/claude-sonnet-5.5",
+        "tested": []
+      },
+      "anthropic": {
+        "model": "claude-sonnet-5-5",
+        "tested": []
+      },
+      "gemini": {
+        "model": "gemini-3.7-flash",
+        "tested": []
+      },
+      "ollama": {
+        "model": "qwen3-vl:8b",
+        "tested": []
+      }
+    },
+    "banner": {
+      "codex": {
+        "model": "",
+        "tested": [
+          {
+            "model": "",
+            "date": "2026-11-20",
+            "with": "Codex CLI 0.163.0, its default model",
+            "how": "live run",
+            "result": "6 clips of the same VOD: a small sponsor plate at the game's edge found in each; not yet tried on a large banner"
+          }
+        ]
+      },
+      "openai": {
+        "model": "gpt-6.1-terra",
+        "tested": []
+      },
+      "openrouter": {
+        "model": "anthropic/claude-sonnet-5.5",
+        "tested": []
+      },
+      "anthropic": {
+        "model": "claude-sonnet-5-5",
+        "tested": []
+      },
+      "gemini": {
+        "model": "gemini-3.7-flash",
+        "tested": []
+      },
+      "ollama": {
+        "model": "qwen3-vl:8b",
+        "tested": []
+      }
+    },
+    "critic": {
+      "codex": {
+        "model": "",
+        "tested": [
+          {
+            "model": "",
+            "date": "2026-11-21",
+            "with": "Codex CLI 0.163.0, its default model, reasoning medium",
+            "how": "live run",
+            "result": "Twitch VOD 2 h 21 min: six finished clips, six frames each, 7–11 s a check, every answer matched the schema; all six passed (78–84). Two clips rendered on purpose with the whole frame over a visible webcam: both caught (black_bars, webcam_misplaced, fix layout_streamer_split), after the one edit passed 81–82"
+          }
+        ]
+      },
+      "openai": {
+        "model": "gpt-6.2-sol",
+        "tested": []
+      },
+      "openrouter": {
+        "model": "anthropic/claude-sonnet-5.5",
+        "tested": []
+      },
+      "anthropic": {
+        "model": "claude-sonnet-5-5",
+        "tested": []
+      },
+      "gemini": {
+        "model": "gemini-3.7-flash",
+        "tested": []
+      },
+      "ollama": {
+        "model": "qwen3-vl:8b",
+        "tested": []
+      }
+    }
+  }
+}

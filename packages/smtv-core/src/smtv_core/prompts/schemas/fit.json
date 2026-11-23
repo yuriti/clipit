@@ -1,0 +1,141 @@
+{
+  "type": "object",
+  "properties": {
+    "clips": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "clip_format": {
+            "type": "string",
+            "enum": [
+              "story",
+              "explanation",
+              "dialogue",
+              "reaction",
+              "comedy",
+              "visual_moment",
+              "unknown"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "pattern": "^[^\\r\\n]+$"
+          },
+          "fit_score": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 100,
+            "multipleOf": 5
+          },
+          "trim": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "start_ms": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 55000
+                  },
+                  "end_ms": {
+                    "type": "integer",
+                    "minimum": 15000,
+                    "maximum": 70000
+                  },
+                  "event_start_word_id": {
+                    "type": "string"
+                  },
+                  "event_end_word_id": {
+                    "type": "string"
+                  },
+                  "focus_relation": {
+                    "enum": [
+                      "event_overlaps_focus",
+                      "event_precedes_focus_possible_delay"
+                    ]
+                  }
+                },
+                "required": [
+                  "start_ms",
+                  "end_ms",
+                  "event_start_word_id",
+                  "event_end_word_id",
+                  "focus_relation"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "clip_format",
+          "id",
+          "title",
+          "fit_score",
+          "trim"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "fit_score": {
+                  "type": "null"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "trim": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "trim": {
+                  "type": "null"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "fit_score": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "integer",
+                      "maximum": 40
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 4
+    }
+  },
+  "required": [
+    "clips"
+  ],
+  "additionalProperties": false
+}

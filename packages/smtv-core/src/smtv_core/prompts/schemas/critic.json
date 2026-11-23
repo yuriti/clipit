@@ -1,0 +1,108 @@
+{
+  "type": "object",
+  "properties": {
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fix",
+        "reject"
+      ]
+    },
+    "score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "issues": {
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "text_too_small",
+              "text_overlap",
+              "text_cut_off",
+              "hook_unreadable",
+              "webcam_misplaced",
+              "webcam_missing",
+              "webcam_frame",
+              "game_not_visible",
+              "subject_cut",
+              "black_bars",
+              "low_quality",
+              "wrong_cut",
+              "too_short",
+              "other"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "minor",
+              "major"
+            ]
+          },
+          "where": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "detail": {
+            "type": "string",
+            "maxLength": 300
+          }
+        },
+        "required": [
+          "code",
+          "severity",
+          "where",
+          "detail"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "wish": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 200
+    },
+    "fix": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "layout_scene_only",
+        "layout_streamer_split",
+        "layout_split_equal",
+        "captions_lower",
+        "captions_center",
+        "captions_upper",
+        "peak_default",
+        "peak_lower",
+        "peak_upper",
+        "drop_hook",
+        "webcam_tighter",
+        null
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 300
+    }
+  },
+  "required": [
+    "verdict",
+    "score",
+    "issues",
+    "wish",
+    "fix",
+    "summary"
+  ],
+  "additionalProperties": false
+}

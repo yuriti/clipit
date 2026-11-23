@@ -1,0 +1,34 @@
+name: Suggest an idea
+description: Something SMTV or one of its plugins could do.
+title: "[idea] "
+labels: ["idea"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What do you want to do?
+      description: The task, in your own words, e.g. "I stream 8 hours and want the clips ready by morning".
+    validations:
+      required: true
+  - type: textarea
+    id: today
+    attributes:
+      label: How do you do it today?
+      description: By hand, another tool, not at all.
+    validations:
+      required: false
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help?
+      description: How you imagine it in SMTV. Rough is fine.
+    validations:
+      required: false
+  - type: input
+    id: plugin
+    attributes:
+      label: Which part of SMTV?
+      description: SMTV itself, VodCut, or a new plugin.
+      placeholder: vodcut
+    validations:
+      required: false

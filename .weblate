@@ -1,0 +1,5 @@
+# The Weblate client (wlc) and the maintainers: where SMTV is translated. Components and their settings:
+# docs/translations.md. Translations come back as pull requests from Weblate.
+[weblate]
+url = https://hosted.weblate.org/api/
+translation = smtv/window

@@ -1,0 +1,60 @@
+{
+  "about": "Everything planned for SMTV, shown in Settings → About → Coming, on «soon» plugin cards and on the «soon» pages of the rail. One list, updated with each version. No dates. The texts are in web/i18n/<language>.json under soon.<id>.<field> (title, summary, lead, note; points.N, notes.N). kind: plugin (a card under Plugins, never installed), page (a rail item), feature (only in the list).",
+  "items": [
+    {
+      "id": "livecut",
+      "kind": "plugin",
+      "icon": "live"
+    },
+    {
+      "id": "scheduled",
+      "kind": "page",
+      "icon": "clock"
+    },
+    {
+      "id": "promotion",
+      "kind": "page",
+      "icon": "promo"
+    },
+    {
+      "id": "campaigns",
+      "kind": "page",
+      "icon": "campaigns"
+    },
+    {
+      "id": "mcp",
+      "kind": "plugin",
+      "icon": "code"
+    },
+    {
+      "id": "own-plugins",
+      "kind": "feature",
+      "icon": "plus"
+    },
+    {
+      "id": "autopublish",
+      "kind": "plugin",
+      "icon": "upload"
+    },
+    {
+      "id": "tiktok-hashtags",
+      "kind": "plugin",
+      "icon": "hash"
+    },
+    {
+      "id": "tiktok-music",
+      "kind": "plugin",
+      "icon": "music"
+    },
+    {
+      "id": "local-models",
+      "kind": "feature",
+      "icon": "spark"
+    },
+    {
+      "id": "cloud",
+      "kind": "feature",
+      "icon": "cloud"
+    }
+  ]
+}

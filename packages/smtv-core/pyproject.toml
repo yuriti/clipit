@@ -1,0 +1,36 @@
+[project]
+name = "smtv-core"
+version = "0.1.0.dev0"
+description = "Shared core of StreamMoment tools: settings, model access, system checks; later speech recognition and 9:16 rendering"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+authors = [{ name = "StreamMoment" }]
+# onnxruntime below 1.24 on Intel Macs: 1.24 and newer have no wheels for them (only Apple Silicon), so without this line
+# SMTV would not install on an Intel Mac at all. The second line keeps every other computer on the newer one (the lock
+# would otherwise take the older version for everybody).
+dependencies = ["jsonschema>=4.18", "numpy>=1.26", "onnx-asr[cpu,hub]>=0.12", "fonttools>=4.40",
+                "onnxruntime<1.24; sys_platform == 'darwin' and platform_machine == 'x86_64'",
+                "onnxruntime>=1.24; python_version >= '3.11' and (sys_platform != 'darwin' or platform_machine != 'x86_64')"]
+
+[project.optional-dependencies]
+# Keys in the system keychain (macOS Keychain, Windows Credential Manager, Secret Service).
+# Without it keys are kept in a private file in the settings folder.
+keyring = ["keyring>=24"]
+# Speech recognition on an NVIDIA card (CUDA). Replaces the processor build of onnxruntime.
+gpu = ["onnx-asr[gpu,hub]>=0.12"]
+# Whisper large-v3-turbo on this computer (stage 20), for the ~70 languages GigaAM and Parakeet do not know. onnx-asr
+# (already here) gives Whisper without word timings (it decodes with <|notimestamps|>), and clips need the time of every
+# word; faster-whisper gives them, runs on an NVIDIA card or the processor, MIT. Wheels for macOS, Windows and Linux.
+whisper = ["faster-whisper>=1.1"]
+
+[project.urls]
+Homepage = "https://github.com/streammomenttv"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/smtv_core"]

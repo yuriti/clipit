@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "properties": {
+    "layout": {"type": "string", "enum": ["streamer_only", "scene_only", "streamer_scene_split", "streamer_scene_split_equal"]},
+    "live_chat_side": {"type": "string", "enum": ["left", "right", "none"]},
+    "webcam_region": {"anyOf": [{"$ref": "#/$defs/rect"}, {"type": "null"}]},
+    "streamer_crop": {"anyOf": [{"$ref": "#/$defs/rect"}, {"type": "null"}]},
+    "scene_crop": {"anyOf": [{"$ref": "#/$defs/rect"}, {"type": "null"}]},
+    "screen_essential": {"type": "boolean"},
+    "stable_across_frames": {"type": "boolean"},
+    "needs_review": {"type": "boolean"},
+    "reason": {"type": "string"},
+    "uncertainties": {"type": "array", "items": {"type": "string"}}
+  },
+  "required": ["layout", "live_chat_side", "webcam_region", "streamer_crop", "scene_crop", "screen_essential", "stable_across_frames", "needs_review", "reason", "uncertainties"],
+  "additionalProperties": false,
+  "$defs": {
+    "rect": {
+      "type": "object",
+      "properties": {
+        "x": {"type": "number", "minimum": 0, "maximum": 1},
+        "y": {"type": "number", "minimum": 0, "maximum": 1},
+        "width": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "height": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}
+      },
+      "required": ["x", "y", "width", "height"],
+      "additionalProperties": false
+    }
+  }
+}
