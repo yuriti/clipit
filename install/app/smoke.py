@@ -9,7 +9,9 @@ Runs the app's own Python with a clean environment and an empty SMTV folder, and
 - the ffmpeg inside the app is the one SMTV picks, and it burns captions (libass) with SMTV's caption font;
 - `smtv doctor` runs: nothing but the AI connection and the speech model is missing on a fresh computer, and the
   speech model is offered for download, not bundled;
-- `smtv serve` answers /api/hello with its version and keeps the page closed without the launch key.
+- `smtv serve` answers /api/hello with its version and keeps the page closed without the launch key;
+- on Windows, SMTV.exe opened with nothing after it (a double click) starts `SMTV.exe -m smtv app` (checked without
+  opening the window: SMTV_LAUNCH_CHECK), and the page's server runs in SMTV.exe itself.
 Exits 1 with the failed checks listed. Prints nothing secret: the folder is a fresh temporary one.
 """
 from __future__ import annotations
@@ -139,6 +141,26 @@ def page_status(port: int) -> int:
         return 0
 
 
+def double_click(smtv_exe: Path, env: dict[str, str], tmp: Path) -> list[str]:
+    """SMTV.exe with nothing after it, as Explorer starts it: it must ask for SMTV's window and end at once."""
+    check = tmp / "double-click.json"
+    try:
+        r = subprocess.run([str(smtv_exe)], env={**env, "SMTV_LAUNCH_CHECK": str(check)}, capture_output=True,
+                           timeout=60, cwd=tmp, stdin=subprocess.DEVNULL)
+    except subprocess.TimeoutExpired:
+        return ["a double click on SMTV.exe did not end within 60 s (the start in sitecustomize.py is missing?)"]
+    except OSError as e:
+        return [f"SMTV.exe did not start: {e}"]
+    if not check.is_file():
+        return [f"a double click on SMTV.exe starts nothing (exit {r.returncode}): Lib/site-packages/sitecustomize.py "
+                "is missing or does not recognise SMTV.exe"]
+    started = json.loads(check.read_text(encoding="utf-8"))
+    if [Path(started[0]).name.lower(), *started[1:]] != ["smtv.exe", "-m", "smtv", "app"]:
+        return [f"a double click on SMTV.exe would start {started}, not SMTV.exe -m smtv app"]
+    print(f"double click on SMTV.exe: starts {' '.join(started[1:])}")
+    return []
+
+
 def smoke(app: Path, kinds: tuple[str, ...], arch: str = "arm64") -> list[str]:
     failed: list[str] = []
     cmd, extra = app_python(app, arch)
@@ -202,8 +224,12 @@ def smoke(app: Path, kinds: tuple[str, ...], arch: str = "arm64") -> list[str]:
         if "Speech model" not in d.stdout or "not downloaded" not in d.stdout:
             failed.append("smtv doctor does not offer the speech model for download")
 
+        smtv_exe = app / "SMTV.exe" if app.suffix != ".app" else None
+        if smtv_exe and smtv_exe.is_file():
+            failed += double_click(smtv_exe, env, Path(tmp))
         port = free_port()
-        server = subprocess.Popen([*cmd, "-m", "smtv", "serve", "--no-browser", "--port", str(port)], env=env, cwd=tmp,
+        serving = [str(smtv_exe)] if smtv_exe and smtv_exe.is_file() else cmd     # what a double click runs
+        server = subprocess.Popen([*serving, "-m", "smtv", "serve", "--no-browser", "--port", str(port)], env=env, cwd=tmp,
                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding="utf-8",
                                   errors="replace")
         try:

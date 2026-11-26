@@ -32,6 +32,7 @@ def load(name: str, folder: Path):
 
 build = load("build", APP)
 smoke = load("smoke", APP)
+double_click = load("double_click", APP)
 release_manifest = load("release_manifest", REPO / "scripts")
 
 
@@ -200,11 +201,17 @@ def test_the_windows_folder_has_smtv_exe_the_icon_and_the_zip_is_marked_zip(tmp_
     py = tmp_path / "python"
     py.mkdir()
     (py / "pythonw.exe").write_bytes(b"MZ windowless")
+    (py / "Lib" / "site-packages").mkdir(parents=True)
     (py / build.KIND_MARKER).write_text("exe\n", encoding="utf-8")
     folder = build.make_win_folder(py, tmp_path)
+    # Smart App Control: SMTV.exe is pythonw.exe byte for byte, and no program or script of our own is added
     assert (folder / "SMTV.exe").read_bytes() == b"MZ windowless"
+    assert sorted(f.name for f in folder.rglob("*") if f.suffix.lower() in (".exe", ".dll", ".pyd", ".cmd", ".bat")) \
+        == ["SMTV.exe", "pythonw.exe"]
     assert (folder / "smtv.ico").read_bytes()[:4] == b"\x00\x00\x01\x00"
-    assert "-m smtv app" in (folder / "Start SMTV.cmd").read_text(encoding="utf-8")
+    # the double click on SMTV.exe opens the window: every Python of the folder reads this on start
+    site = folder / "Lib" / "site-packages" / "sitecustomize.py"
+    assert site.read_text(encoding="utf-8") == (APP / "double_click.py").read_text(encoding="utf-8")
     z = build.zip_folder(folder, tmp_path / "SMTV.zip", "zip")
     with zipfile.ZipFile(z) as f:
         names = f.namelist()
@@ -220,7 +227,7 @@ def test_the_installer_is_per_user_keeps_its_id_and_names_its_file_as_the_releas
     assert "OutputBaseFilename=SMTV-{#AppVersion}-windows-x64-setup" in iss
     assert ("exe", "x64", "SMTV-{v}-windows-x64-setup.exe") in release_manifest.APPS
     assert r'Name: "{autoprograms}\SMTV"; Filename: "{app}\SMTV.exe"; Parameters: "-m smtv app"' in iss
-    assert 'Excludes: "Start SMTV.cmd"' in iss and "[UninstallDelete]" in iss
+    assert "Excludes:" not in iss and "[UninstallDelete]" in iss
     # ISCC is 32-bit: the compressor runs apart, in 64 bits, with few threads (4 threads ran out of memory, v0.1.0)
     assert "LZMAUseSeparateProcess=yes" in iss and int(re.search(r"LZMANumBlockThreads=(\d+)", iss)[1]) <= 2
     # the file build.py looks for after ISCC is the one smtv.iss writes
@@ -411,6 +418,68 @@ def test_the_build_scripts_print_any_character_on_a_console_without_it(tmp_path)
     assert r.returncode == 0 and "«".encode() in r.stdout, r.stderr
 
 
+@pytest.mark.parametrize("exe, argv, starts", [
+    (r"C:\SMTV\SMTV.exe", [r"C:\SMTV\SMTV.exe"], True),                 # a double click, from Explorer
+    (r"C:\SMTV\smtv.EXE", ["smtv"], True),
+    (r"C:\SMTV\SMTV.exe", [r"C:\SMTV\SMTV.exe", "-m", "smtv", "app"], False),   # the installer's icon, every job
+    (r"C:\SMTV\SMTV.exe", [r"C:\SMTV\SMTV.exe", "-c", "print(1)"], False),
+    (r"C:\SMTV\pythonw.exe", [r"C:\SMTV\pythonw.exe"], False),
+    (r"C:\SMTV\python.exe", [r"C:\SMTV\python.exe"], False),           # an interactive Python stays one
+])
+def test_only_smtv_exe_with_nothing_after_it_opens_the_window(exe, argv, starts):
+    exe, argv = exe.replace("\\", "/"), [a.replace("\\", "/") for a in argv]
+    assert double_click.command(exe, argv) == ([exe, "-m", "smtv", "app"] if starts else None)
+
+
+def test_the_double_click_starts_the_window_apart_and_ends_or_never_stops_python(monkeypatch):
+    started, ended = [], []
+    monkeypatch.setattr(double_click.sys, "executable", "/a/SMTV.exe")
+    monkeypatch.setattr(double_click.sys, "orig_argv", ["/a/SMTV.exe"], raising=False)
+    monkeypatch.delenv("SMTV_LAUNCH_CHECK", raising=False)
+    double_click.main(start=lambda argv, **k: started.append(argv), end=ended.append)
+    assert started == [["/a/SMTV.exe", "-m", "smtv", "app"]] and ended == [0]
+
+    def broken(argv, **k):
+        raise OSError("blocked")
+    ended.clear()
+    double_click.main(start=broken, end=ended.append)          # Python goes on as before, no traceback
+    assert ended == []
+
+
+def test_a_real_python_named_smtv_opens_the_window_only_without_arguments(tmp_path):
+    site = tmp_path / "site"
+    site.mkdir()
+    (site / "sitecustomize.py").write_text((APP / "double_click.py").read_text(encoding="utf-8"), encoding="utf-8")
+    name = "SMTV.exe" if os.name == "nt" else "smtv"
+    exe = tmp_path / name
+    try:
+        exe.symlink_to(sys.executable)
+    except OSError:
+        pytest.skip("no symbolic links here")
+    check = tmp_path / "started.json"
+    env = {**os.environ, "PYTHONPATH": str(site), "SMTV_LAUNCH_CHECK": str(check)}
+    r = subprocess.run([str(exe)], env=env, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+    assert r.returncode == 0 and json.loads(check.read_text(encoding="utf-8"))[1:] == ["-m", "smtv", "app"], r.stderr
+    check.unlink()
+    r = subprocess.run([str(exe), "-c", "print('as asked')"], env=env, capture_output=True, text=True, timeout=60)
+    assert r.stdout.strip() == "as asked" and not check.exists()
+
+
+def test_smoke_checks_the_double_click_without_opening_a_window(tmp_path):
+    exe = tmp_path / "SMTV.exe"
+    try:
+        exe.symlink_to(sys.executable)
+    except OSError:
+        pytest.skip("no symbolic links here")
+    env = {**os.environ}
+    env.pop("PYTHONPATH", None)
+    assert "starts nothing" in smoke.double_click(exe, env, tmp_path)[0]       # the folder without sitecustomize.py
+    site = tmp_path / "site"
+    site.mkdir()
+    (site / "sitecustomize.py").write_text((APP / "double_click.py").read_text(encoding="utf-8"), encoding="utf-8")
+    assert smoke.double_click(exe, {**env, "PYTHONPATH": str(site)}, tmp_path) == []
+
+
 def test_the_build_sources_are_ascii_named_and_have_their_callers():
     for f in APP.iterdir():
         assert re.fullmatch(r"[a-z0-9._-]+", f.name), f.name
@@ -420,5 +489,5 @@ def test_the_build_sources_are_ascii_named_and_have_their_callers():
     sac = (REPO / ".github" / "workflows" / "smart-app-control.yml").read_text(encoding="utf-8")
     assert "install/app/sac_check.py" in sac
     built = (APP / "build.py").read_text(encoding="utf-8")
-    for name in ("smtv.iss", "dmg-readme.txt", "start-smtv.cmd", "launcher.c"):
+    for name in ("smtv.iss", "dmg-readme.txt", "double_click.py", "launcher.c"):
         assert name in built

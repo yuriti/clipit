@@ -3,10 +3,10 @@ revision = 5
 requires-python = ">=3.11"
 resolution-markers = [
     "python_full_version >= '3.15' and platform_machine == 'x86_64' and sys_platform == 'darwin'",
-    "python_full_version >= '3.12' and python_full_version < '3.15' and platform_machine == 'x86_64' and sys_platform == 'darwin'",
-    "python_full_version < '3.12' and platform_machine == 'x86_64' and sys_platform == 'darwin'",
     "python_full_version >= '3.15' and (platform_machine != 'x86_64' or sys_platform != 'darwin')",
+    "python_full_version >= '3.12' and python_full_version < '3.15' and platform_machine == 'x86_64' and sys_platform == 'darwin'",
     "python_full_version >= '3.12' and python_full_version < '3.15' and (platform_machine != 'x86_64' or sys_platform != 'darwin')",
+    "python_full_version < '3.12' and platform_machine == 'x86_64' and sys_platform == 'darwin'",
     "python_full_version < '3.12' and (platform_machine != 'x86_64' or sys_platform != 'darwin')",
 ]
 
@@ -152,8 +152,8 @@ version = "19.0.2"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
     "python_full_version >= '3.15' and platform_machine == 'x86_64' and sys_platform == 'darwin'",
-    "python_full_version >= '3.12' and python_full_version < '3.15' and platform_machine == 'x86_64' and sys_platform == 'darwin'",
     "python_full_version >= '3.15' and (platform_machine != 'x86_64' or sys_platform != 'darwin')",
+    "python_full_version >= '3.12' and python_full_version < '3.15' and platform_machine == 'x86_64' and sys_platform == 'darwin'",
     "python_full_version >= '3.12' and python_full_version < '3.15' and (platform_machine != 'x86_64' or sys_platform != 'darwin')",
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/23/01/76b6bf563fe907597cf58f10d10168e93fe588b6db9f2658db87e87efa7e/av-19.0.2.tar.gz", hash = "sha256:bebbc52598886480f4d861c575dc2b020785d6c04e1308680ddcc545e1b94c66", size = 4277157, upload-time = "2026-10-21T03:45:30.799Z" }
@@ -1435,8 +1435,8 @@ version = "2.5.5"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
     "python_full_version >= '3.15' and platform_machine == 'x86_64' and sys_platform == 'darwin'",
-    "python_full_version >= '3.12' and python_full_version < '3.15' and platform_machine == 'x86_64' and sys_platform == 'darwin'",
     "python_full_version >= '3.15' and (platform_machine != 'x86_64' or sys_platform != 'darwin')",
+    "python_full_version >= '3.12' and python_full_version < '3.15' and platform_machine == 'x86_64' and sys_platform == 'darwin'",
     "python_full_version >= '3.12' and python_full_version < '3.15' and (platform_machine != 'x86_64' or sys_platform != 'darwin')",
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/4e/3a/8770c288c47f0b5c2a786d3c20e79f66fd245f2d42cd232d7cd5e00e83e5/numpy-2.5.5.tar.gz", hash = "sha256:5cddc243c75114ba845f01b1f87aca1572dbf7b6c2d88636ed3e1d2bccd7f1bf", size = 20873892, upload-time = "2026-11-15T21:32:28.607Z" }
@@ -2307,7 +2307,7 @@ wheels = [
 
 [[package]]
 name = "smtv"
-version = "0.1.0"
+version = "0.1.1"
 source = { editable = "packages/smtv" }
 dependencies = [
     { name = "pyobjc-framework-usernotifications", marker = "sys_platform == 'darwin'" },
@@ -2335,7 +2335,7 @@ provides-extras = ["vodcut", "all"]
 
 [[package]]
 name = "smtv-core"
-version = "0.1.0"
+version = "0.1.1"
 source = { editable = "packages/smtv-core" }
 dependencies = [
     { name = "fonttools" },
@@ -2565,7 +2565,7 @@ wheels = [
 
 [[package]]
 name = "vodcut"
-version = "0.1.0"
+version = "0.1.1"
 source = { editable = "packages/vodcut" }
 dependencies = [
     { name = "smtv" },

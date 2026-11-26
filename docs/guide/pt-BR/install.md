@@ -33,7 +33,7 @@ O instalador coloca o SMTV na sua própria pasta de usuário; ele aparece em **C
 Apps), onde você pode removê-lo.
 
 **Sem instalar:** baixe [o ZIP](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip),
-descompacte onde quiser (por exemplo em Documentos) e abra **Start SMTV** na pasta `SMTV`. Essa cópia não se atualiza
+descompacte onde quiser (por exemplo em Documentos) e abra **SMTV.exe** na pasta `SMTV`. Essa cópia não se atualiza
 sozinha: uma versão nova é um ZIP novo.
 
 ### Windows 11: Smart App Control

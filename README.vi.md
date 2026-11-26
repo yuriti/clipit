@@ -100,7 +100,7 @@ chọn một cách — một cách là đủ, và bạn có thể đổi bất c
 
 Một file cho mọi máy Mac: SMTV tự chạy phiên bản được làm cho bộ xử lý của máy Mac của bạn. Dùng Windows mà không cần cài gì:
 [file ZIP](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — giải nén và mở
-**Start SMTV**.
+**SMTV.exe**.
 
 Mọi thứ SMTV cần đều có sẵn bên trong: chương trình, Python và ffmpeg có hỗ trợ phụ đề. Phần nhận dạng giọng nói được tải về
 ở lần mở đầu tiên, chỉ cho ngôn ngữ của bạn (0.9–2.5 GB, một lần duy nhất): SMTV đề nghị việc này chỉ bằng một nút, **Fix** (Sửa).

@@ -99,7 +99,7 @@ SMTV는 내 컴퓨터에서 음성을 직접 텍스트로 바꿉니다. 가장 �
 
 모든 Mac에 파일 하나: SMTV가 Mac 프로세서에 맞게 만든 버전을 알아서 실행합니다. Windows에서 아무것도 설치하고 싶지 않다면:
 [ZIP 파일](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — 압축을 풀고
-**Start SMTV**를 여세요.
+**SMTV.exe**를 여세요.
 
 SMTV에 필요한 모든 것이 들어 있습니다: 프로그램, Python, 자막을 넣을 수 있는 ffmpeg. 음성 인식은 처음 실행할 때 내 언어용만
 다운로드됩니다(0.9–2.5 GB, 한 번만): SMTV가 **Fix**(수정) 버튼 하나로 제안합니다.

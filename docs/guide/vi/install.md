@@ -32,7 +32,7 @@ Trình cài đặt đặt SMTV vào thư mục người dùng của riêng bạn
 nơi bạn có thể gỡ nó.
 
 **Không cần cài:** tải [file ZIP](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip),
-giải nén ở đâu cũng được (ví dụ vào Documents) và mở **Start SMTV** trong thư mục `SMTV`. Bản này không tự cập nhật:
+giải nén ở đâu cũng được (ví dụ vào Documents) và mở **SMTV.exe** trong thư mục `SMTV`. Bản này không tự cập nhật:
 phiên bản mới là một file ZIP mới.
 
 ### Windows 11: Smart App Control

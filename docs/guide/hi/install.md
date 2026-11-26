@@ -29,7 +29,7 @@ macOS का जितनी जल्दी हो सके, और फिर 
 इंस्टॉलर SMTV को आपके अपने यूज़र फ़ोल्डर में रखता है; वह **Settings → Apps** में दिखता है, जहाँ से आप उसे हटा सकते हैं।
 
 **बिना इंस्टॉल किए:** [ZIP फ़ाइल](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)
-डाउनलोड करें, उसे कहीं भी अनज़िप करें (जैसे Documents में) और `SMTV` फ़ोल्डर में **Start SMTV** खोलें। यह कॉपी खुद
+डाउनलोड करें, उसे कहीं भी अनज़िप करें (जैसे Documents में) और `SMTV` फ़ोल्डर में **SMTV.exe** खोलें। यह कॉपी खुद
 अपडेट नहीं होती: नया वर्ज़न मतलब नई ZIP।
 
 ### Windows 11: Smart App Control

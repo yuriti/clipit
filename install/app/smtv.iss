@@ -68,7 +68,7 @@ Type: filesandordirs; Name: "{app}\Lib"
 Type: filesandordirs; Name: "{app}\ffmpeg"
 
 [Files]
-Source: "{#SourceDir}\*"; DestDir: "{app}"; Excludes: "Start SMTV.cmd"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 ; SMTV.exe is Python's windowless program under SMTV's name; `-m smtv app` opens the window

@@ -32,7 +32,7 @@ Penginstal menaruh SMTV di folder penggunamu sendiri; SMTV muncul di **Pengatura
 dari sana kamu bisa menghapusnya.
 
 **Tanpa menginstal:** unduh [file ZIP](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip),
-ekstrak di mana saja (misalnya ke Documents) dan buka **Start SMTV** di folder `SMTV`. Salinan ini tidak memperbarui
+ekstrak di mana saja (misalnya ke Documents) dan buka **SMTV.exe** di folder `SMTV`. Salinan ini tidak memperbarui
 dirinya sendiri: versi baru berarti ZIP baru.
 
 ### Windows 11: Smart App Control

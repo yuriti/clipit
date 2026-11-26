@@ -100,7 +100,7 @@ cara — satu saja cukup, dan kamu bisa menggantinya kapan saja di **Settings �
 
 Satu file untuk semua Mac: SMTV sendiri menjalankan versi yang dibuat untuk prosesor Mac-mu. Windows tanpa menginstal apa pun:
 [file ZIP](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — ekstrak dan buka
-**Start SMTV**.
+**SMTV.exe**.
 
 Semua yang dibutuhkan SMTV sudah ada di dalamnya: programnya, Python, dan ffmpeg dengan teks (caption). Pengenalan ucapan
 diunduh saat pertama kali dijalankan, hanya untuk bahasamu (0.9–2.5 GB, sekali saja): SMTV menawarkannya dengan satu

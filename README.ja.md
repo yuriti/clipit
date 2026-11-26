@@ -99,7 +99,7 @@ SMTV は音声の文字起こしをあなたのパソコンで自分で行いま
 
 どの Mac でも同じ 1 つのファイルです。SMTV が Mac のプロセッサ用に作られた版を自動で起動します。Windows で何もインストールしたくないなら：
 [ZIP ファイル](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)を展開して
-**Start SMTV** を開きます。
+**SMTV.exe** を開きます。
 
 SMTV に必要なものはすべて入っています：プログラム本体、Python、字幕付きの ffmpeg。音声認識は初回起動時に、あなたの言語の分だけ
 ダウンロードされます（0.9〜2.5 GB、一度だけ）：SMTV が **Fix**（修正）ボタンひとつで提案します。

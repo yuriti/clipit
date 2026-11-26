@@ -31,7 +31,7 @@ Oʻrnatuvchi SMTV’ni oʻz foydalanuvchi papkangizga qoʻyadi; u **Settings →
 paydo boʻladi, uni oʻsha yerdan oʻchirish mumkin.
 
 **Oʻrnatmasdan:** [ZIP arxivni](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) yuklab oling, istalgan joyga (masalan, Documents papkasiga) arxivdan chiqaring
-va `SMTV` papkasidagi **Start SMTV** ni oching. Bu nusxa oʻzi yangilanmaydi: yangi versiya — bu yangi ZIP.
+va `SMTV` papkasidagi **SMTV.exe** ni oching. Bu nusxa oʻzi yangilanmaydi: yangi versiya — bu yangi ZIP.
 
 ### Windows 11: Smart App Control
 

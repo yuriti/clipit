@@ -29,7 +29,7 @@
 설치 프로그램은 SMTV를 내 사용자 폴더에 넣습니다. SMTV는 **설정 → 앱**(Settings → Apps)에 나타나며, 거기서 삭제할 수 있습니다.
 
 **설치하지 않고:** [ZIP 파일](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)을 다운로드해
-원하는 곳(예: 문서)에 압축을 풀고, `SMTV` 폴더의 **Start SMTV**를 엽니다. 이 사본은 스스로 업데이트되지 않습니다:
+원하는 곳(예: 문서)에 압축을 풀고, `SMTV` 폴더의 **SMTV.exe**를 엽니다. 이 사본은 스스로 업데이트되지 않습니다:
 새 버전은 새 ZIP입니다.
 
 ### Windows 11: 스마트 앱 컨트롤

@@ -5,12 +5,11 @@
 
 # Install SMTV
 
-Download one file, open it, and an **SMTV** icon appears. Everything SMTV needs is inside. You do not need an
-administrator password.
+Download one file and open it. Everything SMTV needs is inside. You do not need an administrator password.
 
 | Your computer | Download | Size |
 |---|---|---|
-| **Windows 10 or 11** (64-bit) | [SMTV for Windows](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | about 130 MB |
+| **Windows 10 or 11** (64-bit) | [SMTV for Windows](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) (ZIP) | about 210 MB |
 | **Mac** — Apple silicon (M1 and newer) or Intel, macOS 13+ | [SMTV for Mac](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | about 270 MB |
 
 All versions and their checksums: [the release page](https://github.com/yuriti/clipit/releases/latest).
@@ -21,24 +20,37 @@ read what it does.
 
 ## Windows
 
-1. Download **SMTV for Windows** (the file `SMTV-…-windows-x64-setup.exe`) and open it.
-2. Windows shows a blue window **«Windows protected your PC»**. Press **More info**, then **Run anyway**.
+1. Download **SMTV for Windows** — the ZIP `SMTV-windows.zip`.
+2. Right-click it → **Extract All** → choose a folder (Documents, for example) → **Extract**.
+3. Open the `SMTV` folder and double-click **SMTV.exe**: the SMTV window opens. If Windows shows a blue window
+   **«Windows protected your PC»**, press **More info**, then **Run anyway**.
+4. So you do not have to look for the folder every time: right-click **SMTV.exe** → **Send to** → **Desktop (create
+   shortcut)** (on Windows 11, **Show more options** first).
+
+This copy does not update itself: a new version is a new ZIP, and SMTV tells you when one is out. To remove it, delete
+the `SMTV` folder.
+
+**With the installer** — an icon in the Start menu and updates right from the window. While Smart App Control is on
+(below), the installer does not start yet.
+
+1. Download [the installer](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) (the file `SMTV-…-windows-x64-setup.exe`, about 130 MB) and open it.
+2. If **«Windows protected your PC»** appears: **More info** → **Run anyway**.
 3. The installer asks a couple of questions (language, an icon on the desktop) — press **Next** and **Install**.
 4. At the end leave **Launch SMTV** ticked and press **Finish**. Next time start SMTV from the **Start** menu (or the
    desktop icon).
 
 The installer puts SMTV into your own user folder; it appears in **Settings → Apps**, where you can remove it.
 
-**Without installing:** download [the ZIP](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip),
-unzip it anywhere (for example to Documents) and open **Start SMTV** in the `SMTV` folder. This copy does not update
-itself: a new version is a new ZIP.
-
 ### Windows 11: Smart App Control
 
-If **Smart App Control** is on (Windows Security → App & browser control), Windows blocks programs without a signature
-completely, and there is no button to let them through. You do not need to turn Smart App Control off for SMTV.
-Install SMTV with one line instead — it works with Smart App Control on: [one line in a terminal](#for-experienced-users-one-line-in-a-terminal). When SMTV is signed, the download
-will work there too.
+If **Smart App Control** is on (Windows Security → App & browser control), Windows does not let programs without a
+signature start, and there is no button to let them through. SMTV's installer is not signed yet, so it does not start.
+You do not need to turn Smart App Control off for SMTV:
+
+1. Take the **ZIP** and open **SMTV.exe** (the steps above): that way SMTV works with Smart App Control on.
+2. If that does not open either, install SMTV with [one line in a terminal](#for-experienced-users-one-line-in-a-terminal).
+
+When SMTV is signed, the installer will work there too.
 
 ## Mac
 
@@ -94,8 +106,8 @@ Both installers are short and open: [install.ps1](../../../install/install.ps1),
 ## If the system warns you
 
 - **Windows: «Windows protected your PC»** (SmartScreen). Press **More info**, then **Run anyway**.
-- **Windows 11: Smart App Control blocks SMTV.** Use [one line in a terminal](#for-experienced-users-one-line-in-a-terminal)
-  until SMTV is signed.
+- **Windows 11: Smart App Control blocks SMTV.** Until SMTV is signed, take the ZIP and open **SMTV.exe**; if that does
+  not help, install SMTV with [one line in a terminal](#for-experienced-users-one-line-in-a-terminal).
 - **Windows: the firewall asks** whether SMTV may use the network. Allow it for **private** networks: SMTV needs it to
   open on your phone. Saying no is fine if you do not need the phone.
 - **Mac: «SMTV cannot be opened»**, «Apple could not verify…» or «developer cannot be verified». Open **System

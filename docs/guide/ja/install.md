@@ -31,7 +31,7 @@
 そこから削除できます。
 
 **インストールせずに使う：** [ZIP ファイル](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)
-をダウンロードし、好きな場所（たとえばドキュメント）に展開して、`SMTV` フォルダの **Start SMTV** を開きます。
+をダウンロードし、好きな場所（たとえばドキュメント）に展開して、`SMTV` フォルダの **SMTV.exe** を開きます。
 このコピーは自動でアップデートされません：新しいバージョンは新しい ZIP です。
 
 ### Windows 11：スマート アプリ コントロール

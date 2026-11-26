@@ -28,7 +28,7 @@
 安装程序会把 SMTV 装在你自己的用户文件夹里；它会出现在 **设置 → 应用**（Settings → Apps）里，可以在那里卸载。
 
 **不安装也能用：** 下载 [ZIP 压缩包](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)，
-解压到任意位置（比如“文档”文件夹），打开 `SMTV` 文件夹里的 **Start SMTV**。这个版本不会自己更新：新版本就是新的 ZIP。
+解压到任意位置（比如“文档”文件夹），打开 `SMTV` 文件夹里的 **SMTV.exe**。这个版本不会自己更新：新版本就是新的 ZIP。
 
 ### Windows 11：智能应用控制
 

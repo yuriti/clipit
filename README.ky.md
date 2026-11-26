@@ -100,7 +100,7 @@ SMTV кепти текстке компьютериңизде өзү айлан�
 | **Mac** — Apple silicon (M1 жана жаңыраагы) же Intel, macOS 13+ | [**Mac үчүн SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | болжол менен 270 МБ |
 
 Бардык Mac үчүн бир файл: SMTV Mac'ыңыздын процессоруна жасалган версияны өзү ишке киргизет. Windows'то эч нерсе орнотпостон:
-[ZIP архиви](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — аны архивден чыгарып, **Start SMTV** ачыңыз.
+[ZIP архиви](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — аны архивден чыгарып, **SMTV.exe** ачыңыз.
 
 SMTVге керектин баары ичинде: программанын өзү, Python жана субтитрлери бар ffmpeg. Кепти таануу биринчи иштеткенде
 сиздин тилиңиз үчүн гана жүктөлөт (0,9–2,5 ГБ, бир жолу): SMTV аны бир баскыч менен сунуштайт — **Fix** (Оңдоо).

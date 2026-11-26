@@ -98,7 +98,7 @@ SMTV 会自己在你的电脑上把语音转成文字。挑选最佳时刻时，
 
 所有 Mac 都用同一个文件：SMTV 会自动启动为你的 Mac 处理器制作的版本。在 Windows 上不想安装任何东西：下载
 [ZIP 压缩包](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)——解压后打开
-**Start SMTV**。
+**SMTV.exe**。
 
 SMTV 需要的一切都在里面：程序本身、Python，以及能加字幕的 ffmpeg。语音识别会在第一次启动时下载，而且只下载你的语言
 （0.9–2.5 GB，只需一次）：SMTV 会提供一个按钮 **Fix**（修复），一键完成。

@@ -29,7 +29,7 @@
 ইনস্টলার SMTV রাখে আপনার নিজের ইউজার ফোল্ডারে; এটা **Settings → Apps**-এ দেখা যায়, সেখান থেকে মুছেও ফেলা যায়।
 
 **ইনস্টল না করে:** [ZIP ফাইল](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)
-ডাউনলোড করুন, যেকোনো জায়গায় আনজিপ করুন (যেমন Documents-এ) আর `SMTV` ফোল্ডারে **Start SMTV** খুলুন। এই কপি নিজে
+ডাউনলোড করুন, যেকোনো জায়গায় আনজিপ করুন (যেমন Documents-এ) আর `SMTV` ফোল্ডারে **SMTV.exe** খুলুন। এই কপি নিজে
 আপডেট হয় না: নতুন ভার্সন মানে নতুন ZIP।
 
 ### Windows 11: Smart App Control

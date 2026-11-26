@@ -32,7 +32,7 @@
 болот, аны ошол жерден өчүрсөңүз болот.
 
 **Орнотпостон:** [ZIP архивин](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) жүктөп алып, каалаган жерге (мисалы, Documents папкасына) архивден чыгарыңыз
-жана `SMTV` папкасындагы **Start SMTV** ачыңыз. Бул көчүрмө өзү жаңырбайт: жаңы версия — жаңы ZIP.
+жана `SMTV` папкасындагы **SMTV.exe** ачыңыз. Бул көчүрмө өзү жаңырбайт: жаңы версия — жаңы ZIP.
 
 ### Windows 11: Smart App Control
 

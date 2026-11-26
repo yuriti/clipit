@@ -100,7 +100,7 @@ Elige una forma (con una basta) y puedes cambiarla cuando quieras en **Settings 
 
 Un solo archivo para cualquier Mac: SMTV arranca por sí solo la versión hecha para el procesador de tu Mac. Windows sin instalar nada:
 [el ZIP](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip): descomprímelo y abre
-**Start SMTV**.
+**SMTV.exe**.
 
 Todo lo que SMTV necesita ya viene dentro: el programa, Python y ffmpeg con subtítulos. El reconocimiento de voz se
 descarga en el primer inicio, solo para tu idioma (0,9–2,5 GB, una sola vez): SMTV lo ofrece con un botón, **Fix**

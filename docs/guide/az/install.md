@@ -31,7 +31,7 @@ Quraşdırıcı SMTV-ni öz istifadəçi qovluğunuza qoyur; o, **Settings → A
 görünür və onu oradan silə bilərsiniz.
 
 **Quraşdırmadan:** [ZIP arxivini](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) yükləyin, istənilən yerə (məsələn, Documents qovluğuna) arxivdən çıxarın və
-`SMTV` qovluğundakı **Start SMTV**-ni açın. Bu nüsxə özü yenilənmir: yeni versiya yeni ZIP deməkdir.
+`SMTV` qovluğundakı **SMTV.exe**-ni açın. Bu nüsxə özü yenilənmir: yeni versiya yeni ZIP deməkdir.
 
 ### Windows 11: Smart App Control
 

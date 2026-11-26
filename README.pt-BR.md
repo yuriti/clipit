@@ -100,7 +100,7 @@ IA. Escolha um jeito — um basta, e você pode trocar a qualquer momento em **S
 
 Um só arquivo para qualquer Mac: o SMTV inicia sozinho a versão feita para o processador do seu Mac. Windows sem instalar nada:
 [o ZIP](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — descompacte e abra
-**Start SMTV**.
+**SMTV.exe**.
 
 Tudo de que o SMTV precisa já vem dentro: o programa, o Python e o ffmpeg com legendas. O reconhecimento de fala é
 baixado na primeira vez que você abre o SMTV, só para o seu idioma (0,9–2,5 GB, uma vez só): o SMTV oferece isso com um

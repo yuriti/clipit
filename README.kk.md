@@ -100,7 +100,7 @@ SMTV сөзді мәтінге компьютеріңізде өзі айнал�
 | **Mac** — Apple silicon (M1 және жаңарағы) немесе Intel, macOS 13+ | [**Mac-қа арналған SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | шамамен 270 МБ |
 
 Барлық Mac-қа бір файл: SMTV Mac-ыңыздың процессорына арналған нұсқаны өзі іске қосады. Windows-та ештеңе орнатпай:
-[ZIP мұрағаты](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — оны мұрағаттан шығарып, **Start SMTV** ашыңыз.
+[ZIP мұрағаты](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — оны мұрағаттан шығарып, **SMTV.exe** ашыңыз.
 
 SMTV-ге керектің бәрі ішінде: бағдарламаның өзі, Python және субтитрлері бар ffmpeg. Сөзді тану алғаш іске қосқанда
 тек сіздің тіліңіз үшін жүктеледі (0,9–2,5 ГБ, бір рет): SMTV оны бір түймемен ұсынады — **Fix** (Түзету).

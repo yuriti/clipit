@@ -101,7 +101,7 @@ mumkin.
 | **Mac** — Apple silicon (M1 va yangiroq) yoki Intel, macOS 13+ | [**Mac uchun SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | taxminan 270 MB |
 
 Har qanday Mac uchun bitta fayl: SMTV Mac’ingiz protsessori uchun yaratilgan versiyani oʻzi ishga tushiradi. Windows’da hech narsa oʻrnatmasdan:
-[ZIP arxiv](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — uni arxivdan chiqaring va **Start SMTV** ni oching.
+[ZIP arxiv](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — uni arxivdan chiqaring va **SMTV.exe** ni oching.
 
 SMTV’ga kerak boʻlgan hamma narsa ichida: dasturning oʻzi, Python va subtitrli ffmpeg. Nutqni tanish birinchi ishga
 tushirishda faqat sizning tilingiz uchun yuklanadi (0,9–2,5 GB, bir marta): SMTV uni bitta tugma bilan taklif qiladi —

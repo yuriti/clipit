@@ -98,7 +98,7 @@ kifayətdir və onu istənilən vaxt **Settings → AI** (Ayarlar → Sİ) bölm
 | **Mac** — Apple silicon (M1 və daha yeni) və ya Intel, macOS 13+ | [**Mac üçün SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | təxminən 270 MB |
 
 Bütün Mac-lər üçün bir fayl: SMTV Mac-inizin prosessoru üçün hazırlanmış versiyanı özü işə salır. Windows-da heç nə quraşdırmadan:
-[ZIP arxivi](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — onu arxivdən çıxarın və **Start SMTV**-ni açın.
+[ZIP arxivi](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — onu arxivdən çıxarın və **SMTV.exe**-ni açın.
 
 SMTV-yə lazım olan hər şey içindədir: proqramın özü, Python və subtitrli ffmpeg. Nitqin tanınması ilk başlanğıcda
 yalnız sizin diliniz üçün yüklənir (0,9–2,5 GB, bir dəfə): SMTV onu bir düymə ilə təklif edir — **Fix** (Düzəlt).

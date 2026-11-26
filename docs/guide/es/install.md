@@ -33,7 +33,7 @@ El instalador pone SMTV en tu propia carpeta de usuario; aparece en **Configurac
 donde puedes desinstalarlo.
 
 **Sin instalar:** descarga [el ZIP](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip),
-descomprímelo donde quieras (por ejemplo, en Documentos) y abre **Start SMTV** en la carpeta `SMTV`. Esta copia no se
+descomprímelo donde quieras (por ejemplo, en Documentos) y abre **SMTV.exe** en la carpeta `SMTV`. Esta copia no se
 actualiza sola: una versión nueva es un ZIP nuevo.
 
 ### Windows 11: Smart App Control

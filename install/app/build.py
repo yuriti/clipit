@@ -384,14 +384,15 @@ def make_dmg(app: Path, out: Path, name: str) -> Path:
 
 def make_win_folder(python: Path, out: Path) -> Path:
     """SMTV/: the Python with everything inside, SMTV.exe (Python's windowless program under SMTV's name, so Task
-    Manager shows SMTV) and the icon. The installer copies this folder."""
+    Manager shows SMTV; a double click on it opens the window: double_click.py) and the icon. The installer copies this
+    folder. No script to start it: Smart App Control blocks a downloaded .cmd, and any program of our own."""
     folder = out / "SMTV"
     if folder.exists():
         shutil.rmtree(folder)
     python.replace(folder)
     shutil.copy2(folder / "pythonw.exe", folder / "SMTV.exe")
     (folder / "smtv.ico").write_bytes(launcher.ico((ICONS / "icon-256.png").read_bytes()))
-    shutil.copy2(HERE / "start-smtv.cmd", folder / "Start SMTV.cmd")
+    shutil.copy2(HERE / "double_click.py", folder / "Lib" / "site-packages" / "sitecustomize.py")
     return folder
 
 

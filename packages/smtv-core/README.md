@@ -11,5 +11,8 @@ License: MIT
 The SMTV window shows the entries newer than the installed version before an update: one `### <version>` per release,
 one `- ` line per change, plain text.
 
+### 0.1.1
+- The captions check waits for a slow first start of ffmpeg; Python 3.11 or newer.
+
 ### 0.1.0
 - First build.

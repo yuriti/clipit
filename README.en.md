@@ -134,13 +134,16 @@ The goal is not to make money but to give a simple way: pay, and everything work
 
 | Your computer | Download | Size |
 |---|---|---|
-| **Windows 10 or 11** (64-bit) | [**SMTV for Windows**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) (installer) | about 130 MB |
+| **Windows 10 or 11** (64-bit) | [**SMTV for Windows**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) (ZIP: unzip it and open **SMTV.exe**) | about 210 MB |
 | **Mac** — Apple silicon (M1 and newer) or Intel, macOS 13+ | [**SMTV for Mac**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | about 270 MB |
 
-One file for every Mac: SMTV starts the version made for your Mac's processor by itself. Windows without installing
-anything:
-[the ZIP](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — unzip it and open
-**Start SMTV**.
+One file for every Mac: SMTV starts the version made for your Mac's processor by itself.
+
+Windows: unzip the ZIP wherever you like (Documents, for example) and double-click **SMTV.exe** in the `SMTV` folder.
+This copy does not update itself: a new version is a new ZIP, and SMTV tells you when one is out. For an icon in the
+Start menu and updates from the window, there is
+[the installer](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) (about 130 MB), but
+it does not start while Smart App Control is on.
 
 Everything SMTV needs is inside: the program, Python and ffmpeg with captions. Speech recognition is downloaded on the
 first start, only for your language (0.9–2.5 GB, once): SMTV offers it with one button, **Fix**.
@@ -150,9 +153,9 @@ later, the one for macOS as soon as possible, and then this warning goes away. U
 
 - **Windows** («Windows protected your PC»): **More info** → **Run anyway**.
 - **Mac**: open SMTV once, then **System Settings → Privacy & Security** → **Open Anyway**.
-- **Windows 11 with Smart App Control** blocks programs without a signature completely, and there is no button to let
-  one through. Use the one-line install below: it works with Smart App Control on. When SMTV is signed, the download
-  will work there too.
+- **Windows 11 with Smart App Control** does not let the unsigned installer start, and there is no button to let it
+  through. Take the **ZIP** and open **SMTV.exe**: that way SMTV works with Smart App Control on. If that does not open
+  either, install SMTV with one line (below). When SMTV is signed, the installer will work there too.
 
 [Every step with pictures](docs/guide/en/install.md).
 
