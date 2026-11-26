@@ -68,6 +68,7 @@ hosts = [
   "cloud.cerebras.ai", "lmstudio.ai", "docs.vllm.ai", "brew.sh", "formulae.brew.sh", "learn.microsoft.com",
   "apps.microsoft.com", "ffmpeg.org", "www.gyan.dev", "boosty.to", "scripts.sil.org", "docs.github.com",
   "www.w3.org",                                                    # XML namespaces (SVG), never fetched
+  "schemas.microsoft.com",                                         # the XML namespace of Windows' events (sac_check.py), never fetched
   "www.gnu.org",                                                   # the GPL text named in the app's ffmpeg/README.txt
   "hosted.weblate.org",                                            # where SMTV is translated (docs/translations.md, .weblate)
   "www.rfc-editor.org", "trustee.ietf.org",                        # the source and license of the Ed25519 code (ed25519.py)

@@ -417,6 +417,8 @@ def test_the_build_sources_are_ascii_named_and_have_their_callers():
     apps = (REPO / ".github" / "workflows" / "apps.yml").read_text(encoding="utf-8")
     for name in ("build.py", "smoke.py"):
         assert f"install/app/{name}" in apps
+    sac = (REPO / ".github" / "workflows" / "smart-app-control.yml").read_text(encoding="utf-8")
+    assert "install/app/sac_check.py" in sac
     built = (APP / "build.py").read_text(encoding="utf-8")
     for name in ("smtv.iss", "dmg-readme.txt", "start-smtv.cmd", "launcher.c"):
         assert name in built
