@@ -172,7 +172,13 @@ def probe(port: int = DEFAULT_PORT, timeout: float = 1.5) -> dict | None:
     return data if isinstance(data, dict) and data.get("app") == HELLO_APP else None
 
 
-PROMPTS_REPO = "https://github.com/streammomenttv/prompts"
+# The prompts are published only as the copy inside SMTV (smtv-core); a release links its own tag, a development build main.
+PROMPTS_SOURCE = "https://github.com/yuriti/clipit/blob/{ref}/packages/smtv-core/src/smtv_core/prompts"
+
+
+def prompts_source(version: str = __version__) -> str:
+    """Where the window's «In SMTV's source code» shows a prompt: this release's own copy."""
+    return PROMPTS_SOURCE.format(ref=f"v{version}" if re.fullmatch(r"\d+\.\d+\.\d+", version) else "main")
 LIVE_MODELS_TTL_S = 600
 MODEL_ID = re.compile(r"^[A-Za-z0-9._:/@+-]*$")
 TABLE_COLUMNS = ("codex", "claude_code", "openai", "openrouter", "anthropic", "gemini")
@@ -1036,7 +1042,7 @@ class App:
         settings = Settings.load()
         table = agents_mod.table()
         return {"prompts": {"version": prompts.version(), "date": (table.get("prompts") or {}).get("date"),
-                            "table_date": table.get("updated"), "repo": PROMPTS_REPO},
+                            "table_date": table.get("updated"), "source": prompts_source()},
                 "providers": len(settings.enabled()),
                 "agents": [self._agent_card(name, a, settings) for a in tool.agents]}
 

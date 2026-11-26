@@ -500,7 +500,7 @@
   "ag_avg_unknown": "time unknown",
   "ag_prompt": "Prompt",
   "ag_schema": "Answer schema",
-  "ag_in_repo": "In the prompts repository",
+  "ag_in_source": "In SMTV's source code",
   "upd_title": "Updates",
   "upd_check_daily": "Check for updates once a day",
   "upd_check_daily_about": "Looks for a new version of SMTV and its plugins in the list of releases signed by its authors. Nothing is installed without your click.",

@@ -2,9 +2,12 @@
 
     python scripts/sync_prompts.py ../prompts            copy and report what changed
     python scripts/sync_prompts.py ../prompts --check    only report; exit 1 if the bundled copy differs
+    python scripts/sync_prompts.py --intact              without ../prompts: the bundled copy is whole and readable
 
-The prompts repository is the source of truth: prompts are changed and tested there (its harness), released as a
-version (its VERSION file, later a git tag), and only then copied here. Never edit the bundled copy by hand.
+The prompts are changed and tested in the prompts repository (its harness, a private checkout next to this one),
+released as a version (its VERSION file and a git tag) and only then copied here. The bundled copy in smtv-core is
+what is published: anyone without ../prompts (CI, a contributor) checks only that it is whole (--intact). Never edit
+the bundled copy by hand.
 What is copied: vod/*.txt, fit/*.txt, schemas/*.json, models.json (the model for each agent and provider, and what was
 tested), prices.json (dollars per million tokens of each known model) and VERSION.
 """
@@ -12,6 +15,8 @@ from __future__ import annotations
 
 import argparse
 import filecmp
+import json
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -41,11 +46,45 @@ def plan(source: Path) -> list[tuple[str, Path, Path]]:
     return out
 
 
+def broken(target: Path | None = None) -> list[str]:
+    """What is wrong with the bundled copy on its own: a release VERSION, every part present, every file readable and
+    every JSON file valid. Used where ../prompts is not next to this repository (CI, a contributor's checkout)."""
+    target = target or TARGET
+    problems = []
+    version = (target / "VERSION").read_text(encoding="utf-8").strip() if (target / "VERSION").is_file() else ""
+    if not re.fullmatch(r"\d+\.\d+\.\d+", version):
+        problems.append(f"VERSION: {version or 'missing'} is not a release number like 1.2.3")
+    for folder, pattern in PARTS:
+        files = sorted((target / folder).glob(pattern))
+        if not files:
+            problems.append(f"{folder}/{pattern}: nothing there")
+        for f in files:
+            try:
+                text = f.read_text(encoding="utf-8")
+                if f.suffix == ".json":
+                    json.loads(text)
+                elif not text.strip():
+                    problems.append(f"{f.relative_to(target)}: empty")
+            except (OSError, ValueError) as e:
+                problems.append(f"{f.relative_to(target)}: {type(e).__name__}: {e}"[:200])
+    return problems
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("source", type=Path, help="the prompts repository folder")
+    parser.add_argument("source", type=Path, nargs="?", help="the prompts repository folder")
     parser.add_argument("--check", action="store_true", help="only compare")
+    parser.add_argument("--intact", action="store_true", help="without the prompts repository: check the bundled copy")
     args = parser.parse_args(argv)
+    if args.intact:
+        problems = broken()
+        for p in problems:
+            print(f"  {p}")
+        version = (TARGET / "VERSION").read_text(encoding="utf-8").strip() if not problems else ""
+        print(f"Bundled prompts are whole (version {version})." if not problems else "Bundled prompts are broken.")
+        return 1 if problems else 0
+    if args.source is None:
+        parser.error("the prompts repository folder, or --intact")
     source = args.source.expanduser().resolve()
     if not (source / "VERSION").exists() or not (source / "vod").is_dir():
         print(f"{source} does not look like the prompts repository (no VERSION or vod/)")

@@ -2014,10 +2014,9 @@ function agentCard(name, a, d) {
     const btn = h("button.btn.btn-sm", { type: "button" }, icon(ICONS.copy), t("copy"));
     btn.onclick = (e) => { e.preventDefault(); copy(text || "", btn); };
     return h("details.ag-src", h("summary", h("span", label), h("span.mono.faint", file)),
-      h("div.ag-src-bar", btn, href ? h("a.btn.btn-ghost.btn-sm", { href, target: "_blank", rel: "noopener" }, icon(ICONS.ext), t("ag_in_repo")) : null),
+      h("div.ag-src-bar", btn, href ? h("a.btn.btn-ghost.btn-sm", { href, target: "_blank", rel: "noopener" }, icon(ICONS.ext), t("ag_in_source")) : null),
       h("pre.ag-pre", text || "—"));
   };
-  const tag = `v${d.prompts.version}`;
   // V1 (owner 22.11): the step in one sentence and what it runs on now; everything for the curious under «More»
   return h("section.card.card-pad.ag-card",
     h("div.ag-head", h("div", h("h3", txt(a.title)), h("p.muted", txt(a.short) || txt(a.does)))),
@@ -2031,8 +2030,8 @@ function agentCard(name, a, d) {
         h("div.ag-block", h("h4", t("ag_needs")), needs),
         h("div.ag-block", h("h4", t("ag_tested_title")), recs),
         stats,
-        source(t("ag_prompt"), a.prompt, a.prompt_text, `${d.prompts.repo}/blob/${tag}/${a.prompt}`),
-        source(t("ag_schema"), `schemas/${a.schema}.json`, a.schema_text, `${d.prompts.repo}/blob/${tag}/schemas/${a.schema}.json`))));
+        source(t("ag_prompt"), a.prompt, a.prompt_text, `${d.prompts.source}/${a.prompt}`),
+        source(t("ag_schema"), `schemas/${a.schema}.json`, a.schema_text, `${d.prompts.source}/schemas/${a.schema}.json`))));
 }
 
 // --- updates and plugins from the window (stage 8) -----------------------------------------------------------------

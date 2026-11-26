@@ -1286,3 +1286,9 @@ def test_signing_in_from_the_profile_menu_adds_streammoment_once_and_last(server
     c.request("POST", f"/api/settings/providers/{sm['id']}/delete", {})
     c.request("GET", "/api/account")
     assert [p["kind"] for p in c.request("GET", "/api/settings")[1]["providers"]] == ["gemini"], "removed later, it stays removed"
+
+
+def test_a_prompt_links_to_the_copy_inside_this_release_of_smtv():
+    """The prompts are published only inside SMTV: a release links its own tag, a development build links main."""
+    assert serve.prompts_source("0.1.0") == "https://github.com/yuriti/clipit/blob/v0.1.0/packages/smtv-core/src/smtv_core/prompts"
+    assert serve.prompts_source("0.2.0.dev0").startswith("https://github.com/yuriti/clipit/blob/main/")

@@ -494,10 +494,14 @@ def test_lock_entries_from_git_or_a_url_and_metadata_hooks_fail(tmp_path):
     assert "fromgit: comes from git" in found and "build hooks" in found
 
 
-def test_sync_in_ci_fails_without_the_prompts_repository(tmp_path):
-    tree(tmp_path / "smtv", {"scripts/sync_prompts.py": "import sys; sys.exit(0)\n"})
-    assert sync.check(Repo(tmp_path / "smtv", config={})).ok
-    assert not sync.check(Repo(tmp_path / "smtv", config={}, ci=True)).ok
+def test_sync_without_the_prompts_repository_checks_the_bundled_copy(tmp_path):
+    """The prompts repository is not published: CI and contributors check that the bundled copy is whole instead."""
+    tree(tmp_path / "smtv", {"scripts/sync_prompts.py": "import sys; sys.exit(0 if sys.argv[1:] == ['--intact'] else 3)\n"})
+    for ci in (False, True):
+        assert sync.check(Repo(tmp_path / "smtv", config={}, ci=ci)).ok
+    tree(tmp_path / "bad", {"scripts/sync_prompts.py": "import sys; print('VERSION: missing'); sys.exit(1)\n"})
+    found = sync.check(Repo(tmp_path / "bad", config={}, ci=True))
+    assert not found.ok and "VERSION: missing" in "\n".join(messages(found))
 
 
 @needs_git

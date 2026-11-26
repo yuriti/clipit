@@ -32,3 +32,20 @@ def test_bundled_copy_matches_the_prompts_repository_when_it_is_next_door():
     if not (source / "VERSION").exists():
         return  # the prompts repository is not checked out next to this one
     assert sync.plan(source) == [], "bundled prompts differ: run scripts/sync_prompts.py ../prompts"
+
+
+def test_the_published_copy_is_whole_on_its_own():
+    """Without ../prompts (CI, contributors) the bundled copy is what is checked: it is whole now."""
+    assert sync.broken() == []
+    assert sync.main(["--intact"]) == 0
+
+
+def test_a_broken_copy_says_what_is_wrong(tmp_path, monkeypatch):
+    tree(tmp_path, {"VERSION": "next\n", "vod/a.txt": " ", "fit/b.txt": "ok", "schemas/s.json": "{not json",
+                    "models.json": "{}"})
+    problems = "\n".join(sync.broken(tmp_path))
+    assert "VERSION: next is not a release number" in problems
+    assert "vod/a.txt: empty" in problems and "schemas/s.json: JSONDecodeError" in problems
+    assert "./prices.json: nothing there" in problems
+    monkeypatch.setattr(sync, "TARGET", tmp_path)
+    assert sync.main(["--intact"]) == 1
