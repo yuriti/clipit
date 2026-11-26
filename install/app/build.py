@@ -461,6 +461,9 @@ def build(target: str, out: Path, cache: Path, given_wheels: Path | None = None,
 
 
 def main(argv: list[str] | None = None) -> int:
+    for stream in (sys.stdout, sys.stderr):   # a Windows runner's console is cp1252: no «→», and print would fail
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("target", choices=("mac", "win-x64"))
     ap.add_argument("--out", type=Path, default=REPO / "build" / "app")

@@ -177,3 +177,14 @@ def test_progress_reaches_a_file_before_the_run_ends(tmp_path):
         finally:
             proc.kill()
             proc.wait()
+
+
+def test_the_command_line_never_dies_on_a_character_its_output_lacks():
+    # Windows: `smtv doctor > file.txt` or a pipe writes in cp1252/cp1251, which have no «→»; it printed a traceback
+    import os
+    import subprocess
+    import sys
+    code = "import sys; from smtv import cli; cli._line_buffered(); print('Settings → AI'); print('→', file=sys.stderr)"
+    r = subprocess.run([sys.executable, "-c", code], env={**os.environ, "PYTHONIOENCODING": "cp1252"},
+                       capture_output=True, timeout=60)
+    assert r.returncode == 0 and r.stdout.strip() == b"Settings ? AI" and r.stderr.strip() == b"?", r.stderr

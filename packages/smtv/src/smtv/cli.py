@@ -429,11 +429,13 @@ def build_parser(tools) -> argparse.ArgumentParser:
 
 
 def _line_buffered() -> None:
-    """Progress lines show up at once even when the output goes to a file or a pipe (a long run under nohup or a task)."""
+    """Progress lines show up at once even when the output goes to a file or a pipe (a long run under nohup or a task).
+    And a character the output's code page lacks becomes «?» instead of a crash: on Windows, `smtv doctor > file.txt` or
+    a pipe writes in cp1252 or cp1251, which have no «→» (a console window itself takes any character)."""
     for stream in (sys.stdout, sys.stderr):
         reconfigure = getattr(stream, "reconfigure", None)
         if reconfigure:
-            reconfigure(line_buffering=True)
+            reconfigure(line_buffering=True, errors="replace")
 
 
 def main(argv=None) -> int:

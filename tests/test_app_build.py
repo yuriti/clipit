@@ -7,6 +7,7 @@ import json
 import os
 import plistlib
 import re
+import subprocess
 import sys
 import tarfile
 import zipfile
@@ -397,6 +398,17 @@ def test_the_smoke_check_fails_when_the_app_does_not_start(tmp_path, capsys):
     lines = out.out.splitlines()
     assert lines[-2].startswith("FAILED: the app's Python did not start") and lines[-1] == "smoke (windows): 1 failed"
     assert out.err == ""
+
+
+def test_the_build_scripts_print_any_character_on_a_console_without_it(tmp_path):
+    # a Windows runner's console is cp1252: smoke printed smtv doctor's «→» and died with UnicodeEncodeError
+    env = {**os.environ, "PYTHONIOENCODING": "ascii"}           # stricter than cp1252: no «, no →
+    app = tmp_path / "SMTV →"                                    # smoke's failure names the folder
+    app.mkdir()
+    r = subprocess.run([sys.executable, str(APP / "smoke.py"), str(app)], env=env, capture_output=True, timeout=60)
+    assert r.returncode == 1 and "SMTV →".encode() in r.stdout and b"Traceback" not in r.stderr, r.stderr
+    r = subprocess.run([sys.executable, str(APP / "build.py"), "--help"], env=env, capture_output=True, timeout=60)
+    assert r.returncode == 0 and "«".encode() in r.stdout, r.stderr
 
 
 def test_the_build_sources_are_ascii_named_and_have_their_callers():

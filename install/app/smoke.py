@@ -19,6 +19,7 @@ import json
 import os
 import socket
 import subprocess
+import sys
 import tempfile
 import time
 import urllib.error
@@ -185,7 +186,8 @@ def smoke(app: Path, kinds: tuple[str, ...], arch: str = "arm64") -> list[str]:
             fonts = info["fonts"].replace("\\", "/").replace(":", "\\:")
             r = subprocess.run([ffmpeg, "-hide_banner", "-loglevel", "error", "-y", "-f", "lavfi", "-i",
                                 "color=c=blue:s=1080x1920:d=1", "-vf", f"ass=t.ass:fontsdir='{fonts}'", "-c:v", "libx264",
-                                str(out)], env=env, capture_output=True, text=True, timeout=120, cwd=tmp)
+                                str(out)], env=env, capture_output=True, text=True, encoding="utf-8", errors="replace",
+                                timeout=120, cwd=tmp)
             if r.returncode != 0 or not out.is_file() or out.stat().st_size < 1000:
                 failed.append(f"ffmpeg did not burn a caption with libx264: {r.stderr[-800:]}")
 
@@ -227,6 +229,9 @@ def smoke(app: Path, kinds: tuple[str, ...], arch: str = "arm64") -> list[str]:
 
 
 def main(argv: list[str] | None = None) -> int:
+    for stream in (sys.stdout, sys.stderr):   # a Windows runner's console is cp1252: no «→», and print would fail
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("app", type=Path, help="SMTV.app, or the folder of the Windows app")
     ap.add_argument("--arch", choices=("arm64", "x86_64"), help="SMTV.app: which of its Pythons (default: this Mac's own)")
