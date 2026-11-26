@@ -112,3 +112,21 @@ def test_the_workflow_runs_by_hand_enforces_the_policy_and_checks_all_three_ways
     assert "permissions:\n  contents: read" in WORKFLOW and "persist-credentials: false" in WORKFLOW
     for action in re.findall(r"uses: (\S+)", WORKFLOW):
         assert re.search(r"@[0-9a-f]{40}$", action), action
+
+
+def test_every_windows_powershell_runs_without_the_modules_of_powershell_7(monkeypatch):
+    # run 45893866134: powershell.exe started from a pwsh step could not load Get-AuthenticodeSignature
+    monkeypatch.setenv("PSModulePath", "C:\\Program Files\\PowerShell\\7\\Modules")
+    env = sac_check.windows_env(SMTV_LANG="en")
+    assert not any(k.upper() == "PSMODULEPATH" for k in env) and env["SMTV_LANG"] == "en" and "PATH" in env
+    seen = []
+    monkeypatch.setattr(sac_check.subprocess, "run",
+                        lambda argv, **k: seen.append((argv, k.get("env"))) or subprocess.CompletedProcess(argv, 0, "[]", ""))
+    sac_check.signatures(["C:\\a"])
+    monkeypatch.setattr(sac_check, "events_since", lambda t: [])
+    monkeypatch.setattr(sac_check, "uv_python", lambda env: None)
+    sac_check.run_all(Path("work"), REPO)
+    shells = [(argv, env) for argv, env in seen if argv[0] == "powershell"]
+    assert len(shells) == 3                                        # the signatures, the language mode, install.ps1
+    for argv, env in shells:
+        assert env is not None and not any(k.upper() == "PSMODULEPATH" for k in env), argv

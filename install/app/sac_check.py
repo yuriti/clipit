@@ -50,6 +50,15 @@ $rows | ConvertTo-Json -Compress -Depth 3
 """
 
 
+def windows_env(**extra: str) -> dict[str, str]:
+    """This environment for Windows PowerShell 5.1 and what it starts: without PSModulePath, which the workflow's
+    PowerShell 7 sets to its own modules (5.1 then cannot load even Get-AuthenticodeSignature). A person's PowerShell
+    window has none of it either."""
+    env = {k: v for k, v in os.environ.items() if k.upper() != "PSMODULEPATH"}
+    env.update(extra)
+    return env
+
+
 # --- the CodeIntegrity journal ---------------------------------------------------------------------------------------
 
 def stamp(t: datetime) -> str:
@@ -207,10 +216,10 @@ def run_all(work: Path, repo: Path) -> list[dict]:
         cases.append(run_case("b3", "the app installed before the policy, its full check",
                               [sys.executable, smoke, str(before), "--kind", "exe"], 900))
 
-    env = {**os.environ, "SMTV_NO_START": "1", "SMTV_LANG": "en"}
+    env = windows_env(SMTV_NO_START="1", SMTV_LANG="en")
     cases.append(run_case("c0", "PowerShell's language mode under the policy",
                           ["powershell", "-NoProfile", "-Command", "$ExecutionContext.SessionState.LanguageMode"], 60,
-                          ok=lambda r: True))
+                          ok=lambda r: True, env=env))
     script = repo / "install" / "install.ps1"
     cases.append(run_case("c1", "the one-line install (install.ps1 of this branch, as `irm | iex` runs it)",
                           ["powershell", "-NoProfile", "-ExecutionPolicy", "ByPass", "-Command",
@@ -235,7 +244,7 @@ def run_all(work: Path, repo: Path) -> list[dict]:
 def signatures(dirs: list[str]) -> list[dict]:
     r = subprocess.run(["powershell", "-NoProfile", "-ExecutionPolicy", "ByPass", "-Command",
                         "& {" + SIGNATURES_PS + "}", *dirs], capture_output=True, text=True, encoding="utf-8",
-                       errors="replace", timeout=1800)
+                       errors="replace", timeout=1800, env=windows_env())
     if r.returncode != 0:
         raise SystemExit(f"Get-AuthenticodeSignature failed: {r.stderr.strip()[-1500:]}")
     rows = json.loads(r.stdout or "[]")
