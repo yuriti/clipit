@@ -130,3 +130,9 @@ def test_every_windows_powershell_runs_without_the_modules_of_powershell_7(monke
     assert len(shells) == 3                                        # the signatures, the language mode, install.ps1
     for argv, env in shells:
         assert env is not None and not any(k.upper() == "PSMODULEPATH" for k in env), argv
+
+
+def test_only_programs_and_libraries_are_asked_for_a_signature():
+    # run 45894528238: -Include with -LiteralPath filtered nothing: 11634 other files came back as UnknownError
+    assert "-Include" not in sac_check.SIGNATURES_PS
+    assert "$_.Extension -in '.exe', '.dll', '.pyd'" in sac_check.SIGNATURES_PS

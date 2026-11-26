@@ -54,7 +54,7 @@ jobs:
           $dir = Join-Path $env:windir 'schemas\CodeIntegrity\ExamplePolicies'
           "Example policies here:"; Get-ChildItem $dir -Name
           $name = 'SmartAppControl.xml', 'SignedReputable.xml' | Where-Object { Test-Path (Join-Path $dir $_) } | Select-Object -First 1
-          if (-not $name) { throw "neither SmartAppControl.xml nor SignedReputable.xml is in $dir: no policy like Smart App Control here" }
+          if (-not $name) { throw "neither SmartAppControl.xml nor SignedReputable.xml is in ${dir}: no policy like Smart App Control here" }
           $xml = Join-Path $w 'policy.xml'
           Copy-Item (Join-Path $dir $name) $xml
           Set-CIPolicyIdInfo -FilePath $xml -ResetPolicyID | Out-Null    # its own id, never Windows' own one

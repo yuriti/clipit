@@ -278,6 +278,55 @@ def test_a_workflow_github_cannot_read_fails_before_the_push(tmp_path, monkeypat
     assert supply.workflows(repo(tmp_path / "ok", {".github/workflows/good.yml": good})).skipped   # no zizmor here
 
 
+PS_WORKFLOW = """on: workflow_dispatch
+jobs:
+  win:
+    runs-on: windows-latest
+    steps:
+      - run: |
+          $w = Join-Path $env:RUNNER_TEMP 'sac'
+          throw "nothing is in $dir: here"
+      - shell: bash
+        run: |
+          echo "$dir: is fine in bash"
+      - run: |
+          $w = Join-Path $env:RUNNER_TEMP 'sac'
+          "${dir}: braced" ; 'single $quoted: text'   # a comment with $note: in it
+          Write-Host "${{ inputs.tag }}"
+"""
+
+
+def test_a_powershell_name_before_a_colon_is_found_on_its_line(tmp_path, monkeypatch):
+    # run 45894528238: «"… is in $dir: no policy …"» stopped the step before it ran
+    monkeypatch.setattr(supply.shutil, "which", lambda name, *a, **k: None)
+    found = supply.workflows(repo(tmp_path, {".github/workflows/w.yml": PS_WORKFLOW}))
+    assert messages(found) == [".github/workflows/w.yml:8: PowerShell reads «$dir:» as a drive or scope and stops: write ${dir}"]
+    assert any("only searched, not parsed: pwsh is not installed" in n for n in found.notes)
+    blocks = supply.powershell_blocks(tmp_path / ".github/workflows/w.yml", __import__("yaml").safe_load(PS_WORKFLOW))
+    assert [line for line, _ in blocks] == [7, 13] and "${{" not in blocks[1][1]     # bash left out, GitHub's ${{ }} gone
+
+
+def test_with_pwsh_every_powershell_block_goes_through_its_parser(tmp_path, monkeypatch):
+    good = PS_WORKFLOW.replace("in $dir: here", "in ${dir}: here")
+    monkeypatch.setattr(supply.shutil, "which", lambda name, *a, **k: "/usr/bin/pwsh" if name == "pwsh" else None)
+    sent = []
+
+    def fake(argv, **k):
+        sent.append(json.loads(k["input"]))
+        return subprocess.CompletedProcess(argv, 0, "1\t2\tMissing closing ')' in expression.\n", "")
+    monkeypatch.setattr(supply.subprocess, "run", fake)
+    found = supply.workflows(repo(tmp_path, {".github/workflows/w.yml": good}))
+    assert len(sent[0]) == 2 and messages(found) == [
+        ".github/workflows/w.yml:14: PowerShell cannot parse this: Missing closing ')' in expression."]
+
+
+@pytest.mark.skipif(shutil.which("pwsh") is None, reason="pwsh is not installed here (GitHub's Linux machines have it)")
+def test_the_real_parser_finds_what_github_would_refuse(tmp_path):
+    bad = PS_WORKFLOW.replace("in $dir: here", "in ${dir}: here").replace("Write-Host", "if ( Write-Host")
+    found = supply.workflows(repo(tmp_path, {".github/workflows/w.yml": bad}))
+    assert any("PowerShell cannot parse this" in m for m in messages(found))
+
+
 def test_every_workflow_of_this_repository_is_valid_yaml():
     import yaml
     for path in sorted((ROOT / ".github" / "workflows").glob("*.y*ml")):

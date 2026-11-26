@@ -43,7 +43,9 @@ print("loaded")
 SIGNATURES_PS = r"""
 $ErrorActionPreference = 'Stop'
 $rows = foreach ($d in $args) {
-  Get-ChildItem -LiteralPath $d -Recurse -File -Include *.exe, *.dll, *.pyd | Get-AuthenticodeSignature | ForEach-Object {
+  # by extension: an Include filter with LiteralPath keeps every file, and the others come back as UnknownError
+  Get-ChildItem -LiteralPath $d -Recurse -File | Where-Object { $_.Extension -in '.exe', '.dll', '.pyd' } |
+  Get-AuthenticodeSignature | ForEach-Object {
     [pscustomobject]@{ root = $d; path = $_.Path; status = "$($_.Status)";
                        signer = $(if ($_.SignerCertificate) { $_.SignerCertificate.Subject } else { '' }) } } }
 $rows | ConvertTo-Json -Compress -Depth 3
@@ -205,6 +207,9 @@ def run_all(work: Path, repo: Path) -> list[dict]:
                           ok=lambda r: r.returncode == 0 and (target / "SMTV.exe").is_file()))
 
     app = work / "zip" / "SMTV"
+    cases.append(run_case("b0", "the ZIP's ffmpeg on its own (Gyan's build, not signed: does reputation let it run?)",
+                          [str(app / "ffmpeg" / "ffmpeg.exe"), "-hide_banner", "-version"], 120,
+                          ok=lambda r: r.returncode == 0 and "ffmpeg version" in r.stdout))
     marker = work / "zip-ran.txt"
     cases.append(run_case("b1", "the ZIP's SMTV.exe starts", [str(app / "SMTV.exe"), "-c",
                           f"open(r'{marker}', 'w').write('ok')"], 120, ok=lambda r: marker.is_file()))

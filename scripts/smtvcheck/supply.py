@@ -1,7 +1,10 @@
 """Supply chain: a lock file with hashes, nothing that runs code at install time, known vulnerabilities."""
 from __future__ import annotations
 
+import json
+import re
 import shutil
+import subprocess
 import sys
 import tempfile
 import tomllib
@@ -91,6 +94,74 @@ def audit(repo: Repo) -> Outcome:
     return out
 
 
+POWERSHELL = {"pwsh", "powershell"}
+GH_EXPRESSION = re.compile(r"\$\{\{.*?\}\}")
+# `"… $dir: …"` is a PowerShell parse error (run 45894528238): a name followed by «:» must be written ${dir}
+SCOPED = re.compile(r"\$(?!(?:env|global|script|local|private|using|function|variable|alias):)([A-Za-z_]\w*):(?!:)")
+PARSE_PS = r"""
+$blocks = [Console]::In.ReadToEnd() | ConvertFrom-Json
+foreach ($b in $blocks) {
+  $tokens = $null; $errors = $null
+  [System.Management.Automation.Language.Parser]::ParseInput($b.text, [ref]$tokens, [ref]$errors) | Out-Null
+  foreach ($e in $errors) { "{0}`t{1}`t{2}" -f $b.id, $e.Extent.StartLineNumber, $e.Message }
+}
+"""
+
+
+def powershell_blocks(path: Path, doc) -> list[tuple[int, str]]:
+    """The `run:` blocks a workflow gives to PowerShell (`shell: pwsh` or `powershell`, or no shell on a Windows
+    runner), with the line where each starts; GitHub's `${{ … }}` replaced, as GitHub does before PowerShell sees it."""
+    if not isinstance(doc, dict):
+        return []
+    text = path.read_text(encoding="utf-8")
+    top = ((doc.get("defaults") or {}).get("run") or {}).get("shell")
+    out, cursor = [], 0
+    for job in (doc.get("jobs") or {}).values():
+        if not isinstance(job, dict):
+            continue
+        default = ((job.get("defaults") or {}).get("run") or {}).get("shell") or top
+        windows = "windows" in str(job.get("runs-on", ""))
+        for step in job.get("steps") or []:
+            if not isinstance(step, dict) or not isinstance(step.get("run"), str):
+                continue
+            shell = str(step.get("shell") or default or ("pwsh" if windows else "bash")).split()[0]
+            if shell in POWERSHELL:
+                script = step["run"]
+                first = next((ln.strip() for ln in script.splitlines() if ln.strip()), "")
+                at = text.find(first, cursor) if first else -1      # steps come in the file's order
+                cursor = at + 1 if at >= 0 else cursor
+                out.append((text.count("\n", 0, at) + 1 if at >= 0 else 0, GH_EXPRESSION.sub("x", script)))
+    return out
+
+
+def powershell(repo: Repo, docs: dict, out: Outcome) -> None:
+    """Every PowerShell block parses: by PowerShell's own parser when pwsh is here (GitHub's Linux machines have it),
+    else by a search for the mistake that broke a run."""
+    blocks = [(str(path.relative_to(repo.root)), line, script)
+              for path, doc in docs.items() for line, script in powershell_blocks(path, doc)]
+    if not blocks:
+        return
+    for rel, line, script in blocks:
+        for n, text in enumerate(script.splitlines()):
+            code = re.sub(r"'[^']*'", "''", text).split(" #")[0]
+            for m in SCOPED.finditer(code):
+                out.add(rel, line + n, f"PowerShell reads «${m[1]}:» as a drive or scope and stops: write ${{{m[1]}}}")
+    pwsh = shutil.which("pwsh")
+    if pwsh is None:
+        out.notes.append(f"{len(blocks)} PowerShell blocks only searched, not parsed: pwsh is not installed here")
+        return
+    payload = json.dumps([{"id": i, "text": script} for i, (_, _, script) in enumerate(blocks)])
+    res = subprocess.run([pwsh, "-NoProfile", "-NonInteractive", "-Command", PARSE_PS], input=payload,
+                         capture_output=True, text=True, encoding="utf-8", timeout=120)
+    if res.returncode != 0:
+        out.add(".github/workflows", 0, "pwsh could not parse the PowerShell blocks: " + res.stderr.strip()[-300:])
+        return
+    for row in res.stdout.splitlines():
+        i, n, message = row.split("\t", 2)
+        rel, line, _ = blocks[int(i)]
+        out.add(rel, line + int(n) - 1, f"PowerShell cannot parse this: {message}")
+
+
 def workflows(repo: Repo) -> Outcome:
     """The GitHub workflows: each parses as YAML, then zizmor (offline): template injection, credentials left in checkouts, risky triggers."""
     out = Outcome("workflows")
@@ -104,14 +175,16 @@ def workflows(repo: Repo) -> Outcome:
     except ImportError:
         out.skipped = "PyYAML is not installed (dev group)"
         return out
+    docs = {}
     for path in sorted(folder.glob("*.y*ml")):
         try:
-            yaml.safe_load(path.read_text(encoding="utf-8"))
+            docs[path] = yaml.safe_load(path.read_text(encoding="utf-8"))
         except yaml.YAMLError as e:
             mark = getattr(e, "problem_mark", None)
             line = mark.line + 1 if mark else 0
             out.add(str(path.relative_to(repo.root)), line, f"not valid YAML, GitHub will reject it: {getattr(e, 'problem', None) or e}"
                     " (quote a value that holds «: » or « #»)")
+    powershell(repo, docs, out)
     exe = shutil.which("zizmor") or shutil.which("zizmor", path=str(Path(sys.executable).parent))
     if exe is None:
         if not out.findings:
