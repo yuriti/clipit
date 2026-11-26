@@ -10,9 +10,9 @@
 <!-- languages -->
 **Русский** · [English](README.en.md) · [Қазақша](README.kk.md) · [Oʻzbekcha](README.uz.md) · [Azərbaycanca](README.az.md) · [Кыргызча](README.ky.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [বাংলা](README.bn.md) · [Español](README.es.md) · [Português](README.pt-BR.md) · [Deutsch](README.de.md)
 
-[![Последний выпуск](https://img.shields.io/github/v/release/streammomenttv/smtv?label=release)](https://github.com/streammomenttv/smtv/releases/latest)
+[![Последний выпуск](https://img.shields.io/github/v/release/yuriti/clipit?label=release)](https://github.com/yuriti/clipit/releases/latest)
 [![Скачивания](https://img.shields.io/pepy/dt/smtv?label=downloads)](https://pepy.tech/projects/smtv)
-[![Звёзды](https://img.shields.io/github/stars/streammomenttv/smtv?style=flat)](https://github.com/streammomenttv/smtv/stargazers)
+[![Звёзды](https://img.shields.io/github/stars/yuriti/clipit?style=flat)](https://github.com/yuriti/clipit/stargazers)
 [![Лицензия: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Python](https://img.shields.io/pypi/pyversions/smtv)](https://pypi.org/project/smtv/)
 [![Перевести на Weblate](https://hosted.weblate.org/widget/smtv/svg-badge.svg)](https://hosted.weblate.org/engage/smtv/)
@@ -118,7 +118,7 @@ Twitch и YouTube всё сильнее мешают скачивать запи
 **Нейросеть в интернете.** Облачные нейросети работают намного быстрее и дают клипы в разы лучше. Я перепробовал
 разные и рекомендую OpenAI: вставьте свой ключ в SMTV и платите сервису напрямую, только за то, что потратили.
 Подешевле — DeepSeek и похожие сервисы. Нужна другая нейросеть?
-[Напишите нам](https://github.com/streammomenttv/smtv/issues/new?template=feature.yml) — подстроим SMTV под неё.
+[Напишите нам](https://github.com/yuriti/clipit/issues/new?template=feature.yml) — подстроим SMTV под неё.
 
 ### Подписка — скоро
 
@@ -132,11 +132,11 @@ Twitch и YouTube всё сильнее мешают скачивать запи
 
 | Ваш компьютер | Скачать | Размер |
 |---|---|---|
-| **Windows 10 или 11** (64-битная) | [**SMTV для Windows**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe) (установщик) | около 130 МБ |
-| **Mac** — Apple silicon (M1 и новее) или Intel, macOS 13+ | [**SMTV для Mac**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | около 270 МБ |
+| **Windows 10 или 11** (64-битная) | [**SMTV для Windows**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) (установщик) | около 130 МБ |
+| **Mac** — Apple silicon (M1 и новее) или Intel, macOS 13+ | [**SMTV для Mac**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | около 270 МБ |
 
 Один файл для любого Mac: SMTV сам запускает версию, сделанную под процессор вашего Mac. Windows без установки:
-[ZIP-архив](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip) — распакуйте и откройте
+[ZIP-архив](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — распакуйте и откройте
 **Start SMTV**.
 
 Всё нужное уже внутри: программа, Python и ffmpeg с субтитрами. Распознавание речи скачивается при первом запуске и
@@ -162,13 +162,13 @@ macOS — при первой возможности; тогда это пред
 **Windows** — нажмите «Пуск», наберите **PowerShell**, откройте его и вставьте:
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 **Mac или Linux** — откройте **Терминал** и вставьте:
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 Нажмите Enter и подождите несколько минут. Пароль администратора не нужен. Появится значок **SMTV** — на рабочем столе
@@ -205,7 +205,7 @@ curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/in
 
 Самые популярные открытые клипперы — по собственному коду и документации каждого проекта, **на ноябрь 2026 года**.
 Это хорошие проекты, каждый сделан под свою задачу; таблица только показывает, чем отличается SMTV. Что-то изменилось?
-[Напишите нам](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) — поправим таблицу.
+[Напишите нам](https://github.com/yuriti/clipit/issues/new?template=bug.yml) — поправим таблицу.
 
 | | **SMTV** | [openshorts](https://github.com/mutonby/openshorts) | [SupoClip](https://github.com/FujiwaraChoki/supoclip) | [PeakCut](https://github.com/haziqahmedqasmi/PeakCut) | [FunClip](https://github.com/modelscope/FunClip) |
 |---|---|---|---|---|---|
@@ -312,7 +312,7 @@ request. [Как устроены переводы](docs/translations.md).
 SMTV делает команда [StreamMoment](https://streammoment.tv). Скоро появится аккаунт StreamMoment: он даст SMTV
 нейросеть и будет скачивать записи по ссылкам без всякой настройки. SMTV полностью работает и без него.
 
-- [Сообщить о проблеме](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) · [Предложить идею](https://github.com/streammomenttv/smtv/issues/new?template=feature.yml)
+- [Сообщить о проблеме](https://github.com/yuriti/clipit/issues/new?template=bug.yml) · [Предложить идею](https://github.com/yuriti/clipit/issues/new?template=feature.yml)
 - [Для опытных пользователей](docs/advanced.md): Docker, все сервисы нейросетей, модели распознавания речи, ключи, команды
 - [Изменения](CHANGELOG.md) · [Как поучаствовать](CONTRIBUTING.md) · [Безопасность](SECURITY.md)
 - Нравится SMTV? [Поддержите на Boosty](https://boosty.to/smtv) и поставьте репозиторию ⭐ — так его найдут другие.

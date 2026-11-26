@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../install.md) · [English](../en/install.md) · [Қазақша](../kk/install.md) · [Oʻzbekcha](../uz/install.md) · [Azərbaycanca](../az/install.md) · [Кыргызча](../ky/install.md) · [简体中文](../zh-CN/install.md) · [日本語](../ja/install.md) · [한국어](../ko/install.md) · **Tiếng Việt** · [Bahasa Indonesia](../id/install.md) · [हिन्दी](../hi/install.md) · [বাংলা](../bn/install.md) · [Español](../es/install.md) · [Português](../pt-BR/install.md) · [Deutsch](../de/install.md)
 
-> 🌐 Trang này được dịch tự động. Hãy giúp cải thiện bản dịch: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Bản gốc: Русский](../install.md).
+> 🌐 Trang này được dịch tự động. Hãy giúp cải thiện bản dịch: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Bản gốc: Русский](../install.md).
 
 # Cài đặt SMTV
 
@@ -10,10 +10,10 @@ mật khẩu quản trị viên.
 
 | Máy tính của bạn | Tải về | Dung lượng |
 |---|---|---|
-| **Windows 10 hoặc 11** (64-bit) | [SMTV cho Windows](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe) | khoảng 130 MB |
-| **Mac** — chip Apple (M1 trở về sau) hoặc Intel, macOS 13+ | [SMTV cho Mac](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | khoảng 270 MB |
+| **Windows 10 hoặc 11** (64-bit) | [SMTV cho Windows](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | khoảng 130 MB |
+| **Mac** — chip Apple (M1 trở về sau) hoặc Intel, macOS 13+ | [SMTV cho Mac](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | khoảng 270 MB |
 
-Tất cả các phiên bản và mã kiểm tra (checksum) của chúng: [trang phát hành](https://github.com/streammomenttv/smtv/releases/latest).
+Tất cả các phiên bản và mã kiểm tra (checksum) của chúng: [trang phát hành](https://github.com/yuriti/clipit/releases/latest).
 
 **Vì sao lần đầu hệ thống cảnh báo bạn.** SMTV chưa có chữ ký số. Chữ ký cho Windows sẽ có muộn hơn một chút, chữ ký cho
 macOS sẽ có sớm nhất có thể, và khi đó cảnh báo này sẽ biến mất. Mã nguồn của SMTV là công khai: ai cũng có thể đọc xem nó
@@ -31,7 +31,7 @@ làm gì.
 Trình cài đặt đặt SMTV vào thư mục người dùng của riêng bạn; nó xuất hiện trong **Cài đặt → Ứng dụng** (Settings → Apps),
 nơi bạn có thể gỡ nó.
 
-**Không cần cài:** tải [file ZIP](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip),
+**Không cần cài:** tải [file ZIP](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip),
 giải nén ở đâu cũng được (ví dụ vào Documents) và mở **Start SMTV** trong thư mục `SMTV`. Bản này không tự cập nhật:
 phiên bản mới là một file ZIP mới.
 
@@ -73,7 +73,7 @@ hơn. Nó cập nhật từ cửa sổ giống như ứng dụng tải về.
 Ctrl+V) và bấm **Enter**:
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 Khi Smart App Control đang bật, trình cài đặt cài SMTV trên bản Python có chữ ký từ python.org (có thể nó sẽ hỏi để cài
@@ -82,7 +82,7 @@ Python — hãy đồng ý) và mở SMTV thông qua đó. Nếu terminal báo k
 **Mac hoặc Linux:** mở **Terminal** (trên Mac: Cmd+Space, gõ `Terminal`, Enter), dán dòng này và bấm **Enter**:
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 Chờ đến khi nó báo đã xong (2–10 phút). SMTV tự mở; biểu tượng **SMTV** nằm trong menu Start trên Windows, trong
@@ -105,7 +105,7 @@ Cả hai trình cài đặt đều ngắn và công khai: [install.ps1](../../..
 - **Mac: «SMTV muốn chấp nhận các kết nối đến»** («SMTV would like to accept incoming connections») — hãy cho phép nếu
   bạn muốn dùng SMTV trên điện thoại.
 - **Phần mềm diệt virus** phàn nàn? SMTV còn mới và chưa có chữ ký, nên một số phần mềm diệt virus dè chừng với nó. Mã nguồn
-  của SMTV là công khai, và mã kiểm tra của từng file có trên [trang phát hành](https://github.com/streammomenttv/smtv/releases/latest)
+  của SMTV là công khai, và mã kiểm tra của từng file có trên [trang phát hành](https://github.com/yuriti/clipit/releases/latest)
   (`SHA256SUMS.txt`).
 
 Tiếp theo: [clip đầu tiên của bạn](first-clip.md).

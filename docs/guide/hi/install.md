@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../install.md) · [English](../en/install.md) · [Қазақша](../kk/install.md) · [Oʻzbekcha](../uz/install.md) · [Azərbaycanca](../az/install.md) · [Кыргызча](../ky/install.md) · [简体中文](../zh-CN/install.md) · [日本語](../ja/install.md) · [한국어](../ko/install.md) · [Tiếng Việt](../vi/install.md) · [Bahasa Indonesia](../id/install.md) · **हिन्दी** · [বাংলা](../bn/install.md) · [Español](../es/install.md) · [Português](../pt-BR/install.md) · [Deutsch](../de/install.md)
 
-> 🌐 यह पेज अपने-आप अनुवाद किया गया है। इसे बेहतर बनाने में मदद करें: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [मूल पाठ: Русский](../install.md).
+> 🌐 यह पेज अपने-आप अनुवाद किया गया है। इसे बेहतर बनाने में मदद करें: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [मूल पाठ: Русский](../install.md).
 
 # SMTV इंस्टॉल करें
 
@@ -10,10 +10,10 @@
 
 | आपका कंप्यूटर | डाउनलोड | साइज़ |
 |---|---|---|
-| **Windows 10 या 11** (64-बिट) | [Windows के लिए SMTV](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe) | करीब 130 MB |
-| **Mac** — Apple silicon (M1 और नए) या Intel, macOS 13+ | [Mac के लिए SMTV](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | करीब 270 MB |
+| **Windows 10 या 11** (64-बिट) | [Windows के लिए SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | करीब 130 MB |
+| **Mac** — Apple silicon (M1 और नए) या Intel, macOS 13+ | [Mac के लिए SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | करीब 270 MB |
 
-सभी वर्ज़न और उनके चेकसम: [रिलीज़ पेज](https://github.com/streammomenttv/smtv/releases/latest)।
+सभी वर्ज़न और उनके चेकसम: [रिलीज़ पेज](https://github.com/yuriti/clipit/releases/latest)।
 
 **पहली बार सिस्टम चेतावनी क्यों देता है।** SMTV के पास अभी डिजिटल साइन नहीं है। Windows का साइन थोड़ा बाद में आएगा,
 macOS का जितनी जल्दी हो सके, और फिर यह चेतावनी चली जाएगी। SMTV का कोड खुला है: कोई भी पढ़ सकता है कि वह क्या करता है।
@@ -28,7 +28,7 @@ macOS का जितनी जल्दी हो सके, और फिर 
 
 इंस्टॉलर SMTV को आपके अपने यूज़र फ़ोल्डर में रखता है; वह **Settings → Apps** में दिखता है, जहाँ से आप उसे हटा सकते हैं।
 
-**बिना इंस्टॉल किए:** [ZIP फ़ाइल](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip)
+**बिना इंस्टॉल किए:** [ZIP फ़ाइल](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)
 डाउनलोड करें, उसे कहीं भी अनज़िप करें (जैसे Documents में) और `SMTV` फ़ोल्डर में **Start SMTV** खोलें। यह कॉपी खुद
 अपडेट नहीं होती: नया वर्ज़न मतलब नई ZIP।
 
@@ -72,7 +72,7 @@ SMTV आपका कंप्यूटर जाँचता है और प�
 (राइट क्लिक या Ctrl+V) और **Enter** दबाएँ:
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 Smart App Control चालू होने पर इंस्टॉलर SMTV को python.org के साइन किए हुए Python पर इंस्टॉल करता है (वह इसे इंस्टॉल
@@ -83,7 +83,7 @@ Smart App Control चालू होने पर इंस्टॉलर SMTV
 दबाएँ:
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 तब तक इंतज़ार करें जब तक वह न कहे कि काम हो गया (2–10 मिनट)। SMTV अपने-आप खुल जाता है; **SMTV** आइकन Windows पर Start
@@ -103,7 +103,7 @@ curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/in
   Privacy & Security** खोलें, नीचे स्क्रॉल करें और SMTV के पास **Open Anyway** दबाएँ।
 - **Mac: «SMTV would like to accept incoming connections»** — अगर आप फ़ोन पर SMTV इस्तेमाल करना चाहते हैं, तो इजाज़त दें।
 - **एंटीवायरस** शिकायत करता है? SMTV नया है और अभी साइन नहीं हुआ, इसलिए कुछ एंटीवायरस उससे सावधान रहते हैं। उसका कोड
-  खुला है, और हर फ़ाइल के चेकसम [रिलीज़ पेज](https://github.com/streammomenttv/smtv/releases/latest) पर हैं
+  खुला है, और हर फ़ाइल के चेकसम [रिलीज़ पेज](https://github.com/yuriti/clipit/releases/latest) पर हैं
   (`SHA256SUMS.txt`)।
 
 आगे: [आपकी पहली क्लिप](first-clip.md)।

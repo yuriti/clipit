@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../README.md) · [English](../en/README.md) · [Қазақша](../kk/README.md) · [Oʻzbekcha](../uz/README.md) · [Azərbaycanca](../az/README.md) · [Кыргызча](../ky/README.md) · [简体中文](../zh-CN/README.md) · [日本語](../ja/README.md) · **한국어** · [Tiếng Việt](../vi/README.md) · [Bahasa Indonesia](../id/README.md) · [हिन्दी](../hi/README.md) · [বাংলা](../bn/README.md) · [Español](../es/README.md) · [Português](../pt-BR/README.md) · [Deutsch](../de/README.md)
 
-> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/streammomenttv/smtv/pulls) · [원문: Русский](../README.md).
+> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/yuriti/clipit/pulls) · [원문: Русский](../README.md).
 
 # SMTV 가이드
 

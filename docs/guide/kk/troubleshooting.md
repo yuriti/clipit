@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../troubleshooting.md) · [English](../en/troubleshooting.md) · **Қазақша** · [Oʻzbekcha](../uz/troubleshooting.md) · [Azərbaycanca](../az/troubleshooting.md) · [Кыргызча](../ky/troubleshooting.md) · [简体中文](../zh-CN/troubleshooting.md) · [日本語](../ja/troubleshooting.md) · [한국어](../ko/troubleshooting.md) · [Tiếng Việt](../vi/troubleshooting.md) · [Bahasa Indonesia](../id/troubleshooting.md) · [हिन्दी](../hi/troubleshooting.md) · [বাংলা](../bn/troubleshooting.md) · [Español](../es/troubleshooting.md) · [Português](../pt-BR/troubleshooting.md) · [Deutsch](../de/troubleshooting.md)
 
-> 🌐 Бұл бет автоматты түрде аударылған. Оны жақсартуға көмектесіңіз: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Түпнұсқа: Русский](../troubleshooting.md).
+> 🌐 Бұл бет автоматты түрде аударылған. Оны жақсартуға көмектесіңіз: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Түпнұсқа: Русский](../troubleshooting.md).
 
 # Бірдеңе дұрыс болмады
 
@@ -54,4 +54,4 @@
    толтырылған жаңа issue ашылады. Мұрағатты соған сүйреп апарып, **Submit** басыңыз.
 
 SMTV өзінен-өзі ештеңе жібермейді. Терезесіз: терминалда `smtv report` орындаңыз. Сондай-ақ тікелей
-[issue ашуға](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) болады.
+[issue ашуға](https://github.com/yuriti/clipit/issues/new?template=bug.yml) болады.

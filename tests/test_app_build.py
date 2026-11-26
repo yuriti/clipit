@@ -237,7 +237,7 @@ def test_the_release_puts_every_app_in_the_signed_manifest_with_its_processor(tm
     changelog.write_text("# Changelog\n\n## 0.2.0\n\n- Apps\n", encoding="utf-8")
     monkeypatch.setenv("SMTV_UPDATE_SIGNING_KEY", base64.b64encode(secret).decode())
     args = [str(dist), "--apps", "--version", "0.2.0", "--changelog", str(changelog), "--public-key", public,
-            "--base-url", "https://github.com/streammomenttv/smtv/releases/download/v0.2.0"]
+            "--base-url", "https://github.com/yuriti/clipit/releases/download/v0.2.0"]
     with pytest.raises(SystemExit, match="missing"):           # --apps: no release with an app missing
         release_manifest.main(args)
     for _, _, pattern in release_manifest.APPS:

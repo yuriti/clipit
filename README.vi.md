@@ -10,11 +10,11 @@
 <!-- languages -->
 [Русский](README.md) · [English](README.en.md) · [Қазақша](README.kk.md) · [Oʻzbekcha](README.uz.md) · [Azərbaycanca](README.az.md) · [Кыргызча](README.ky.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · **Tiếng Việt** · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [বাংলা](README.bn.md) · [Español](README.es.md) · [Português](README.pt-BR.md) · [Deutsch](README.de.md)
 
-> 🌐 Trang này được dịch tự động. Hãy giúp cải thiện bản dịch: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Bản gốc: Русский](README.md).
+> 🌐 Trang này được dịch tự động. Hãy giúp cải thiện bản dịch: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Bản gốc: Русский](README.md).
 
-[![Bản phát hành mới nhất](https://img.shields.io/github/v/release/streammomenttv/smtv?label=release)](https://github.com/streammomenttv/smtv/releases/latest)
+[![Bản phát hành mới nhất](https://img.shields.io/github/v/release/yuriti/clipit?label=release)](https://github.com/yuriti/clipit/releases/latest)
 [![Lượt tải](https://img.shields.io/pepy/dt/smtv?label=downloads)](https://pepy.tech/projects/smtv)
-[![Sao](https://img.shields.io/github/stars/streammomenttv/smtv?style=flat)](https://github.com/streammomenttv/smtv/stargazers)
+[![Sao](https://img.shields.io/github/stars/yuriti/clipit?style=flat)](https://github.com/yuriti/clipit/stargazers)
 [![Giấy phép: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Python](https://img.shields.io/pypi/pyversions/smtv)](https://pypi.org/project/smtv/)
 [![Dịch trên Weblate](https://hosted.weblate.org/widget/smtv/svg-badge.svg)](https://hosted.weblate.org/engage/smtv/)
@@ -95,11 +95,11 @@ chọn một cách — một cách là đủ, và bạn có thể đổi bất c
 
 | Máy tính của bạn | Tải về | Dung lượng |
 |---|---|---|
-| **Windows 10 hoặc 11** (64-bit) | [**SMTV cho Windows**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe) (trình cài đặt) | khoảng 130 MB |
-| **Mac** — chip Apple (M1 trở về sau) hoặc Intel, macOS 13+ | [**SMTV cho Mac**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | khoảng 270 MB |
+| **Windows 10 hoặc 11** (64-bit) | [**SMTV cho Windows**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) (trình cài đặt) | khoảng 130 MB |
+| **Mac** — chip Apple (M1 trở về sau) hoặc Intel, macOS 13+ | [**SMTV cho Mac**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | khoảng 270 MB |
 
 Một file cho mọi máy Mac: SMTV tự chạy phiên bản được làm cho bộ xử lý của máy Mac của bạn. Dùng Windows mà không cần cài gì:
-[file ZIP](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip) — giải nén và mở
+[file ZIP](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — giải nén và mở
 **Start SMTV**.
 
 Mọi thứ SMTV cần đều có sẵn bên trong: chương trình, Python và ffmpeg có hỗ trợ phụ đề. Phần nhận dạng giọng nói được tải về
@@ -125,13 +125,13 @@ Vẫn là SMTV đó, được cài bằng [uv](https://astral.sh/uv) vào thư m
 **Windows** — bấm Start, gõ **PowerShell**, mở nó lên và dán:
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 **Mac hoặc Linux** — mở **Terminal** và dán:
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 Bấm Enter và chờ vài phút. Không cần mật khẩu quản trị viên. Biểu tượng **SMTV** sẽ xuất hiện — trên desktop và trong
@@ -167,7 +167,7 @@ Dành cho những ai mới làm quen với tất cả những thứ này — t�
 
 Những công cụ cắt clip mã nguồn mở được dùng nhiều nhất, theo chính mã nguồn và tài liệu của từng dự án, **tính đến
 tháng 11 năm 2026**. Đó đều là những dự án tốt, mỗi dự án làm cho một việc riêng; bảng này chỉ
-cho thấy SMTV khác ở đâu. Có gì thay đổi? [Hãy báo cho chúng tôi](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml)
+cho thấy SMTV khác ở đâu. Có gì thay đổi? [Hãy báo cho chúng tôi](https://github.com/yuriti/clipit/issues/new?template=bug.yml)
 và chúng tôi sẽ sửa bảng.
 
 | | **SMTV** | [openshorts](https://github.com/mutonby/openshorts) | [SupoClip](https://github.com/FujiwaraChoki/supoclip) | [PeakCut](https://github.com/haziqahmedqasmi/PeakCut) | [FunClip](https://github.com/modelscope/FunClip) |
@@ -265,7 +265,7 @@ vài dòng. Các bản dịch của trang này được làm tự động; nếu
 SMTV được làm bởi đội ngũ [StreamMoment](https://streammoment.tv). Tài khoản StreamMoment là cách đơn giản nhất để cho
 SMTV một AI và để dán link tới bản ghi; không có nó SMTV vẫn chạy.
 
-- [Báo cáo sự cố](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) · [Đề xuất ý tưởng](https://github.com/streammomenttv/smtv/issues/new?template=feature.yml)
+- [Báo cáo sự cố](https://github.com/yuriti/clipit/issues/new?template=bug.yml) · [Đề xuất ý tưởng](https://github.com/yuriti/clipit/issues/new?template=feature.yml)
 - [Dành cho người dùng nâng cao](docs/advanced.md): Docker, mọi dịch vụ AI, model nhận dạng giọng nói, key, lệnh
 - [Thay đổi](CHANGELOG.md) · [Đóng góp](CONTRIBUTING.md) · [Bảo mật](SECURITY.md)
 - Thích SMTV? [Ủng hộ trên Boosty](https://boosty.to/smtv) và tặng repository một ⭐ — điều đó giúp người khác tìm thấy nó.

@@ -10,11 +10,11 @@
 <!-- languages -->
 [Русский](README.md) · [English](README.en.md) · [Қазақша](README.kk.md) · [Oʻzbekcha](README.uz.md) · [Azərbaycanca](README.az.md) · [Кыргызча](README.ky.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · **한국어** · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [বাংলা](README.bn.md) · [Español](README.es.md) · [Português](README.pt-BR.md) · [Deutsch](README.de.md)
 
-> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/streammomenttv/smtv/pulls) · [원문: Русский](README.md).
+> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/yuriti/clipit/pulls) · [원문: Русский](README.md).
 
-[![최신 릴리스](https://img.shields.io/github/v/release/streammomenttv/smtv?label=release)](https://github.com/streammomenttv/smtv/releases/latest)
+[![최신 릴리스](https://img.shields.io/github/v/release/yuriti/clipit?label=release)](https://github.com/yuriti/clipit/releases/latest)
 [![다운로드 수](https://img.shields.io/pepy/dt/smtv?label=downloads)](https://pepy.tech/projects/smtv)
-[![스타](https://img.shields.io/github/stars/streammomenttv/smtv?style=flat)](https://github.com/streammomenttv/smtv/stargazers)
+[![스타](https://img.shields.io/github/stars/yuriti/clipit?style=flat)](https://github.com/yuriti/clipit/stargazers)
 [![라이선스: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Python](https://img.shields.io/pypi/pyversions/smtv)](https://pypi.org/project/smtv/)
 [![Weblate에서 번역하기](https://hosted.weblate.org/widget/smtv/svg-badge.svg)](https://hosted.weblate.org/engage/smtv/)
@@ -94,11 +94,11 @@ SMTV는 내 컴퓨터에서 음성을 직접 텍스트로 바꿉니다. 가장 �
 
 | 내 컴퓨터 | 다운로드 | 크기 |
 |---|---|---|
-| **Windows 10 또는 11**(64비트) | [**Windows용 SMTV**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe)(설치 프로그램) | 약 130 MB |
-| **Mac** — Apple 실리콘(M1 이상) 또는 Intel, macOS 13+ | [**Mac용 SMTV**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | 약 270 MB |
+| **Windows 10 또는 11**(64비트) | [**Windows용 SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe)(설치 프로그램) | 약 130 MB |
+| **Mac** — Apple 실리콘(M1 이상) 또는 Intel, macOS 13+ | [**Mac용 SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | 약 270 MB |
 
 모든 Mac에 파일 하나: SMTV가 Mac 프로세서에 맞게 만든 버전을 알아서 실행합니다. Windows에서 아무것도 설치하고 싶지 않다면:
-[ZIP 파일](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip) — 압축을 풀고
+[ZIP 파일](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — 압축을 풀고
 **Start SMTV**를 여세요.
 
 SMTV에 필요한 모든 것이 들어 있습니다: 프로그램, Python, 자막을 넣을 수 있는 ffmpeg. 음성 인식은 처음 실행할 때 내 언어용만
@@ -123,13 +123,13 @@ SMTV에 필요한 모든 것이 들어 있습니다: 프로그램, Python, 자�
 **Windows** — 시작을 누르고 **PowerShell**을 입력해 연 다음 붙여 넣으세요:
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 **Mac 또는 Linux** — **터미널**(Terminal)을 열고 붙여 넣으세요:
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 Enter를 누르고 몇 분 기다리세요. 관리자 비밀번호는 필요 없습니다. **SMTV** 아이콘이 나타납니다 — Windows에서는 바탕 화면과
@@ -165,7 +165,7 @@ Enter를 누르고 몇 분 기다리세요. 관리자 비밀번호는 필요 없
 
 사람들이 가장 많이 쓰는 오픈 소스 클리퍼를 각 프로젝트의 코드와 문서를 바탕으로 비교했습니다(**2026년 11월 기준**).
 모두 좋은 프로젝트이고 저마다의 목적이 있습니다. 이 표는 SMTV가 어디서 다른지만 보여 줍니다. 바뀐 점이 있나요?
-[알려 주세요](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml). 표를 고치겠습니다.
+[알려 주세요](https://github.com/yuriti/clipit/issues/new?template=bug.yml). 표를 고치겠습니다.
 
 | | **SMTV** | [openshorts](https://github.com/mutonby/openshorts) | [SupoClip](https://github.com/FujiwaraChoki/supoclip) | [PeakCut](https://github.com/haziqahmedqasmi/PeakCut) | [FunClip](https://github.com/modelscope/FunClip) |
 |---|---|---|---|---|---|
@@ -257,7 +257,7 @@ SMTV 창은 내 컴퓨터의 언어로 표시됩니다. 번역은 [Weblate](http
 SMTV는 [StreamMoment](https://streammoment.tv) 팀이 만듭니다. StreamMoment 계정은 SMTV에 AI를 연결하고
 녹화본 링크를 붙여 넣는 가장 간단한 방법입니다. 계정이 없어도 SMTV는 작동합니다.
 
-- [문제 신고](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) · [아이디어 제안](https://github.com/streammomenttv/smtv/issues/new?template=feature.yml)
+- [문제 신고](https://github.com/yuriti/clipit/issues/new?template=bug.yml) · [아이디어 제안](https://github.com/yuriti/clipit/issues/new?template=feature.yml)
 - [고급 사용자용](docs/advanced.md): Docker, 모든 AI 서비스, 음성 모델, 키, 명령어
 - [변경 사항](CHANGELOG.md) · [기여하기](CONTRIBUTING.md) · [보안](SECURITY.md)
 - SMTV가 마음에 드나요? [Boosty에서 후원](https://boosty.to/smtv)하고 저장소에 ⭐를 눌러 주세요 — 다른 사람들이 찾는 데 도움이 됩니다.

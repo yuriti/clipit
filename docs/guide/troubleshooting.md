@@ -51,4 +51,4 @@
    заполненной сводкой. Перетащите в него архив и нажмите **Submit**.
 
 Сам SMTV ничего не отправляет. Без окна: выполните `smtv report` в терминале. Можно и сразу
-[открыть обращение](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml).
+[открыть обращение](https://github.com/yuriti/clipit/issues/new?template=bug.yml).

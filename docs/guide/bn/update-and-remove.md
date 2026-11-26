@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../update-and-remove.md) · [English](../en/update-and-remove.md) · [Қазақша](../kk/update-and-remove.md) · [Oʻzbekcha](../uz/update-and-remove.md) · [Azərbaycanca](../az/update-and-remove.md) · [Кыргызча](../ky/update-and-remove.md) · [简体中文](../zh-CN/update-and-remove.md) · [日本語](../ja/update-and-remove.md) · [한국어](../ko/update-and-remove.md) · [Tiếng Việt](../vi/update-and-remove.md) · [Bahasa Indonesia](../id/update-and-remove.md) · [हिन्दी](../hi/update-and-remove.md) · **বাংলা** · [Español](../es/update-and-remove.md) · [Português](../pt-BR/update-and-remove.md) · [Deutsch](../de/update-and-remove.md)
 
-> 🌐 এই পাতাটি স্বয়ংক্রিয়ভাবে অনুবাদ করা হয়েছে। এটিকে আরও ভালো করতে সাহায্য করুন: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [মূল লেখা: Русский](../update-and-remove.md).
+> 🌐 এই পাতাটি স্বয়ংক্রিয়ভাবে অনুবাদ করা হয়েছে। এটিকে আরও ভালো করতে সাহায্য করুন: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [মূল লেখা: Русский](../update-and-remove.md).
 
 # আপডেট আর মুছে ফেলা
 
@@ -20,7 +20,7 @@ SMTV দিনে একবার নতুন ভার্সন খোঁজ�
 
 Windows বা Mac-এর জন্য SMTV ডাউনলোড করেছিলেন? **Update** (আপডেট) নতুন ইনস্টলার ডাউনলোড করে, যাচাই করে আর খোলে:
 সেখানে ইনস্টল শেষ করুন (Mac-এ নতুন SMTV টেনে Applications-এ ছেড়ে দিন আর **Replace** চাপুন)। ZIP থেকে নেওয়া Windows
-কপি নিজে আপডেট হয় না: [রিলিজ পেজ](https://github.com/streammomenttv/smtv/releases/latest) থেকে নতুন ZIP ডাউনলোড করুন।
+কপি নিজে আপডেট হয় না: [রিলিজ পেজ](https://github.com/yuriti/clipit/releases/latest) থেকে নতুন ZIP ডাউনলোড করুন।
 
 SMTV অন্যভাবে ইনস্টল করেছিলেন? Docker-এ নতুন ভার্সন মানে নতুন ইমেজ; দেখুন [অভিজ্ঞ ব্যবহারকারীদের জন্য](../../advanced.md#docker)।
 

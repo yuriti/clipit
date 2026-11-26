@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../troubleshooting.md) · [English](../en/troubleshooting.md) · [Қазақша](../kk/troubleshooting.md) · [Oʻzbekcha](../uz/troubleshooting.md) · [Azərbaycanca](../az/troubleshooting.md) · [Кыргызча](../ky/troubleshooting.md) · [简体中文](../zh-CN/troubleshooting.md) · [日本語](../ja/troubleshooting.md) · [한국어](../ko/troubleshooting.md) · [Tiếng Việt](../vi/troubleshooting.md) · [Bahasa Indonesia](../id/troubleshooting.md) · [हिन्दी](../hi/troubleshooting.md) · [বাংলা](../bn/troubleshooting.md) · **Español** · [Português](../pt-BR/troubleshooting.md) · [Deutsch](../de/troubleshooting.md)
 
-> 🌐 Esta página se tradujo automáticamente. Ayuda a mejorarla: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Original: Русский](../troubleshooting.md).
+> 🌐 Esta página se tradujo automáticamente. Ayuda a mejorarla: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Original: Русский](../troubleshooting.md).
 
 # Algo salió mal
 
@@ -53,4 +53,4 @@ rehace lo que ya está hecho.
    en el navegador con el resumen ya escrito. Arrastra el archivo comprimido ahí y presiona **Submit**.
 
 SMTV no envía nada por sí solo. Sin la ventana: ejecuta `smtv report` en una terminal. También puedes
-[abrir un issue](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) directamente.
+[abrir un issue](https://github.com/yuriti/clipit/issues/new?template=bug.yml) directamente.

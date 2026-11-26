@@ -1,6 +1,6 @@
 # smtv
 
-One command for [StreamMoment](https://github.com/streammomenttv) tools: open-source clippers for long Twitch and YouTube streams that run on your own computer. Pick the tools you need; they plug into `smtv` on their own.
+One command for [StreamMoment](https://github.com/yuriti/clipit) tools: open-source clippers for long Twitch and YouTube streams that run on your own computer. Pick the tools you need; they plug into `smtv` on their own.
 
 ```bash
 uv tool install "smtv[vodcut]"

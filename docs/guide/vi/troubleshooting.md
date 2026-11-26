@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../troubleshooting.md) · [English](../en/troubleshooting.md) · [Қазақша](../kk/troubleshooting.md) · [Oʻzbekcha](../uz/troubleshooting.md) · [Azərbaycanca](../az/troubleshooting.md) · [Кыргызча](../ky/troubleshooting.md) · [简体中文](../zh-CN/troubleshooting.md) · [日本語](../ja/troubleshooting.md) · [한국어](../ko/troubleshooting.md) · **Tiếng Việt** · [Bahasa Indonesia](../id/troubleshooting.md) · [हिन्दी](../hi/troubleshooting.md) · [বাংলা](../bn/troubleshooting.md) · [Español](../es/troubleshooting.md) · [Português](../pt-BR/troubleshooting.md) · [Deutsch](../de/troubleshooting.md)
 
-> 🌐 Trang này được dịch tự động. Hãy giúp cải thiện bản dịch: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Bản gốc: Русский](../troubleshooting.md).
+> 🌐 Trang này được dịch tự động. Hãy giúp cải thiện bản dịch: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Bản gốc: Русский](../troubleshooting.md).
 
 # Có lỗi xảy ra
 
@@ -51,4 +51,4 @@ Vẫn chưa được? Hãy báo cho chúng tôi — điều đó giúp ích cho 
    tóm tắt đã được điền sẵn. Kéo file nén vào đó và bấm **Submit**.
 
 SMTV không tự gửi gì cả. Không có cửa sổ: chạy `smtv report` trong terminal. Bạn cũng có thể
-[mở issue](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) trực tiếp.
+[mở issue](https://github.com/yuriti/clipit/issues/new?template=bug.yml) trực tiếp.

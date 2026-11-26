@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../account.md) · [English](../en/account.md) · [Қазақша](../kk/account.md) · [Oʻzbekcha](../uz/account.md) · [Azərbaycanca](../az/account.md) · [Кыргызча](../ky/account.md) · [简体中文](../zh-CN/account.md) · **日本語** · [한국어](../ko/account.md) · [Tiếng Việt](../vi/account.md) · [Bahasa Indonesia](../id/account.md) · [हिन्दी](../hi/account.md) · [বাংলা](../bn/account.md) · [Español](../es/account.md) · [Português](../pt-BR/account.md) · [Deutsch](../de/account.md)
 
-> 🌐 このページは自動翻訳されています。改善にご協力ください：[Weblate](https://hosted.weblate.org/engage/smtv/) · [プルリクエスト](https://github.com/streammomenttv/smtv/pulls) · [原文: Русский](../account.md)。
+> 🌐 このページは自動翻訳されています。改善にご協力ください：[Weblate](https://hosted.weblate.org/engage/smtv/) · [プルリクエスト](https://github.com/yuriti/clipit/pulls) · [原文: Русский](../account.md)。
 
 # StreamMoment アカウント
 

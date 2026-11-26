@@ -19,7 +19,7 @@ local = ["yt-dlp>=2025.1"]
 vodcut = "vodcut.tool:tool"
 
 [project.urls]
-Homepage = "https://github.com/streammomenttv"
+Homepage = "https://github.com/yuriti/clipit"
 
 [build-system]
 requires = ["hatchling"]

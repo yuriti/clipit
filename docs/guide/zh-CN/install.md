@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../install.md) · [English](../en/install.md) · [Қазақша](../kk/install.md) · [Oʻzbekcha](../uz/install.md) · [Azərbaycanca](../az/install.md) · [Кыргызча](../ky/install.md) · **简体中文** · [日本語](../ja/install.md) · [한국어](../ko/install.md) · [Tiếng Việt](../vi/install.md) · [Bahasa Indonesia](../id/install.md) · [हिन्दी](../hi/install.md) · [বাংলা](../bn/install.md) · [Español](../es/install.md) · [Português](../pt-BR/install.md) · [Deutsch](../de/install.md)
 
-> 🌐 本页面由机器自动翻译。欢迎帮助改进：[Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [原文: Русский](../install.md)。
+> 🌐 本页面由机器自动翻译。欢迎帮助改进：[Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [原文: Русский](../install.md)。
 
 # 安装 SMTV
 
@@ -9,10 +9,10 @@
 
 | 你的电脑 | 下载 | 大小 |
 |---|---|---|
-| **Windows 10 或 11**（64 位） | [Windows 版 SMTV](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe) | 约 130 MB |
-| **Mac** — Apple 芯片（M1 及更新）或 Intel，macOS 13+ | [Mac 版 SMTV](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | 约 270 MB |
+| **Windows 10 或 11**（64 位） | [Windows 版 SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | 约 130 MB |
+| **Mac** — Apple 芯片（M1 及更新）或 Intel，macOS 13+ | [Mac 版 SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | 约 270 MB |
 
-所有版本及其校验和：[发布页面](https://github.com/streammomenttv/smtv/releases/latest)。
+所有版本及其校验和：[发布页面](https://github.com/yuriti/clipit/releases/latest)。
 
 **为什么第一次打开时系统会发出警告。** SMTV 还没有数字签名。Windows 的签名稍晚一些就会有，macOS 的签名会尽快有，
 之后这个警告就会消失。SMTV 的代码是公开的：任何人都可以读一读它在做什么。
@@ -27,7 +27,7 @@
 
 安装程序会把 SMTV 装在你自己的用户文件夹里；它会出现在 **设置 → 应用**（Settings → Apps）里，可以在那里卸载。
 
-**不安装也能用：** 下载 [ZIP 压缩包](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip)，
+**不安装也能用：** 下载 [ZIP 压缩包](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)，
 解压到任意位置（比如“文档”文件夹），打开 `SMTV` 文件夹里的 **Start SMTV**。这个版本不会自己更新：新版本就是新的 ZIP。
 
 ### Windows 11：智能应用控制
@@ -66,7 +66,7 @@ SMTV 会检查你的电脑，并显示做出第一个切片的三个步骤。在
 然后按 **Enter**：
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 开着智能应用控制时，安装程序会把 SMTV 装在来自 python.org 的已签名 Python 上（可能会要求安装 Python——同意即可），
@@ -75,7 +75,7 @@ powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/str
 **Mac 或 Linux：** 打开 **Terminal**（终端；在 Mac 上：按 Cmd+Space，输入 `Terminal`，按 Enter），粘贴这行，然后按 **Enter**：
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 等到它显示完成（2–10 分钟）。SMTV 会自己打开；**SMTV** 图标在 Windows 的“开始”菜单里，Mac 的“应用程序”里，
@@ -96,6 +96,6 @@ Linux 的应用程序菜单里。用这种方式安装时，SMTV 第一次会提
   隐私与安全性**（System Settings → Privacy & Security），向下滚动，点 SMTV 旁边的 **仍要打开**（Open Anyway）。
 - **Mac：«SMTV would like to accept incoming connections»**（“SMTV”想要接受传入的网络连接）——如果你想在手机上用 SMTV，就允许它。
 - **杀毒软件** 报警？SMTV 是新程序，还没有签名，所以有些杀毒软件会对它比较谨慎。它的代码是公开的，每个文件的校验和都在
-  [发布页面](https://github.com/streammomenttv/smtv/releases/latest)上（`SHA256SUMS.txt`）。
+  [发布页面](https://github.com/yuriti/clipit/releases/latest)上（`SHA256SUMS.txt`）。
 
 下一步：[你的第一个切片](first-clip.md)。

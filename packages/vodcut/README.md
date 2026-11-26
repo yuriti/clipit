@@ -1,6 +1,6 @@
 # VodCut
 
-Open-source VOD clipper for long streams, by [StreamMoment](https://github.com/streammomenttv): a 6–12 hour Twitch or YouTube recording in, 6–30 vertical clips with captions and the streamer's webcam out, plus a 20–30 minute recap. Runs on your own computer; no strong graphics card needed.
+Open-source VOD clipper for long streams, by [StreamMoment](https://github.com/yuriti/clipit): a 6–12 hour Twitch or YouTube recording in, 6–30 vertical clips with captions and the streamer's webcam out, plus a 20–30 minute recap. Runs on your own computer; no strong graphics card needed.
 
 ```bash
 uv tool install "smtv[vodcut]"

@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../phone.md) · [English](../en/phone.md) · [Қазақша](../kk/phone.md) · [Oʻzbekcha](../uz/phone.md) · [Azərbaycanca](../az/phone.md) · [Кыргызча](../ky/phone.md) · [简体中文](../zh-CN/phone.md) · [日本語](../ja/phone.md) · [한국어](../ko/phone.md) · [Tiếng Việt](../vi/phone.md) · **Bahasa Indonesia** · [हिन्दी](../hi/phone.md) · [বাংলা](../bn/phone.md) · [Español](../es/phone.md) · [Português](../pt-BR/phone.md) · [Deutsch](../de/phone.md)
 
-> 🌐 Halaman ini diterjemahkan secara otomatis. Bantu kami memperbaikinya: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Versi asli: Русский](../phone.md).
+> 🌐 Halaman ini diterjemahkan secara otomatis. Bantu kami memperbaikinya: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Versi asli: Русский](../phone.md).
 
 # SMTV di ponselmu
 

@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../account.md) · [English](../en/account.md) · [Қазақша](../kk/account.md) · [Oʻzbekcha](../uz/account.md) · [Azərbaycanca](../az/account.md) · **Кыргызча** · [简体中文](../zh-CN/account.md) · [日本語](../ja/account.md) · [한국어](../ko/account.md) · [Tiếng Việt](../vi/account.md) · [Bahasa Indonesia](../id/account.md) · [हिन्दी](../hi/account.md) · [বাংলা](../bn/account.md) · [Español](../es/account.md) · [Português](../pt-BR/account.md) · [Deutsch](../de/account.md)
 
-> 🌐 Бул барак автоматтык түрдө которулган. Аны жакшыртууга жардам бериңиз: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Түп нуска: Русский](../account.md).
+> 🌐 Бул барак автоматтык түрдө которулган. Аны жакшыртууга жардам бериңиз: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Түп нуска: Русский](../account.md).
 
 # StreamMoment аккаунту
 

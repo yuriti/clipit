@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../update-and-remove.md) · [English](../en/update-and-remove.md) · [Қазақша](../kk/update-and-remove.md) · [Oʻzbekcha](../uz/update-and-remove.md) · [Azərbaycanca](../az/update-and-remove.md) · [Кыргызча](../ky/update-and-remove.md) · [简体中文](../zh-CN/update-and-remove.md) · [日本語](../ja/update-and-remove.md) · [한국어](../ko/update-and-remove.md) · [Tiếng Việt](../vi/update-and-remove.md) · **Bahasa Indonesia** · [हिन्दी](../hi/update-and-remove.md) · [বাংলা](../bn/update-and-remove.md) · [Español](../es/update-and-remove.md) · [Português](../pt-BR/update-and-remove.md) · [Deutsch](../de/update-and-remove.md)
 
-> 🌐 Halaman ini diterjemahkan secara otomatis. Bantu kami memperbaikinya: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Versi asli: Русский](../update-and-remove.md).
+> 🌐 Halaman ini diterjemahkan secara otomatis. Bantu kami memperbaikinya: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Versi asli: Русский](../update-and-remove.md).
 
 # Perbarui dan hapus
 
@@ -21,7 +21,7 @@ Semua tentang pembaruan ada di **Settings → Computer check → Updates** (Peng
 Mengunduh SMTV untuk Windows atau Mac? **Update** (Perbarui) mengunduh penginstal baru, memeriksanya, dan
 membukanya: selesaikan instalasinya di sana (di Mac, seret SMTV yang baru ke Applications dan tekan **Ganti**
 (Replace)). Salinan Windows dari ZIP tidak memperbarui dirinya sendiri: unduh ZIP baru dari
-[halaman rilis](https://github.com/streammomenttv/smtv/releases/latest).
+[halaman rilis](https://github.com/yuriti/clipit/releases/latest).
 
 Menginstal SMTV dengan cara lain? Di Docker, versi baru berarti image baru; lihat [untuk pengguna mahir](../../advanced.md#docker).
 

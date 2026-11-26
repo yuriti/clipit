@@ -11,12 +11,12 @@
 Так нужно только в первый раз: дальше SMTV открывается обычным щелчком.
 
 Почему macOS предупреждает: у SMTV пока нет подписи Apple. Подпись появится при первой возможности,
-тогда это предупреждение пропадёт. Код SMTV открыт: https://github.com/streammomenttv/smtv
+тогда это предупреждение пропадёт. Код SMTV открыт: https://github.com/yuriti/clipit
 
 При первом запуске SMTV проверит компьютер и предложит скачать распознавание речи для вашего языка
 («Проверка компьютера» → «Исправить»). Это нужно один раз: от 0,9 до 2,5 ГБ.
 
-Помощь: https://github.com/streammomenttv/smtv/blob/main/docs/guide/install.md
+Помощь: https://github.com/yuriti/clipit/blob/main/docs/guide/install.md
 
 
 HOW TO OPEN SMTV
@@ -32,9 +32,9 @@ One SMTV for every Mac, with Apple silicon (M1 and newer) or Intel: it starts th
 Only the first time: after that SMTV opens with a normal click.
 
 Why macOS warns: SMTV has no Apple signature yet. It will get one as soon as possible, and then this
-warning goes away. SMTV's code is open: https://github.com/streammomenttv/smtv
+warning goes away. SMTV's code is open: https://github.com/yuriti/clipit
 
 On the first start SMTV checks this computer and offers to download speech recognition for your
 language («Check this computer» → «Fix»). Once, 0.9 to 2.5 GB.
 
-Help: https://github.com/streammomenttv/smtv/blob/main/docs/guide/en/install.md
+Help: https://github.com/yuriti/clipit/blob/main/docs/guide/en/install.md

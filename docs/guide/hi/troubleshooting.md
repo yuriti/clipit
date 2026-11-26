@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../troubleshooting.md) · [English](../en/troubleshooting.md) · [Қазақша](../kk/troubleshooting.md) · [Oʻzbekcha](../uz/troubleshooting.md) · [Azərbaycanca](../az/troubleshooting.md) · [Кыргызча](../ky/troubleshooting.md) · [简体中文](../zh-CN/troubleshooting.md) · [日本語](../ja/troubleshooting.md) · [한국어](../ko/troubleshooting.md) · [Tiếng Việt](../vi/troubleshooting.md) · [Bahasa Indonesia](../id/troubleshooting.md) · **हिन्दी** · [বাংলা](../bn/troubleshooting.md) · [Español](../es/troubleshooting.md) · [Português](../pt-BR/troubleshooting.md) · [Deutsch](../de/troubleshooting.md)
 
-> 🌐 यह पेज अपने-आप अनुवाद किया गया है। इसे बेहतर बनाने में मदद करें: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [मूल पाठ: Русский](../troubleshooting.md).
+> 🌐 यह पेज अपने-आप अनुवाद किया गया है। इसे बेहतर बनाने में मदद करें: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [मूल पाठ: Русский](../troubleshooting.md).
 
 # कुछ गड़बड़ हो गई
 
@@ -53,4 +53,4 @@
    नया issue खुलता है। आर्काइव उसमें खींचकर डालें और **Submit** दबाएँ।
 
 SMTV अपने-आप कुछ नहीं भेजता। विंडो के बिना: टर्मिनल में `smtv report` चलाएँ। आप सीधे
-[issue भी खोल सकते हैं](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml)।
+[issue भी खोल सकते हैं](https://github.com/yuriti/clipit/issues/new?template=bug.yml)।

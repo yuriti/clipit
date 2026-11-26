@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../troubleshooting.md) · [English](../en/troubleshooting.md) · [Қазақша](../kk/troubleshooting.md) · **Oʻzbekcha** · [Azərbaycanca](../az/troubleshooting.md) · [Кыргызча](../ky/troubleshooting.md) · [简体中文](../zh-CN/troubleshooting.md) · [日本語](../ja/troubleshooting.md) · [한국어](../ko/troubleshooting.md) · [Tiếng Việt](../vi/troubleshooting.md) · [Bahasa Indonesia](../id/troubleshooting.md) · [हिन्दी](../hi/troubleshooting.md) · [বাংলা](../bn/troubleshooting.md) · [Español](../es/troubleshooting.md) · [Português](../pt-BR/troubleshooting.md) · [Deutsch](../de/troubleshooting.md)
 
-> 🌐 Bu sahifa avtomatik tarjima qilingan. Uni yaxshilashga yordam bering: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Asl nusxa: Русский](../troubleshooting.md).
+> 🌐 Bu sahifa avtomatik tarjima qilingan. Uni yaxshilashga yordam bering: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Asl nusxa: Русский](../troubleshooting.md).
 
 # Nimadir notoʻgʻri ketdi
 
@@ -54,4 +54,4 @@ Baribir chiqmayaptimi? Bizga ayting — bu hammaga yordam beradi.
    mazmuni toʻldirilgan yangi issue ochiladi. Arxivni unga sudrab tashlang va **Submit** ni bosing.
 
 SMTV oʻzi hech narsa yubormaydi. Oynasiz: terminalda `smtv report` ni ishga tushiring. Shuningdek, toʻgʻridan-toʻgʻri
-[issue ochishingiz](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) mumkin.
+[issue ochishingiz](https://github.com/yuriti/clipit/issues/new?template=bug.yml) mumkin.

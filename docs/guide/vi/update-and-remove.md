@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../update-and-remove.md) · [English](../en/update-and-remove.md) · [Қазақша](../kk/update-and-remove.md) · [Oʻzbekcha](../uz/update-and-remove.md) · [Azərbaycanca](../az/update-and-remove.md) · [Кыргызча](../ky/update-and-remove.md) · [简体中文](../zh-CN/update-and-remove.md) · [日本語](../ja/update-and-remove.md) · [한국어](../ko/update-and-remove.md) · **Tiếng Việt** · [Bahasa Indonesia](../id/update-and-remove.md) · [हिन्दी](../hi/update-and-remove.md) · [বাংলা](../bn/update-and-remove.md) · [Español](../es/update-and-remove.md) · [Português](../pt-BR/update-and-remove.md) · [Deutsch](../de/update-and-remove.md)
 
-> 🌐 Trang này được dịch tự động. Hãy giúp cải thiện bản dịch: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Bản gốc: Русский](../update-and-remove.md).
+> 🌐 Trang này được dịch tự động. Hãy giúp cải thiện bản dịch: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Bản gốc: Русский](../update-and-remove.md).
 
 # Cập nhật và gỡ cài đặt
 
@@ -20,7 +20,7 @@ Mọi thứ về cập nhật nằm trong **Settings → Computer check → Upda
 
 Bạn tải SMTV cho Windows hoặc Mac? **Update** (Cập nhật) sẽ tải trình cài đặt mới, kiểm tra nó và mở nó: hãy cài nốt ở đó
 (trên Mac, kéo SMTV mới thả vào Applications và bấm **Thay thế** (Replace)). Bản Windows từ file ZIP không tự cập nhật: hãy tải
-file ZIP mới từ [trang phát hành](https://github.com/streammomenttv/smtv/releases/latest).
+file ZIP mới từ [trang phát hành](https://github.com/yuriti/clipit/releases/latest).
 
 Cài SMTV theo cách khác? Trong Docker, phiên bản mới là một image mới; xem [dành cho người dùng nâng cao](../../advanced.md#docker).
 

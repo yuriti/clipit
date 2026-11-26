@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../first-clip.md) · [English](../en/first-clip.md) · [Қазақша](../kk/first-clip.md) · [Oʻzbekcha](../uz/first-clip.md) · [Azərbaycanca](../az/first-clip.md) · [Кыргызча](../ky/first-clip.md) · [简体中文](../zh-CN/first-clip.md) · [日本語](../ja/first-clip.md) · [한국어](../ko/first-clip.md) · [Tiếng Việt](../vi/first-clip.md) · [Bahasa Indonesia](../id/first-clip.md) · [हिन्दी](../hi/first-clip.md) · [বাংলা](../bn/first-clip.md) · [Español](../es/first-clip.md) · [Português](../pt-BR/first-clip.md) · **Deutsch**
 
-> 🌐 Diese Seite wurde automatisch übersetzt. Hilf mit, sie zu verbessern: [Weblate](https://hosted.weblate.org/engage/smtv/) · [Pull Request](https://github.com/streammomenttv/smtv/pulls) · [Original: Русский](../first-clip.md).
+> 🌐 Diese Seite wurde automatisch übersetzt. Hilf mit, sie zu verbessern: [Weblate](https://hosted.weblate.org/engage/smtv/) · [Pull Request](https://github.com/yuriti/clipit/pulls) · [Original: Русский](../first-clip.md).
 
 # Dein erster Clip
 

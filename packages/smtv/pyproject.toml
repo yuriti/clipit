@@ -23,7 +23,7 @@ all = ["vodcut==0.1.0"]
 smtv = "smtv.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/streammomenttv"
+Homepage = "https://github.com/yuriti/clipit"
 
 [build-system]
 requires = ["hatchling"]

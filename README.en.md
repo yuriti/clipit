@@ -10,11 +10,11 @@
 <!-- languages -->
 [Русский](README.md) · **English** · [Қазақша](README.kk.md) · [Oʻzbekcha](README.uz.md) · [Azərbaycanca](README.az.md) · [Кыргызча](README.ky.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [বাংলা](README.bn.md) · [Español](README.es.md) · [Português](README.pt-BR.md) · [Deutsch](README.de.md)
 
-> 🌐 This page was translated automatically from the [Russian original](README.md). Help improve it: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls).
+> 🌐 This page was translated automatically from the [Russian original](README.md). Help improve it: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls).
 
-[![Latest release](https://img.shields.io/github/v/release/streammomenttv/smtv?label=release)](https://github.com/streammomenttv/smtv/releases/latest)
+[![Latest release](https://img.shields.io/github/v/release/yuriti/clipit?label=release)](https://github.com/yuriti/clipit/releases/latest)
 [![Downloads](https://img.shields.io/pepy/dt/smtv?label=downloads)](https://pepy.tech/projects/smtv)
-[![Stars](https://img.shields.io/github/stars/streammomenttv/smtv?style=flat)](https://github.com/streammomenttv/smtv/stargazers)
+[![Stars](https://img.shields.io/github/stars/yuriti/clipit?style=flat)](https://github.com/yuriti/clipit/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Python](https://img.shields.io/pypi/pyversions/smtv)](https://pypi.org/project/smtv/)
 [![Translate on Weblate](https://hosted.weblate.org/widget/smtv/svg-badge.svg)](https://hosted.weblate.org/engage/smtv/)
@@ -119,7 +119,7 @@ you have a powerful computer with a good graphics card, give it a try — someth
 
 **An AI on the internet.** Cloud AIs work much faster and make far better clips. I have tried several and recommend
 OpenAI: paste your own key into SMTV and pay the service directly, only for what you use. Cheaper: DeepSeek and
-similar services. Need another AI? [Write to us](https://github.com/streammomenttv/smtv/issues/new?template=feature.yml)
+similar services. Need another AI? [Write to us](https://github.com/yuriti/clipit/issues/new?template=feature.yml)
 — we will make SMTV work with it.
 
 ### Subscription — coming soon
@@ -134,12 +134,12 @@ The goal is not to make money but to give a simple way: pay, and everything work
 
 | Your computer | Download | Size |
 |---|---|---|
-| **Windows 10 or 11** (64-bit) | [**SMTV for Windows**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe) (installer) | about 130 MB |
-| **Mac** — Apple silicon (M1 and newer) or Intel, macOS 13+ | [**SMTV for Mac**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | about 270 MB |
+| **Windows 10 or 11** (64-bit) | [**SMTV for Windows**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) (installer) | about 130 MB |
+| **Mac** — Apple silicon (M1 and newer) or Intel, macOS 13+ | [**SMTV for Mac**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | about 270 MB |
 
 One file for every Mac: SMTV starts the version made for your Mac's processor by itself. Windows without installing
 anything:
-[the ZIP](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip) — unzip it and open
+[the ZIP](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — unzip it and open
 **Start SMTV**.
 
 Everything SMTV needs is inside: the program, Python and ffmpeg with captions. Speech recognition is downloaded on the
@@ -164,13 +164,13 @@ The same SMTV, installed with [uv](https://astral.sh/uv) into your user folder. 
 **Windows** — press Start, type **PowerShell**, open it and paste:
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 **Mac or Linux** — open **Terminal** and paste:
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 Press Enter and wait a few minutes. No administrator password is needed. An **SMTV** icon appears — on the desktop and
@@ -207,7 +207,7 @@ For people who are new to all this — every step, with pictures:
 
 The open-source clippers people use most, from each project's own code and documentation, **as of November 2026**.
 They are good projects, each made for its own job; this table only shows where SMTV is different. Something changed?
-[Tell us](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) and we will fix the table.
+[Tell us](https://github.com/yuriti/clipit/issues/new?template=bug.yml) and we will fix the table.
 
 | | **SMTV** | [openshorts](https://github.com/mutonby/openshorts) | [SupoClip](https://github.com/FujiwaraChoki/supoclip) | [PeakCut](https://github.com/haziqahmedqasmi/PeakCut) | [FunClip](https://github.com/modelscope/FunClip) |
 |---|---|---|---|---|---|
@@ -311,7 +311,7 @@ request. [How translations work](docs/translations.md).
 SMTV is made by the [StreamMoment](https://streammoment.tv) team. A StreamMoment account is coming soon: it will give
 SMTV an AI and fetch links to recordings without any setup. SMTV works fully without it.
 
-- [Report a problem](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) · [Suggest an idea](https://github.com/streammomenttv/smtv/issues/new?template=feature.yml)
+- [Report a problem](https://github.com/yuriti/clipit/issues/new?template=bug.yml) · [Suggest an idea](https://github.com/yuriti/clipit/issues/new?template=feature.yml)
 - [For advanced users](docs/advanced.md): Docker, every AI service, speech models, keys, commands
 - [Changes](CHANGELOG.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
 - Like SMTV? [Support it on Boosty](https://boosty.to/smtv) and give the repository a ⭐ — it helps others find it.

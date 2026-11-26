@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../phone.md) · [English](../en/phone.md) · [Қазақша](../kk/phone.md) · [Oʻzbekcha](../uz/phone.md) · [Azərbaycanca](../az/phone.md) · [Кыргызча](../ky/phone.md) · [简体中文](../zh-CN/phone.md) · **日本語** · [한국어](../ko/phone.md) · [Tiếng Việt](../vi/phone.md) · [Bahasa Indonesia](../id/phone.md) · [हिन्दी](../hi/phone.md) · [বাংলা](../bn/phone.md) · [Español](../es/phone.md) · [Português](../pt-BR/phone.md) · [Deutsch](../de/phone.md)
 
-> 🌐 このページは自動翻訳されています。改善にご協力ください：[Weblate](https://hosted.weblate.org/engage/smtv/) · [プルリクエスト](https://github.com/streammomenttv/smtv/pulls) · [原文: Русский](../phone.md)。
+> 🌐 このページは自動翻訳されています。改善にご協力ください：[Weblate](https://hosted.weblate.org/engage/smtv/) · [プルリクエスト](https://github.com/yuriti/clipit/pulls) · [原文: Русский](../phone.md)。
 
 # スマホで SMTV
 

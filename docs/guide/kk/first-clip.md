@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../first-clip.md) · [English](../en/first-clip.md) · **Қазақша** · [Oʻzbekcha](../uz/first-clip.md) · [Azərbaycanca](../az/first-clip.md) · [Кыргызча](../ky/first-clip.md) · [简体中文](../zh-CN/first-clip.md) · [日本語](../ja/first-clip.md) · [한국어](../ko/first-clip.md) · [Tiếng Việt](../vi/first-clip.md) · [Bahasa Indonesia](../id/first-clip.md) · [हिन्दी](../hi/first-clip.md) · [বাংলা](../bn/first-clip.md) · [Español](../es/first-clip.md) · [Português](../pt-BR/first-clip.md) · [Deutsch](../de/first-clip.md)
 
-> 🌐 Бұл бет автоматты түрде аударылған. Оны жақсартуға көмектесіңіз: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Түпнұсқа: Русский](../first-clip.md).
+> 🌐 Бұл бет автоматты түрде аударылған. Оны жақсартуға көмектесіңіз: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Түпнұсқа: Русский](../first-clip.md).
 
 # Алғашқы клипіңіз
 

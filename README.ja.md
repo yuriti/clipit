@@ -10,11 +10,11 @@
 <!-- languages -->
 [Русский](README.md) · [English](README.en.md) · [Қазақша](README.kk.md) · [Oʻzbekcha](README.uz.md) · [Azərbaycanca](README.az.md) · [Кыргызча](README.ky.md) · [简体中文](README.zh-CN.md) · **日本語** · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [বাংলা](README.bn.md) · [Español](README.es.md) · [Português](README.pt-BR.md) · [Deutsch](README.de.md)
 
-> 🌐 このページは自動翻訳されています。改善にご協力ください：[Weblate](https://hosted.weblate.org/engage/smtv/) · [プルリクエスト](https://github.com/streammomenttv/smtv/pulls) · [原文: Русский](README.md)。
+> 🌐 このページは自動翻訳されています。改善にご協力ください：[Weblate](https://hosted.weblate.org/engage/smtv/) · [プルリクエスト](https://github.com/yuriti/clipit/pulls) · [原文: Русский](README.md)。
 
-[![最新リリース](https://img.shields.io/github/v/release/streammomenttv/smtv?label=release)](https://github.com/streammomenttv/smtv/releases/latest)
+[![最新リリース](https://img.shields.io/github/v/release/yuriti/clipit?label=release)](https://github.com/yuriti/clipit/releases/latest)
 [![ダウンロード数](https://img.shields.io/pepy/dt/smtv?label=downloads)](https://pepy.tech/projects/smtv)
-[![スター](https://img.shields.io/github/stars/streammomenttv/smtv?style=flat)](https://github.com/streammomenttv/smtv/stargazers)
+[![スター](https://img.shields.io/github/stars/yuriti/clipit?style=flat)](https://github.com/yuriti/clipit/stargazers)
 [![ライセンス：MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Python](https://img.shields.io/pypi/pyversions/smtv)](https://pypi.org/project/smtv/)
 [![Weblate で翻訳](https://hosted.weblate.org/widget/smtv/svg-badge.svg)](https://hosted.weblate.org/engage/smtv/)
@@ -94,11 +94,11 @@ SMTV は音声の文字起こしをあなたのパソコンで自分で行いま
 
 | あなたのパソコン | ダウンロード | サイズ |
 |---|---|---|
-| **Windows 10 または 11**（64 ビット） | [**Windows 版 SMTV**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe)（インストーラー） | 約 130 MB |
-| **Mac** — Apple シリコン（M1 以降）または Intel、macOS 13+ | [**Mac 版 SMTV**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | 約 270 MB |
+| **Windows 10 または 11**（64 ビット） | [**Windows 版 SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe)（インストーラー） | 約 130 MB |
+| **Mac** — Apple シリコン（M1 以降）または Intel、macOS 13+ | [**Mac 版 SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | 約 270 MB |
 
 どの Mac でも同じ 1 つのファイルです。SMTV が Mac のプロセッサ用に作られた版を自動で起動します。Windows で何もインストールしたくないなら：
-[ZIP ファイル](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip)を展開して
+[ZIP ファイル](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)を展開して
 **Start SMTV** を開きます。
 
 SMTV に必要なものはすべて入っています：プログラム本体、Python、字幕付きの ffmpeg。音声認識は初回起動時に、あなたの言語の分だけ
@@ -124,13 +124,13 @@ SMTV に必要なものはすべて入っています：プログラム本体、
 **Windows** — スタートを押して **PowerShell** と入力し、開いて貼り付けます：
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 **Mac または Linux** — **ターミナル**（Terminal）を開いて貼り付けます：
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 Enter を押して数分待ちます。管理者パスワードは不要です。**SMTV** のアイコンが現れます——Windows ではデスクトップと
@@ -166,7 +166,7 @@ Enter を押して数分待ちます。管理者パスワードは不要です�
 
 よく使われているオープンソースのクリップ作成ツールを、各プロジェクト自身のコードとドキュメントをもとに比較しました（**2026 年 11 月時点**）。
 どれも良いプロジェクトで、それぞれ別の目的のために作られています。この表は SMTV がどこで違うかを示すだけです。変わった点がありましたか？
-[教えてください](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml)。表を直します。
+[教えてください](https://github.com/yuriti/clipit/issues/new?template=bug.yml)。表を直します。
 
 | | **SMTV** | [openshorts](https://github.com/mutonby/openshorts) | [SupoClip](https://github.com/FujiwaraChoki/supoclip) | [PeakCut](https://github.com/haziqahmedqasmi/PeakCut) | [FunClip](https://github.com/modelscope/FunClip) |
 |---|---|---|---|---|---|
@@ -259,7 +259,7 @@ SMTV のウィンドウは、あなたのパソコンの言語で表示されま
 SMTV は [StreamMoment](https://streammoment.tv) チームが作っています。StreamMoment アカウントは、SMTV に AI を与え、
 録画のリンクを貼れるようにするいちばん簡単な方法です。アカウントがなくても SMTV は使えます。
 
-- [問題を報告](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) · [アイデアを提案](https://github.com/streammomenttv/smtv/issues/new?template=feature.yml)
+- [問題を報告](https://github.com/yuriti/clipit/issues/new?template=bug.yml) · [アイデアを提案](https://github.com/yuriti/clipit/issues/new?template=feature.yml)
 - [上級者向け](docs/advanced.md)：Docker、すべての AI サービス、音声モデル、キー、コマンド
 - [変更履歴](CHANGELOG.md) · [コントリビュート](CONTRIBUTING.md) · [セキュリティ](SECURITY.md)
 - SMTV を気に入りましたか？[Boosty で応援](https://boosty.to/smtv)して、リポジトリに ⭐ を付けてください——ほかの人が見つけやすくなります。

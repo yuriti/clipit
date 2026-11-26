@@ -35,7 +35,7 @@ def keys():
 def manifest(version="0.2.0", **over) -> dict:
     files = [{"package": "smtv", "name": f"smtv-{version}-py3-none-any.whl", "size": len(WHEEL),
               "sha256": hashlib.sha256(WHEEL).hexdigest(),
-              "url": f"https://github.com/streammomenttv/smtv/releases/download/v{version}/smtv-{version}-py3-none-any.whl"}]
+              "url": f"https://github.com/yuriti/clipit/releases/download/v{version}/smtv-{version}-py3-none-any.whl"}]
     return {"schema": 1, "version": version, "published": "2026-12-01T10:00:00Z",
             "packages": {"smtv": version, "smtv-core": version, "vodcut": version},
             "changes": [{"version": version, "notes": ["Faster clips"]}], "kinds": {"uv": {"files": files}, "pip": {"files": files}}, **over}
@@ -111,7 +111,7 @@ def test_a_wrong_or_missing_signature_is_refused(keys, tamper):
 def test_the_public_key_in_the_code_is_a_real_key_and_not_a_test_one():
     raw = base64.b64decode(channel.PUBLIC_KEY, validate=True)
     assert len(raw) == 32 and ed25519._decompress(raw) is not None
-    assert channel.URL.startswith("https://github.com/streammomenttv/smtv/releases/")
+    assert channel.URL.startswith("https://github.com/yuriti/clipit/releases/")
 
 
 # --- going back ---------------------------------------------------------------------------------------------------------
@@ -232,7 +232,7 @@ def test_a_swapped_wheel_stops_the_update_before_anything_is_installed(keys, mon
     monkeypatch.setattr(updates, "version_of", lambda n: names.get(n))
     m = manifest()
     m["kinds"]["uv"]["files"] = [{**m["kinds"]["uv"]["files"][0], "package": n, "name": f"{n.replace('-', '_')}-0.2.0-py3-none-any.whl",
-                                  "url": f"https://github.com/streammomenttv/smtv/releases/download/v0.2.0/{n}.whl"} for n in ALLOWED]
+                                  "url": f"https://github.com/yuriti/clipit/releases/download/v0.2.0/{n}.whl"} for n in ALLOWED]
     pages = {f["url"]: WHEEL for f in m["kinds"]["uv"]["files"]}
     pages[m["kinds"]["uv"]["files"][2]["url"]] = b"someone else's vodcut"
     host = Host(pages)
@@ -302,7 +302,7 @@ def test_the_release_script_builds_a_manifest_that_smtv_accepts(tmp_path, keys, 
         sys.path.remove(str(REPO / "scripts"))
     monkeypatch.setenv("SMTV_UPDATE_SIGNING_KEY", base64.b64encode(secret).decode())
     args = [str(dist), "--version", "0.2.0", "--changelog", str(changelog), "--public-key", public,
-            "--base-url", "https://github.com/streammomenttv/smtv/releases/download/v0.2.0"]
+            "--base-url", "https://github.com/yuriti/clipit/releases/download/v0.2.0"]
     # a key that is not the one in SMTV's code: every SMTV would refuse it, so nothing is written
     assert release_manifest.main(args[:-4] + args[-2:]) != 0 and not (dist / "latest.json").exists()
     # a version the changelog does not describe: no release without its changes

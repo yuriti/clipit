@@ -6,8 +6,8 @@ Thank you for helping. You do not need to write code for it.
 
 - **Report a problem**: in SMTV, Settings → **Report a problem**, or the button under a failed request. SMTV prepares
   the report without your keys; you only press the button on GitHub. Or open a
-  [problem report](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) by hand.
-- **Suggest an idea**: [a new idea](https://github.com/streammomenttv/smtv/issues/new?template=feature.yml) — what you
+  [problem report](https://github.com/yuriti/clipit/issues/new?template=bug.yml) by hand.
+- **Suggest an idea**: [a new idea](https://github.com/yuriti/clipit/issues/new?template=feature.yml) — what you
   wanted to do and what got in the way.
 - **Tell us which clips were bad and why.** A link to the recording and the clip numbers help the most: the choice of
   moments gets better from such examples.

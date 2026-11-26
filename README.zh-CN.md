@@ -10,11 +10,11 @@
 <!-- languages -->
 [Русский](README.md) · [English](README.en.md) · [Қазақша](README.kk.md) · [Oʻzbekcha](README.uz.md) · [Azərbaycanca](README.az.md) · [Кыргызча](README.ky.md) · **简体中文** · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [বাংলা](README.bn.md) · [Español](README.es.md) · [Português](README.pt-BR.md) · [Deutsch](README.de.md)
 
-> 🌐 本页面由机器自动翻译。欢迎帮助改进：[Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [原文: Русский](README.md)。
+> 🌐 本页面由机器自动翻译。欢迎帮助改进：[Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [原文: Русский](README.md)。
 
-[![最新版本](https://img.shields.io/github/v/release/streammomenttv/smtv?label=release)](https://github.com/streammomenttv/smtv/releases/latest)
+[![最新版本](https://img.shields.io/github/v/release/yuriti/clipit?label=release)](https://github.com/yuriti/clipit/releases/latest)
 [![下载量](https://img.shields.io/pepy/dt/smtv?label=downloads)](https://pepy.tech/projects/smtv)
-[![Star 数](https://img.shields.io/github/stars/streammomenttv/smtv?style=flat)](https://github.com/streammomenttv/smtv/stargazers)
+[![Star 数](https://img.shields.io/github/stars/yuriti/clipit?style=flat)](https://github.com/yuriti/clipit/stargazers)
 [![许可证：MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Python](https://img.shields.io/pypi/pyversions/smtv)](https://pypi.org/project/smtv/)
 [![在 Weblate 上翻译](https://hosted.weblate.org/widget/smtv/svg-badge.svg)](https://hosted.weblate.org/engage/smtv/)
@@ -93,11 +93,11 @@ SMTV 会自己在你的电脑上把语音转成文字。挑选最佳时刻时，
 
 | 你的电脑 | 下载 | 大小 |
 |---|---|---|
-| **Windows 10 或 11**（64 位） | [**Windows 版 SMTV**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe)（安装程序） | 约 130 MB |
-| **Mac** — Apple 芯片（M1 及更新）或 Intel，macOS 13+ | [**Mac 版 SMTV**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | 约 270 MB |
+| **Windows 10 或 11**（64 位） | [**Windows 版 SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe)（安装程序） | 约 130 MB |
+| **Mac** — Apple 芯片（M1 及更新）或 Intel，macOS 13+ | [**Mac 版 SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | 约 270 MB |
 
 所有 Mac 都用同一个文件：SMTV 会自动启动为你的 Mac 处理器制作的版本。在 Windows 上不想安装任何东西：下载
-[ZIP 压缩包](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip)——解压后打开
+[ZIP 压缩包](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)——解压后打开
 **Start SMTV**。
 
 SMTV 需要的一切都在里面：程序本身、Python，以及能加字幕的 ffmpeg。语音识别会在第一次启动时下载，而且只下载你的语言
@@ -121,13 +121,13 @@ SMTV 需要的一切都在里面：程序本身、Python，以及能加字幕的
 **Windows**——点击“开始”，输入 **PowerShell**，打开它并粘贴：
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 **Mac 或 Linux**——打开 **Terminal**（终端）并粘贴：
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 按 Enter，等几分钟。不需要管理员密码。随后会出现 **SMTV** 图标——Windows 上在桌面和“开始”菜单里，
@@ -163,7 +163,7 @@ Mac 上在“应用程序”里，Linux 上在应用程序菜单里。
 
 最常用的开源切片工具，信息来自各项目自己的代码和文档，**截至 2026 年 11 月**。
 它们都是好项目，各有各的用途；这张表只展示 SMTV 的不同之处。有什么变化了？
-[告诉我们](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml)，我们会更新表格。
+[告诉我们](https://github.com/yuriti/clipit/issues/new?template=bug.yml)，我们会更新表格。
 
 | | **SMTV** | [openshorts](https://github.com/mutonby/openshorts) | [SupoClip](https://github.com/FujiwaraChoki/supoclip) | [PeakCut](https://github.com/haziqahmedqasmi/PeakCut) | [FunClip](https://github.com/modelscope/FunClip) |
 |---|---|---|---|---|---|
@@ -255,7 +255,7 @@ SMTV 的窗口会使用你电脑的语言。翻译由大家在 [Weblate](https:/
 SMTV 由 [StreamMoment](https://streammoment.tv) 团队开发。StreamMoment 账户是给 SMTV 接入 AI、
 粘贴录像链接的最简单方式；没有它，SMTV 也能用。
 
-- [报告问题](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) · [提出建议](https://github.com/streammomenttv/smtv/issues/new?template=feature.yml)
+- [报告问题](https://github.com/yuriti/clipit/issues/new?template=bug.yml) · [提出建议](https://github.com/yuriti/clipit/issues/new?template=feature.yml)
 - [给高级用户](docs/advanced.md)：Docker、所有 AI 服务、语音模型、密钥、命令
 - [更新日志](CHANGELOG.md) · [参与贡献](CONTRIBUTING.md) · [安全](SECURITY.md)
 - 喜欢 SMTV？[在 Boosty 上支持它](https://boosty.to/smtv)，并给仓库点个 ⭐——这能帮助更多人找到它。

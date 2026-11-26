@@ -10,11 +10,11 @@
 <!-- languages -->
 [Русский](README.md) · [English](README.en.md) · [Қазақша](README.kk.md) · [Oʻzbekcha](README.uz.md) · **Azərbaycanca** · [Кыргызча](README.ky.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [বাংলা](README.bn.md) · [Español](README.es.md) · [Português](README.pt-BR.md) · [Deutsch](README.de.md)
 
-> 🌐 Bu səhifə avtomatik tərcümə olunub. Onu yaxşılaşdırmağa kömək edin: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Orijinal: Русский](README.md).
+> 🌐 Bu səhifə avtomatik tərcümə olunub. Onu yaxşılaşdırmağa kömək edin: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Orijinal: Русский](README.md).
 
-[![Son versiya](https://img.shields.io/github/v/release/streammomenttv/smtv?label=release)](https://github.com/streammomenttv/smtv/releases/latest)
+[![Son versiya](https://img.shields.io/github/v/release/yuriti/clipit?label=release)](https://github.com/yuriti/clipit/releases/latest)
 [![Yükləmələr](https://img.shields.io/pepy/dt/smtv?label=downloads)](https://pepy.tech/projects/smtv)
-[![Ulduzlar](https://img.shields.io/github/stars/streammomenttv/smtv?style=flat)](https://github.com/streammomenttv/smtv/stargazers)
+[![Ulduzlar](https://img.shields.io/github/stars/yuriti/clipit?style=flat)](https://github.com/yuriti/clipit/stargazers)
 [![Lisenziya: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Python](https://img.shields.io/pypi/pyversions/smtv)](https://pypi.org/project/smtv/)
 [![Weblate-də tərcümə edin](https://hosted.weblate.org/widget/smtv/svg-badge.svg)](https://hosted.weblate.org/engage/smtv/)
@@ -94,11 +94,11 @@ kifayətdir və onu istənilən vaxt **Settings → AI** (Ayarlar → Sİ) bölm
 
 | Kompüteriniz | Yükləmə | Ölçü |
 |---|---|---|
-| **Windows 10 və ya 11** (64-bit) | [**Windows üçün SMTV**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe) (quraşdırıcı) | təxminən 130 MB |
-| **Mac** — Apple silicon (M1 və daha yeni) və ya Intel, macOS 13+ | [**Mac üçün SMTV**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | təxminən 270 MB |
+| **Windows 10 və ya 11** (64-bit) | [**Windows üçün SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) (quraşdırıcı) | təxminən 130 MB |
+| **Mac** — Apple silicon (M1 və daha yeni) və ya Intel, macOS 13+ | [**Mac üçün SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | təxminən 270 MB |
 
 Bütün Mac-lər üçün bir fayl: SMTV Mac-inizin prosessoru üçün hazırlanmış versiyanı özü işə salır. Windows-da heç nə quraşdırmadan:
-[ZIP arxivi](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip) — onu arxivdən çıxarın və **Start SMTV**-ni açın.
+[ZIP arxivi](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) — onu arxivdən çıxarın və **Start SMTV**-ni açın.
 
 SMTV-yə lazım olan hər şey içindədir: proqramın özü, Python və subtitrli ffmpeg. Nitqin tanınması ilk başlanğıcda
 yalnız sizin diliniz üçün yüklənir (0,9–2,5 GB, bir dəfə): SMTV onu bir düymə ilə təklif edir — **Fix** (Düzəlt).
@@ -122,13 +122,13 @@ Control** ilə də işləyir və pəncərədən eyni cür yenilənir.
 **Windows** — Start düyməsini basın, **PowerShell** yazın, açın və yapışdırın:
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 **Mac və ya Linux** — **Terminal**-ı açın və yapışdırın:
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 Enter basın və bir neçə dəqiqə gözləyin. Administrator parolu lazım deyil. **SMTV** ikonu görünəcək — Windows-da iş
@@ -164,7 +164,7 @@ Bütün bunlarla yeni tanış olanlar üçün — hər addım, şəkillərlə:
 
 Ən çox istifadə olunan açıq mənbəli klip proqramları, hər layihənin öz kodu və sənədlərinə əsasən, **2026-cı ilin
 noyabr ayına olan vəziyyət**. Bunlar yaxşı layihələrdir, hər biri öz işi üçün hazırlanıb; bu cədvəl yalnız SMTV-nin
-nədə fərqləndiyini göstərir. Nəsə dəyişib? [Bizə bildirin](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml),
+nədə fərqləndiyini göstərir. Nəsə dəyişib? [Bizə bildirin](https://github.com/yuriti/clipit/issues/new?template=bug.yml),
 cədvəli düzəldək.
 
 | | **SMTV** | [openshorts](https://github.com/mutonby/openshorts) | [SupoClip](https://github.com/FujiwaraChoki/supoclip) | [PeakCut](https://github.com/haziqahmedqasmi/PeakCut) | [FunClip](https://github.com/modelscope/FunClip) |
@@ -260,7 +260,7 @@ düzəldin. [Tərcümələr necə işləyir](docs/translations.md).
 SMTV-ni [StreamMoment](https://streammoment.tv) komandası hazırlayır. StreamMoment hesabı SMTV-yə Sİ verməyin və
 yazıların linklərini yapışdırmağın ən sadə yoludur; SMTV onsuz da işləyir.
 
-- [Problem barədə bildirin](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) · [İdeya təklif edin](https://github.com/streammomenttv/smtv/issues/new?template=feature.yml)
+- [Problem barədə bildirin](https://github.com/yuriti/clipit/issues/new?template=bug.yml) · [İdeya təklif edin](https://github.com/yuriti/clipit/issues/new?template=feature.yml)
 - [Təcrübəli istifadəçilər üçün](docs/advanced.md): Docker, bütün Sİ xidmətləri, nitq modelləri, açarlar, əmrlər
 - [Dəyişikliklər](CHANGELOG.md) · [Töhfə vermək](CONTRIBUTING.md) · [Təhlükəsizlik](SECURITY.md)
 - SMTV xoşunuza gəlir? [Boosty-də dəstəkləyin](https://boosty.to/smtv) və repozitoriyaya ⭐ verin — bu, başqalarının

@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../install.md) · [English](../en/install.md) · [Қазақша](../kk/install.md) · [Oʻzbekcha](../uz/install.md) · **Azərbaycanca** · [Кыргызча](../ky/install.md) · [简体中文](../zh-CN/install.md) · [日本語](../ja/install.md) · [한국어](../ko/install.md) · [Tiếng Việt](../vi/install.md) · [Bahasa Indonesia](../id/install.md) · [हिन्दी](../hi/install.md) · [বাংলা](../bn/install.md) · [Español](../es/install.md) · [Português](../pt-BR/install.md) · [Deutsch](../de/install.md)
 
-> 🌐 Bu səhifə avtomatik tərcümə olunub. Onu yaxşılaşdırmağa kömək edin: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Orijinal: Русский](../install.md).
+> 🌐 Bu səhifə avtomatik tərcümə olunub. Onu yaxşılaşdırmağa kömək edin: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Orijinal: Русский](../install.md).
 
 # SMTV-ni quraşdırın
 
@@ -10,10 +10,10 @@ lazım deyil.
 
 | Kompüteriniz | Yükləmə | Ölçü |
 |---|---|---|
-| **Windows 10 və ya 11** (64-bit) | [Windows üçün SMTV](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe) | təxminən 130 MB |
-| **Mac** — Apple silicon (M1 və daha yeni) və ya Intel, macOS 13+ | [Mac üçün SMTV](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | təxminən 270 MB |
+| **Windows 10 və ya 11** (64-bit) | [Windows üçün SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | təxminən 130 MB |
+| **Mac** — Apple silicon (M1 və daha yeni) və ya Intel, macOS 13+ | [Mac üçün SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | təxminən 270 MB |
 
-Bütün versiyalar və onların yoxlama cəmləri: [buraxılış səhifəsi](https://github.com/streammomenttv/smtv/releases/latest).
+Bütün versiyalar və onların yoxlama cəmləri: [buraxılış səhifəsi](https://github.com/yuriti/clipit/releases/latest).
 
 **Sistem ilk dəfə niyə xəbərdarlıq edir.** SMTV-nin hələ rəqəmsal imzası yoxdur. Windows üçün imza bir az sonra,
 macOS üçün isə imkan olan kimi gələcək və onda bu xəbərdarlıq yox olacaq. SMTV-nin kodu açıqdır: onun nə etdiyini hər
@@ -30,7 +30,7 @@ kəs oxuya bilər.
 Quraşdırıcı SMTV-ni öz istifadəçi qovluğunuza qoyur; o, **Settings → Apps** (Parametrlər → Tətbiqlər) bölməsində
 görünür və onu oradan silə bilərsiniz.
 
-**Quraşdırmadan:** [ZIP arxivini](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip) yükləyin, istənilən yerə (məsələn, Documents qovluğuna) arxivdən çıxarın və
+**Quraşdırmadan:** [ZIP arxivini](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) yükləyin, istənilən yerə (məsələn, Documents qovluğuna) arxivdən çıxarın və
 `SMTV` qovluğundakı **Start SMTV**-ni açın. Bu nüsxə özü yenilənmir: yeni versiya yeni ZIP deməkdir.
 
 ### Windows 11: Smart App Control
@@ -72,7 +72,7 @@ yüklənmiş proqram kimi pəncərədən yenilənir.
 (sağ klik və ya Ctrl+V) və **Enter** basın:
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 Smart App Control aktivdirsə, quraşdırıcı SMTV-ni python.org-dan imzalı Python üzərində quraşdırır (onu quraşdırmağı
@@ -83,7 +83,7 @@ soruşa bilər — razılaşın) və SMTV-ni onun vasitəsilə başladır. Termi
 **Enter** basın:
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 Bitdiyini deyənə qədər gözləyin (2–10 dəqiqə). SMTV özü açılır; **SMTV** ikonu Windows-da Start menyusunda, Mac-də
@@ -104,6 +104,6 @@ Hər iki quraşdırıcı qısa və açıqdır: [install.ps1](../../../install/in
 - **Mac: «SMTV would like to accept incoming connections»** — SMTV-ni telefonda istifadə etmək istəyirsinizsə, icazə
   verin.
 - **Antivirus** şikayət edir? SMTV yenidir və hələ imzalanmayıb, ona görə bəzi antiviruslar ona ehtiyatla yanaşır.
-  Onun kodu açıqdır, hər faylın yoxlama cəmləri isə [buraxılış səhifəsindədir](https://github.com/streammomenttv/smtv/releases/latest) (`SHA256SUMS.txt`).
+  Onun kodu açıqdır, hər faylın yoxlama cəmləri isə [buraxılış səhifəsindədir](https://github.com/yuriti/clipit/releases/latest) (`SHA256SUMS.txt`).
 
 Növbəti: [ilk klipiniz](first-clip.md).

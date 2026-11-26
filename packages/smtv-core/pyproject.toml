@@ -26,7 +26,7 @@ gpu = ["onnx-asr[gpu,hub]>=0.12"]
 whisper = ["faster-whisper>=1.1"]
 
 [project.urls]
-Homepage = "https://github.com/streammomenttv"
+Homepage = "https://github.com/yuriti/clipit"
 
 [build-system]
 requires = ["hatchling"]

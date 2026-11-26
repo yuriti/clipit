@@ -1,6 +1,6 @@
 ﻿# SMTV installer for Windows: uv (the official way), then SMTV with its tools, then the SMTV icon.
 #
-#   powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+#   powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 #
 # Everything goes into your own user folder: no administrator rights. Read it before running it - it is short.
 #
@@ -133,8 +133,8 @@ $InstallArgs += $Spec
 Say "2/3 Installing $Spec (a few minutes the first time: about 0.7 GB to download)..." `
     "2/3 Ставлю $Spec (в первый раз несколько минут: скачивается около 0,7 ГБ)..."
 if (-not (Invoke-Step $Uv $InstallArgs)) {
-    Stop-Install "Could not install SMTV. Check the internet connection and run this again; if it fails again, copy the text above into a problem report: https://github.com/streammomenttv/smtv/issues/new?template=bug.yml" `
-                 "Не удалось установить SMTV. Проверьте интернет и запустите установку снова; если не выйдет - скопируйте текст выше в сообщение о проблеме: https://github.com/streammomenttv/smtv/issues/new?template=bug.yml"
+    Stop-Install "Could not install SMTV. Check the internet connection and run this again; if it fails again, copy the text above into a problem report: https://github.com/yuriti/clipit/issues/new?template=bug.yml" `
+                 "Не удалось установить SMTV. Проверьте интернет и запустите установку снова; если не выйдет - скопируйте текст выше в сообщение о проблеме: https://github.com/yuriti/clipit/issues/new?template=bug.yml"
 }
 # Where uv puts commands goes on PATH for new windows; harmless when it already is.
 $null = Invoke-Step $Uv @("tool", "update-shell")

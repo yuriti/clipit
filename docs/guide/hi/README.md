@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../README.md) · [English](../en/README.md) · [Қазақша](../kk/README.md) · [Oʻzbekcha](../uz/README.md) · [Azərbaycanca](../az/README.md) · [Кыргызча](../ky/README.md) · [简体中文](../zh-CN/README.md) · [日本語](../ja/README.md) · [한국어](../ko/README.md) · [Tiếng Việt](../vi/README.md) · [Bahasa Indonesia](../id/README.md) · **हिन्दी** · [বাংলা](../bn/README.md) · [Español](../es/README.md) · [Português](../pt-BR/README.md) · [Deutsch](../de/README.md)
 
-> 🌐 यह पेज अपने-आप अनुवाद किया गया है। इसे बेहतर बनाने में मदद करें: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [मूल पाठ: Русский](../README.md).
+> 🌐 यह पेज अपने-आप अनुवाद किया गया है। इसे बेहतर बनाने में मदद करें: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [मूल पाठ: Русский](../README.md).
 
 # SMTV गाइड
 

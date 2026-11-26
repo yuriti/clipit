@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../README.md) · [English](../en/README.md) · [Қазақша](../kk/README.md) · [Oʻzbekcha](../uz/README.md) · [Azərbaycanca](../az/README.md) · [Кыргызча](../ky/README.md) · [简体中文](../zh-CN/README.md) · [日本語](../ja/README.md) · [한국어](../ko/README.md) · [Tiếng Việt](../vi/README.md) · **Bahasa Indonesia** · [हिन्दी](../hi/README.md) · [বাংলা](../bn/README.md) · [Español](../es/README.md) · [Português](../pt-BR/README.md) · [Deutsch](../de/README.md)
 
-> 🌐 Halaman ini diterjemahkan secara otomatis. Bantu kami memperbaikinya: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Versi asli: Русский](../README.md).
+> 🌐 Halaman ini diterjemahkan secara otomatis. Bantu kami memperbaikinya: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Versi asli: Русский](../README.md).
 
 # Panduan SMTV
 

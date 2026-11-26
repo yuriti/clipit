@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../README.md) · [English](../en/README.md) · [Қазақша](../kk/README.md) · [Oʻzbekcha](../uz/README.md) · **Azərbaycanca** · [Кыргызча](../ky/README.md) · [简体中文](../zh-CN/README.md) · [日本語](../ja/README.md) · [한국어](../ko/README.md) · [Tiếng Việt](../vi/README.md) · [Bahasa Indonesia](../id/README.md) · [हिन्दी](../hi/README.md) · [বাংলা](../bn/README.md) · [Español](../es/README.md) · [Português](../pt-BR/README.md) · [Deutsch](../de/README.md)
 
-> 🌐 Bu səhifə avtomatik tərcümə olunub. Onu yaxşılaşdırmağa kömək edin: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Orijinal: Русский](../README.md).
+> 🌐 Bu səhifə avtomatik tərcümə olunub. Onu yaxşılaşdırmağa kömək edin: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Orijinal: Русский](../README.md).
 
 # SMTV bələdçiləri
 

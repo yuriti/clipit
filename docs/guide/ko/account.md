@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../account.md) · [English](../en/account.md) · [Қазақша](../kk/account.md) · [Oʻzbekcha](../uz/account.md) · [Azərbaycanca](../az/account.md) · [Кыргызча](../ky/account.md) · [简体中文](../zh-CN/account.md) · [日本語](../ja/account.md) · **한국어** · [Tiếng Việt](../vi/account.md) · [Bahasa Indonesia](../id/account.md) · [हिन्दी](../hi/account.md) · [বাংলা](../bn/account.md) · [Español](../es/account.md) · [Português](../pt-BR/account.md) · [Deutsch](../de/account.md)
 
-> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/streammomenttv/smtv/pulls) · [원문: Русский](../account.md).
+> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/yuriti/clipit/pulls) · [원문: Русский](../account.md).
 
 # StreamMoment 계정
 

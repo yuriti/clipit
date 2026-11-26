@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../install.md) · [English](../en/install.md) · [Қазақша](../kk/install.md) · [Oʻzbekcha](../uz/install.md) · [Azərbaycanca](../az/install.md) · [Кыргызча](../ky/install.md) · [简体中文](../zh-CN/install.md) · [日本語](../ja/install.md) · [한국어](../ko/install.md) · [Tiếng Việt](../vi/install.md) · [Bahasa Indonesia](../id/install.md) · [हिन्दी](../hi/install.md) · **বাংলা** · [Español](../es/install.md) · [Português](../pt-BR/install.md) · [Deutsch](../de/install.md)
 
-> 🌐 এই পাতাটি স্বয়ংক্রিয়ভাবে অনুবাদ করা হয়েছে। এটিকে আরও ভালো করতে সাহায্য করুন: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [মূল লেখা: Русский](../install.md).
+> 🌐 এই পাতাটি স্বয়ংক্রিয়ভাবে অনুবাদ করা হয়েছে। এটিকে আরও ভালো করতে সাহায্য করুন: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [মূল লেখা: Русский](../install.md).
 
 # SMTV ইনস্টল করুন
 
@@ -10,10 +10,10 @@
 
 | আপনার কম্পিউটার | ডাউনলোড | সাইজ |
 |---|---|---|
-| **Windows 10 বা 11** (64-বিট) | [Windows-এর জন্য SMTV](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe) | প্রায় 130 MB |
-| **Mac** — Apple silicon (M1 আর নতুন) বা Intel, macOS 13+ | [Mac-এর জন্য SMTV](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | প্রায় 270 MB |
+| **Windows 10 বা 11** (64-বিট) | [Windows-এর জন্য SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | প্রায় 130 MB |
+| **Mac** — Apple silicon (M1 আর নতুন) বা Intel, macOS 13+ | [Mac-এর জন্য SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | প্রায় 270 MB |
 
-সব ভার্সন আর তাদের চেকসাম: [রিলিজ পেজ](https://github.com/streammomenttv/smtv/releases/latest)।
+সব ভার্সন আর তাদের চেকসাম: [রিলিজ পেজ](https://github.com/yuriti/clipit/releases/latest)।
 
 **প্রথমবার সিস্টেম কেন সতর্ক করে।** SMTV-র এখনো ডিজিটাল সাইন নেই। Windows-এর সাইন আসবে একটু পরে, macOS-এর যত
 তাড়াতাড়ি সম্ভব, আর তারপর এই সতর্কবার্তা চলে যাবে। SMTV-র কোড খোলা: যে কেউ পড়ে দেখতে পারেন এটা কী করে।
@@ -28,7 +28,7 @@
 
 ইনস্টলার SMTV রাখে আপনার নিজের ইউজার ফোল্ডারে; এটা **Settings → Apps**-এ দেখা যায়, সেখান থেকে মুছেও ফেলা যায়।
 
-**ইনস্টল না করে:** [ZIP ফাইল](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip)
+**ইনস্টল না করে:** [ZIP ফাইল](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)
 ডাউনলোড করুন, যেকোনো জায়গায় আনজিপ করুন (যেমন Documents-এ) আর `SMTV` ফোল্ডারে **Start SMTV** খুলুন। এই কপি নিজে
 আপডেট হয় না: নতুন ভার্সন মানে নতুন ZIP।
 
@@ -71,7 +71,7 @@ SMTV আপনার কম্পিউটার পরীক্ষা করে
 (রাইট ক্লিক বা Ctrl+V) আর **Enter** চাপুন:
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 Smart App Control চালু থাকলে ইনস্টলার SMTV-কে python.org-এর সাইন করা Python-এর ওপর ইনস্টল করে (সেটা ইনস্টল করতে
@@ -82,7 +82,7 @@ Smart App Control চালু থাকলে ইনস্টলার SMTV-ক
 **Enter** চাপুন:
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 কাজ শেষ বলা পর্যন্ত অপেক্ষা করুন (2–10 মিনিট)। SMTV নিজেই খুলে যায়; **SMTV** আইকন আছে Windows-এ Start মেনুতে, Mac-এ
@@ -102,7 +102,7 @@ Applications-এ, Linux-এ অ্যাপ্লিকেশন মেনুত
   Privacy & Security** খুলুন, নিচে স্ক্রল করুন আর SMTV-র পাশে **Open Anyway** চাপুন।
 - **Mac: «SMTV would like to accept incoming connections»** — ফোনে SMTV ব্যবহার করতে চাইলে অনুমতি দিন।
 - **অ্যান্টিভাইরাস** আপত্তি করছে? SMTV নতুন আর এখনো সাইন হয়নি, তাই কিছু অ্যান্টিভাইরাস এটা নিয়ে সাবধান থাকে। এর কোড
-  খোলা, আর প্রতিটা ফাইলের চেকসাম আছে [রিলিজ পেজে](https://github.com/streammomenttv/smtv/releases/latest)
+  খোলা, আর প্রতিটা ফাইলের চেকসাম আছে [রিলিজ পেজে](https://github.com/yuriti/clipit/releases/latest)
   (`SHA256SUMS.txt`)।
 
 এরপর: [আপনার প্রথম ক্লিপ](first-clip.md)।

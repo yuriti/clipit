@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../install.md) · [English](../en/install.md) · [Қазақша](../kk/install.md) · [Oʻzbekcha](../uz/install.md) · [Azərbaycanca](../az/install.md) · [Кыргызча](../ky/install.md) · [简体中文](../zh-CN/install.md) · **日本語** · [한국어](../ko/install.md) · [Tiếng Việt](../vi/install.md) · [Bahasa Indonesia](../id/install.md) · [हिन्दी](../hi/install.md) · [বাংলা](../bn/install.md) · [Español](../es/install.md) · [Português](../pt-BR/install.md) · [Deutsch](../de/install.md)
 
-> 🌐 このページは自動翻訳されています。改善にご協力ください：[Weblate](https://hosted.weblate.org/engage/smtv/) · [プルリクエスト](https://github.com/streammomenttv/smtv/pulls) · [原文: Русский](../install.md)。
+> 🌐 このページは自動翻訳されています。改善にご協力ください：[Weblate](https://hosted.weblate.org/engage/smtv/) · [プルリクエスト](https://github.com/yuriti/clipit/pulls) · [原文: Русский](../install.md)。
 
 # SMTV をインストール
 
@@ -10,10 +10,10 @@
 
 | あなたのパソコン | ダウンロード | サイズ |
 |---|---|---|
-| **Windows 10 または 11**（64 ビット） | [Windows 版 SMTV](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe) | 約 130 MB |
-| **Mac** — Apple シリコン（M1 以降）または Intel、macOS 13+ | [Mac 版 SMTV](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | 約 270 MB |
+| **Windows 10 または 11**（64 ビット） | [Windows 版 SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | 約 130 MB |
+| **Mac** — Apple シリコン（M1 以降）または Intel、macOS 13+ | [Mac 版 SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | 約 270 MB |
 
-すべてのバージョンとチェックサム：[リリースページ](https://github.com/streammomenttv/smtv/releases/latest)。
+すべてのバージョンとチェックサム：[リリースページ](https://github.com/yuriti/clipit/releases/latest)。
 
 **初回にシステムが警告するわけ。** SMTV にはまだデジタル署名がありません。Windows 用の署名はもう少し後に、macOS 用の署名は
 できるだけ早く付き、そうすればこの警告は出なくなります。SMTV のコードは公開されています：何をしているかは誰でも読めます。
@@ -30,7 +30,7 @@
 インストーラーは SMTV をあなた自身のユーザーフォルダに入れます。SMTV は **設定 → アプリ**（Settings → Apps）に表示され、
 そこから削除できます。
 
-**インストールせずに使う：** [ZIP ファイル](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip)
+**インストールせずに使う：** [ZIP ファイル](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)
 をダウンロードし、好きな場所（たとえばドキュメント）に展開して、`SMTV` フォルダの **Start SMTV** を開きます。
 このコピーは自動でアップデートされません：新しいバージョンは新しい ZIP です。
 
@@ -73,7 +73,7 @@ SMTV はパソコンをチェックし、最初のクリップまでの 3 つの
 （右クリックか Ctrl+V）、**Enter** を押します：
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 スマート アプリ コントロールが有効な場合、インストーラーは python.org の署名付き Python の上に SMTV をインストールし
@@ -84,7 +84,7 @@ powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/str
 この行を貼り付けて **Enter** を押します：
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 完了と表示されるまで待ちます（2〜10 分）。SMTV が自動で開きます。**SMTV** のアイコンは、Windows ではスタートメニューに、
@@ -107,7 +107,7 @@ Mac ではアプリケーションに、Linux ではアプリケーションメ�
 - **Mac：«SMTV would like to accept incoming connections»**（「SMTV」へのネットワーク受信接続を許可しますか？）——スマホで SMTV を
   使いたいなら許可してください。
 - **ウイルス対策ソフト**が反応した？SMTV は新しく、まだ署名がないので、慎重に扱うウイルス対策ソフトもあります。コードは公開されていて、
-  すべてのファイルのチェックサムは[リリースページ](https://github.com/streammomenttv/smtv/releases/latest)にあります
+  すべてのファイルのチェックサムは[リリースページ](https://github.com/yuriti/clipit/releases/latest)にあります
   （`SHA256SUMS.txt`）。
 
 次へ：[最初のクリップ](first-clip.md)。

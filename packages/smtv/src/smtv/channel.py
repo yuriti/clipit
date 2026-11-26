@@ -38,7 +38,7 @@ from pathlib import Path
 
 from . import ed25519
 
-URL = "https://github.com/streammomenttv/smtv/releases/latest/download/latest.json"
+URL = "https://github.com/yuriti/clipit/releases/latest/download/latest.json"
 # The maintainers' public key. Its private half is the release workflow's secret SMTV_UPDATE_SIGNING_KEY.
 PUBLIC_KEY = "QLD7R3qn3faw5V2wG7qyIxdlFpzPfljZINV0QHS5gsw="
 SCHEMA = 1

@@ -14,7 +14,7 @@ function store(key, value) {
 // through Weblate (docs/translations.md). The language is the system's until one is chosen in Settings → Language; a
 // key a language lacks is shown in English. No text of the window is written in this file.
 // step-by-step guides for newcomers (docs/guide/ in the repository, stage V7); the window links them from Settings → AI
-const GUIDE = "https://github.com/streammomenttv/smtv/blob/main/docs/guide/";
+const GUIDE = "https://github.com/yuriti/clipit/blob/main/docs/guide/";
 const LANGS = (document.querySelector('meta[name="smtv-languages"]')?.content || "en").split(",").filter((x) => /^[a-z]{2,3}(-[A-Za-z]{2,4})?$/.test(x));
 function systemLang() {
   const wanted = navigator.languages?.length ? navigator.languages : [navigator.language || "en"];
@@ -2040,7 +2040,7 @@ const PKG_TITLE = { smtv: "SMTV", "smtv-core": "SMTV core", vodcut: "VodCut", li
 const canChange = (u) => u && (u.kind === "uv" || u.kind === "pip");          // plugins: only uv and pip
 const canUpdate = (u) => canChange(u) || (u && (u.kind === "dmg" || u.kind === "exe"));   // the apps: by their installer
 const isApp = (u) => u && ["dmg", "exe", "zip"].includes(u.kind);   // the desktop apps: plugins inside, no terminal
-const RELEASES = "https://github.com/streammomenttv/smtv/releases/latest";
+const RELEASES = "https://github.com/yuriti/clipit/releases/latest";
 // a check that failed, in plain words (the server's code before the colon; channel.ChannelError)
 const updError = (e) => { const key = "upd_err_" + String(e).split(":")[0]; return t(key) === key ? t("upd_error", { e }) : t(key); };
 

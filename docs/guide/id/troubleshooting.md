@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../troubleshooting.md) · [English](../en/troubleshooting.md) · [Қазақша](../kk/troubleshooting.md) · [Oʻzbekcha](../uz/troubleshooting.md) · [Azərbaycanca](../az/troubleshooting.md) · [Кыргызча](../ky/troubleshooting.md) · [简体中文](../zh-CN/troubleshooting.md) · [日本語](../ja/troubleshooting.md) · [한국어](../ko/troubleshooting.md) · [Tiếng Việt](../vi/troubleshooting.md) · **Bahasa Indonesia** · [हिन्दी](../hi/troubleshooting.md) · [বাংলা](../bn/troubleshooting.md) · [Español](../es/troubleshooting.md) · [Português](../pt-BR/troubleshooting.md) · [Deutsch](../de/troubleshooting.md)
 
-> 🌐 Halaman ini diterjemahkan secara otomatis. Bantu kami memperbaikinya: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Versi asli: Русский](../troubleshooting.md).
+> 🌐 Halaman ini diterjemahkan secara otomatis. Bantu kami memperbaikinya: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Versi asli: Русский](../troubleshooting.md).
 
 # Ada yang tidak beres
 
@@ -53,4 +53,4 @@ Masih buntu? Beri tahu kami — itu membantu semua orang.
    dengan ringkasan yang sudah terisi. Seret arsip ke sana dan tekan **Submit**.
 
 SMTV tidak mengirim apa pun dengan sendirinya. Tanpa jendela: jalankan `smtv report` di terminal. Kamu juga bisa
-[membuka issue](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) secara langsung.
+[membuka issue](https://github.com/yuriti/clipit/issues/new?template=bug.yml) secara langsung.

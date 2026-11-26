@@ -46,12 +46,12 @@ In the code (`Agent`, `RequestKind`, `Page.about`) there are only keys; a key no
 
 ## Weblate setup (maintainers, once)
 
-Project `smtv` on hosted.weblate.org, «Libre» plan, license MIT, website `https://github.com/streammomenttv/smtv`.
+Project `smtv` on hosted.weblate.org, «Libre» plan, license MIT, website `https://github.com/yuriti/clipit`.
 For each component above:
 
 | Setting | Value |
 |---|---|
-| Source code repository | `https://github.com/streammomenttv/smtv.git`, branch `main` |
+| Source code repository | `https://github.com/yuriti/clipit.git`, branch `main` |
 | Repository push URL | the same; **Version control: GitHub pull request**, push on commit |
 | File format | **JSON file** |
 | File mask | the «Files» column above |
@@ -64,5 +64,5 @@ For each component above:
 
 Add-ons: **Cleanup translation files** (drops keys English no longer has, so every language keeps the same keys) and
 **Customize JSON output** (indent 2, keys not sorted, Unicode kept). On GitHub: install the Weblate app on
-`streammomenttv/smtv`. The `.weblate` file in the repository root points the Weblate command line client (`wlc`) at
+`yuriti/clipit`. The `.weblate` file in the repository root points the Weblate command line client (`wlc`) at
 the project.

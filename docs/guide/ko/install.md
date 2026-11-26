@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../install.md) · [English](../en/install.md) · [Қазақша](../kk/install.md) · [Oʻzbekcha](../uz/install.md) · [Azərbaycanca](../az/install.md) · [Кыргызча](../ky/install.md) · [简体中文](../zh-CN/install.md) · [日本語](../ja/install.md) · **한국어** · [Tiếng Việt](../vi/install.md) · [Bahasa Indonesia](../id/install.md) · [हिन्दी](../hi/install.md) · [বাংলা](../bn/install.md) · [Español](../es/install.md) · [Português](../pt-BR/install.md) · [Deutsch](../de/install.md)
 
-> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/streammomenttv/smtv/pulls) · [원문: Русский](../install.md).
+> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/yuriti/clipit/pulls) · [원문: Русский](../install.md).
 
 # SMTV 설치하기
 
@@ -9,10 +9,10 @@
 
 | 내 컴퓨터 | 다운로드 | 크기 |
 |---|---|---|
-| **Windows 10 또는 11**(64비트) | [Windows용 SMTV](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe) | 약 130 MB |
-| **Mac** — Apple 실리콘(M1 이상) 또는 Intel, macOS 13+ | [Mac용 SMTV](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | 약 270 MB |
+| **Windows 10 또는 11**(64비트) | [Windows용 SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | 약 130 MB |
+| **Mac** — Apple 실리콘(M1 이상) 또는 Intel, macOS 13+ | [Mac용 SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | 약 270 MB |
 
-모든 버전과 체크섬: [릴리스 페이지](https://github.com/streammomenttv/smtv/releases/latest).
+모든 버전과 체크섬: [릴리스 페이지](https://github.com/yuriti/clipit/releases/latest).
 
 **처음에 시스템이 경고하는 이유.** SMTV에는 아직 디지털 서명이 없습니다. Windows용 서명은 조금 뒤에, macOS용 서명은 최대한 빨리
 붙을 예정이고, 그러면 이 경고는 사라집니다. SMTV의 코드는 공개되어 있습니다: 무엇을 하는지 누구나 읽어 볼 수 있습니다.
@@ -28,7 +28,7 @@
 
 설치 프로그램은 SMTV를 내 사용자 폴더에 넣습니다. SMTV는 **설정 → 앱**(Settings → Apps)에 나타나며, 거기서 삭제할 수 있습니다.
 
-**설치하지 않고:** [ZIP 파일](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip)을 다운로드해
+**설치하지 않고:** [ZIP 파일](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)을 다운로드해
 원하는 곳(예: 문서)에 압축을 풀고, `SMTV` 폴더의 **Start SMTV**를 엽니다. 이 사본은 스스로 업데이트되지 않습니다:
 새 버전은 새 ZIP입니다.
 
@@ -69,7 +69,7 @@ SMTV는 컴퓨터를 점검하고 첫 클립까지의 세 단계를 보여 줍�
 클릭 또는 Ctrl+V) **Enter**를 누릅니다:
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 스마트 앱 컨트롤이 켜져 있으면 설치 프로그램은 python.org의 서명된 Python 위에 SMTV를 설치하고(Python 설치를 요청할 수
@@ -79,7 +79,7 @@ powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/str
 **Enter**를 누릅니다:
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 완료됐다고 나올 때까지 기다리세요(2–10분). SMTV가 저절로 열립니다. **SMTV** 아이콘은 Windows에서는 시작 메뉴에, Mac에서는
@@ -102,7 +102,7 @@ curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/in
 - **Mac: «SMTV would like to accept incoming connections»**(SMTV가 수신 네트워크 연결을 허용하려고 합니다) — 휴대폰에서 SMTV를
   쓰려면 허용하세요.
 - **백신 프로그램**이 경고하나요? SMTV는 새 프로그램이고 아직 서명이 없어서, 일부 백신 프로그램이 조심스럽게 다룹니다. 코드는
-  공개되어 있고, 모든 파일의 체크섬은 [릴리스 페이지](https://github.com/streammomenttv/smtv/releases/latest)에 있습니다
+  공개되어 있고, 모든 파일의 체크섬은 [릴리스 페이지](https://github.com/yuriti/clipit/releases/latest)에 있습니다
   (`SHA256SUMS.txt`).
 
 다음: [첫 클립](first-clip.md).

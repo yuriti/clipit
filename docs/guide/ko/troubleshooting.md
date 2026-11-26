@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../troubleshooting.md) · [English](../en/troubleshooting.md) · [Қазақша](../kk/troubleshooting.md) · [Oʻzbekcha](../uz/troubleshooting.md) · [Azərbaycanca](../az/troubleshooting.md) · [Кыргызча](../ky/troubleshooting.md) · [简体中文](../zh-CN/troubleshooting.md) · [日本語](../ja/troubleshooting.md) · **한국어** · [Tiếng Việt](../vi/troubleshooting.md) · [Bahasa Indonesia](../id/troubleshooting.md) · [हिन्दी](../hi/troubleshooting.md) · [বাংলা](../bn/troubleshooting.md) · [Español](../es/troubleshooting.md) · [Português](../pt-BR/troubleshooting.md) · [Deutsch](../de/troubleshooting.md)
 
-> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/streammomenttv/smtv/pulls) · [원문: Русский](../troubleshooting.md).
+> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/yuriti/clipit/pulls) · [원문: Русский](../troubleshooting.md).
 
 # 문제가 생겼어요
 
@@ -48,4 +48,4 @@
    압축 파일을 거기로 끌어다 놓고 **Submit**을 누르세요.
 
 SMTV는 저절로 아무것도 보내지 않습니다. 창 없이 하려면: 터미널에서 `smtv report`를 실행하세요.
-[issue를 직접 열](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) 수도 있습니다.
+[issue를 직접 열](https://github.com/yuriti/clipit/issues/new?template=bug.yml) 수도 있습니다.

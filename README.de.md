@@ -10,11 +10,11 @@
 <!-- languages -->
 [Русский](README.md) · [English](README.en.md) · [Қазақша](README.kk.md) · [Oʻzbekcha](README.uz.md) · [Azərbaycanca](README.az.md) · [Кыргызча](README.ky.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [বাংলা](README.bn.md) · [Español](README.es.md) · [Português](README.pt-BR.md) · **Deutsch**
 
-> 🌐 Diese Seite wurde automatisch übersetzt. Hilf mit, sie zu verbessern: [Weblate](https://hosted.weblate.org/engage/smtv/) · [Pull Request](https://github.com/streammomenttv/smtv/pulls) · [Original: Русский](README.md).
+> 🌐 Diese Seite wurde automatisch übersetzt. Hilf mit, sie zu verbessern: [Weblate](https://hosted.weblate.org/engage/smtv/) · [Pull Request](https://github.com/yuriti/clipit/pulls) · [Original: Русский](README.md).
 
-[![Neueste Version](https://img.shields.io/github/v/release/streammomenttv/smtv?label=release)](https://github.com/streammomenttv/smtv/releases/latest)
+[![Neueste Version](https://img.shields.io/github/v/release/yuriti/clipit?label=release)](https://github.com/yuriti/clipit/releases/latest)
 [![Downloads](https://img.shields.io/pepy/dt/smtv?label=downloads)](https://pepy.tech/projects/smtv)
-[![Sterne](https://img.shields.io/github/stars/streammomenttv/smtv?style=flat)](https://github.com/streammomenttv/smtv/stargazers)
+[![Sterne](https://img.shields.io/github/stars/yuriti/clipit?style=flat)](https://github.com/yuriti/clipit/stargazers)
 [![Lizenz: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Python](https://img.shields.io/pypi/pyversions/smtv)](https://pypi.org/project/smtv/)
 [![Auf Weblate übersetzen](https://hosted.weblate.org/widget/smtv/svg-badge.svg)](https://hosted.weblate.org/engage/smtv/)
@@ -96,11 +96,11 @@ Wähle einen Weg – einer reicht, und du kannst ihn jederzeit in **Settings →
 
 | Dein Computer | Download | Größe |
 |---|---|---|
-| **Windows 10 oder 11** (64-Bit) | [**SMTV für Windows**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe) (Installationsprogramm) | etwa 130 MB |
-| **Mac** — Apple Silicon (M1 und neuer) oder Intel, macOS 13+ | [**SMTV für Mac**](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | etwa 270 MB |
+| **Windows 10 oder 11** (64-Bit) | [**SMTV für Windows**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) (Installationsprogramm) | etwa 130 MB |
+| **Mac** — Apple Silicon (M1 und neuer) oder Intel, macOS 13+ | [**SMTV für Mac**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | etwa 270 MB |
 
 Eine Datei für jeden Mac: SMTV startet von selbst die Version, die für den Prozessor deines Macs gebaut ist. Windows ganz ohne Installation:
-[das ZIP](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip) – entpacke es und öffne
+[das ZIP](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) – entpacke es und öffne
 **Start SMTV**.
 
 Alles, was SMTV braucht, ist schon drin: das Programm, Python und ffmpeg mit Untertiteln. Die Spracherkennung wird beim
@@ -128,13 +128,13 @@ Dasselbe SMTV, mit [uv](https://astral.sh/uv) in deinen Benutzerordner installie
 **Windows** – drücke Start, tippe **PowerShell**, öffne es und füge ein:
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 **Mac oder Linux** – öffne das **Terminal** und füge ein:
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 Drücke Enter und warte ein paar Minuten. Ein Administratorpasswort ist nicht nötig. Ein **SMTV**-Symbol erscheint –
@@ -170,7 +170,7 @@ Für alle, für die das alles neu ist – jeder Schritt, mit Bildern:
 
 Die meistgenutzten Open-Source-Clipper, nach dem eigenen Code und der Dokumentation jedes Projekts, **Stand November
 2026**. Das sind gute Projekte, jedes für seine eigene Aufgabe gemacht; diese Tabelle zeigt nur, worin sich SMTV
-unterscheidet. Hat sich etwas geändert? [Sag es uns](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml),
+unterscheidet. Hat sich etwas geändert? [Sag es uns](https://github.com/yuriti/clipit/issues/new?template=bug.yml),
 und wir korrigieren die Tabelle.
 
 | | **SMTV** | [openshorts](https://github.com/mutonby/openshorts) | [SupoClip](https://github.com/FujiwaraChoki/supoclip) | [PeakCut](https://github.com/haziqahmedqasmi/PeakCut) | [FunClip](https://github.com/modelscope/FunClip) |
@@ -271,7 +271,7 @@ einem Pull Request. [Wie Übersetzungen funktionieren](docs/translations.md).
 SMTV wird vom Team von [StreamMoment](https://streammoment.tv) gemacht. Das StreamMoment-Konto ist der einfachste Weg,
 SMTV eine KI zu geben und Links zu Aufnahmen einzufügen; SMTV funktioniert auch ohne es.
 
-- [Problem melden](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) · [Idee vorschlagen](https://github.com/streammomenttv/smtv/issues/new?template=feature.yml)
+- [Problem melden](https://github.com/yuriti/clipit/issues/new?template=bug.yml) · [Idee vorschlagen](https://github.com/yuriti/clipit/issues/new?template=feature.yml)
 - [Für Fortgeschrittene](docs/advanced.md): Docker, alle KI-Dienste, Sprachmodelle, Schlüssel, Befehle
 - [Änderungen](CHANGELOG.md) · [Mitmachen](CONTRIBUTING.md) · [Sicherheit](SECURITY.md)
 - Gefällt dir SMTV? [Unterstütze es auf Boosty](https://boosty.to/smtv) und gib dem Repository einen ⭐ – so finden es

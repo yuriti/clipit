@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../install.md) · [English](../en/install.md) · [Қазақша](../kk/install.md) · [Oʻzbekcha](../uz/install.md) · [Azərbaycanca](../az/install.md) · [Кыргызча](../ky/install.md) · [简体中文](../zh-CN/install.md) · [日本語](../ja/install.md) · [한국어](../ko/install.md) · [Tiếng Việt](../vi/install.md) · **Bahasa Indonesia** · [हिन्दी](../hi/install.md) · [বাংলা](../bn/install.md) · [Español](../es/install.md) · [Português](../pt-BR/install.md) · [Deutsch](../de/install.md)
 
-> 🌐 Halaman ini diterjemahkan secara otomatis. Bantu kami memperbaikinya: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Versi asli: Русский](../install.md).
+> 🌐 Halaman ini diterjemahkan secara otomatis. Bantu kami memperbaikinya: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Versi asli: Русский](../install.md).
 
 # Instal SMTV
 
@@ -10,10 +10,10 @@ kata sandi administrator.
 
 | Komputermu | Unduh | Ukuran |
 |---|---|---|
-| **Windows 10 atau 11** (64-bit) | [SMTV untuk Windows](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe) | sekitar 130 MB |
-| **Mac** — Apple silicon (M1 dan yang lebih baru) atau Intel, macOS 13+ | [SMTV untuk Mac](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | sekitar 270 MB |
+| **Windows 10 atau 11** (64-bit) | [SMTV untuk Windows](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | sekitar 130 MB |
+| **Mac** — Apple silicon (M1 dan yang lebih baru) atau Intel, macOS 13+ | [SMTV untuk Mac](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | sekitar 270 MB |
 
-Semua versi dan checksum-nya: [halaman rilis](https://github.com/streammomenttv/smtv/releases/latest).
+Semua versi dan checksum-nya: [halaman rilis](https://github.com/yuriti/clipit/releases/latest).
 
 **Kenapa sistem memberi peringatan pada kali pertama.** SMTV belum punya tanda tangan digital. Tanda tangan untuk Windows
 menyusul sedikit lebih lambat, untuk macOS secepat mungkin, dan setelah itu peringatan ini hilang. Kode SMTV terbuka:
@@ -31,7 +31,7 @@ siapa pun bisa membaca apa yang dilakukannya.
 Penginstal menaruh SMTV di folder penggunamu sendiri; SMTV muncul di **Pengaturan → Aplikasi** (Settings → Apps), dan
 dari sana kamu bisa menghapusnya.
 
-**Tanpa menginstal:** unduh [file ZIP](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip),
+**Tanpa menginstal:** unduh [file ZIP](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip),
 ekstrak di mana saja (misalnya ke Documents) dan buka **Start SMTV** di folder `SMTV`. Salinan ini tidak memperbarui
 dirinya sendiri: versi baru berarti ZIP baru.
 
@@ -76,7 +76,7 @@ diperbarui dari jendela, sama seperti aplikasi yang diunduh.
 kanan atau Ctrl+V) dan tekan **Enter**:
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 Jika Smart App Control menyala, penginstal menginstal SMTV di atas Python bertanda tangan dari python.org (mungkin akan
@@ -87,7 +87,7 @@ menjalankan `smtv`, pakai ikon **SMTV** saja.
 **Enter**:
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 Tunggu sampai penginstal bilang sudah selesai (2–10 menit). SMTV terbuka sendiri; ikon **SMTV** ada di menu Start di
@@ -110,7 +110,7 @@ Kedua penginstal itu pendek dan terbuka: [install.ps1](../../../install/install.
 - **Mac: «SMTV ingin menerima koneksi masuk»** («SMTV would like to accept incoming connections») — izinkan kalau kamu
   ingin memakai SMTV di ponsel.
 - **Antivirus** mengeluh? SMTV masih baru dan belum bertanda tangan, jadi sebagian antivirus berhati-hati terhadapnya.
-  Kodenya terbuka, dan checksum setiap file ada di [halaman rilis](https://github.com/streammomenttv/smtv/releases/latest)
+  Kodenya terbuka, dan checksum setiap file ada di [halaman rilis](https://github.com/yuriti/clipit/releases/latest)
   (`SHA256SUMS.txt`).
 
 Berikutnya: [klip pertamamu](first-clip.md).

@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../phone.md) · [English](../en/phone.md) · [Қазақша](../kk/phone.md) · [Oʻzbekcha](../uz/phone.md) · [Azərbaycanca](../az/phone.md) · [Кыргызча](../ky/phone.md) · [简体中文](../zh-CN/phone.md) · [日本語](../ja/phone.md) · **한국어** · [Tiếng Việt](../vi/phone.md) · [Bahasa Indonesia](../id/phone.md) · [हिन्दी](../hi/phone.md) · [বাংলা](../bn/phone.md) · [Español](../es/phone.md) · [Português](../pt-BR/phone.md) · [Deutsch](../de/phone.md)
 
-> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/streammomenttv/smtv/pulls) · [원문: Русский](../phone.md).
+> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/yuriti/clipit/pulls) · [원문: Русский](../phone.md).
 
 # 휴대폰에서 SMTV
 

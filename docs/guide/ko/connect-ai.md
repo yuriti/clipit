@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../connect-ai.md) · [English](../en/connect-ai.md) · [Қазақша](../kk/connect-ai.md) · [Oʻzbekcha](../uz/connect-ai.md) · [Azərbaycanca](../az/connect-ai.md) · [Кыргызча](../ky/connect-ai.md) · [简体中文](../zh-CN/connect-ai.md) · [日本語](../ja/connect-ai.md) · **한국어** · [Tiếng Việt](../vi/connect-ai.md) · [Bahasa Indonesia](../id/connect-ai.md) · [हिन्दी](../hi/connect-ai.md) · [বাংলা](../bn/connect-ai.md) · [Español](../es/connect-ai.md) · [Português](../pt-BR/connect-ai.md) · [Deutsch](../de/connect-ai.md)
 
-> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/streammomenttv/smtv/pulls) · [원문: Русский](../connect-ai.md).
+> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/yuriti/clipit/pulls) · [원문: Русский](../connect-ai.md).
 
 # 어떤 AI를 고를까
 

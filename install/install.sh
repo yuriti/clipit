@@ -1,7 +1,7 @@
 #!/bin/sh
 # SMTV installer for macOS and Linux: uv (the official way), then SMTV with its tools, then the SMTV icon.
 #
-#   curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+#   curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 #
 # Everything goes into your own home folder: no sudo, no administrator password. Read it before running it — it is short.
 #
@@ -118,8 +118,8 @@ SPEC="smtv[$TOOLS]"
 say "2/3 Installing $SPEC (a few minutes the first time: about 0.7 GB to download)…" \
     "2/3 Ставлю $SPEC (в первый раз несколько минут: скачивается около 0,7 ГБ)…"
 if ! run "$UV" tool install --upgrade --python "$PYTHON_VERSION" "$SPEC"; then
-  fail "Could not install SMTV. Check the internet connection and run this again; if it fails again, copy the text above into a problem report: https://github.com/streammomenttv/smtv/issues/new?template=bug.yml" \
-       "Не удалось установить SMTV. Проверьте интернет и запустите установку снова; если не выйдет — скопируйте текст выше в сообщение о проблеме: https://github.com/streammomenttv/smtv/issues/new?template=bug.yml"
+  fail "Could not install SMTV. Check the internet connection and run this again; if it fails again, copy the text above into a problem report: https://github.com/yuriti/clipit/issues/new?template=bug.yml" \
+       "Не удалось установить SMTV. Проверьте интернет и запустите установку снова; если не выйдет — скопируйте текст выше в сообщение о проблеме: https://github.com/yuriti/clipit/issues/new?template=bug.yml"
 fi
 # Where uv puts commands (~/.local/bin) goes on PATH for new terminals; harmless when it already is.
 run "$UV" tool update-shell || true

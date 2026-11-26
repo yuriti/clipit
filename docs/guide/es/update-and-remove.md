@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../update-and-remove.md) · [English](../en/update-and-remove.md) · [Қазақша](../kk/update-and-remove.md) · [Oʻzbekcha](../uz/update-and-remove.md) · [Azərbaycanca](../az/update-and-remove.md) · [Кыргызча](../ky/update-and-remove.md) · [简体中文](../zh-CN/update-and-remove.md) · [日本語](../ja/update-and-remove.md) · [한국어](../ko/update-and-remove.md) · [Tiếng Việt](../vi/update-and-remove.md) · [Bahasa Indonesia](../id/update-and-remove.md) · [हिन्दी](../hi/update-and-remove.md) · [বাংলা](../bn/update-and-remove.md) · **Español** · [Português](../pt-BR/update-and-remove.md) · [Deutsch](../de/update-and-remove.md)
 
-> 🌐 Esta página se tradujo automáticamente. Ayuda a mejorarla: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Original: Русский](../update-and-remove.md).
+> 🌐 Esta página se tradujo automáticamente. Ayuda a mejorarla: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Original: Русский](../update-and-remove.md).
 
 # Actualizar y desinstalar
 
@@ -21,7 +21,7 @@ de la computadora → Actualizaciones).
 
 ¿Descargaste SMTV para Windows o Mac? **Update** (Actualizar) descarga el instalador nuevo, lo comprueba y lo abre:
 termina la instalación ahí (en una Mac, arrastra el SMTV nuevo sobre Aplicaciones y presiona **Reemplazar** (Replace)).
-La copia de Windows desde el ZIP no se actualiza sola: descarga el ZIP nuevo desde [la página de la versión](https://github.com/streammomenttv/smtv/releases/latest).
+La copia de Windows desde el ZIP no se actualiza sola: descarga el ZIP nuevo desde [la página de la versión](https://github.com/yuriti/clipit/releases/latest).
 
 ¿Instalaste SMTV de otra forma? En Docker, una versión nueva es una imagen nueva; mira [para usuarios avanzados](../../advanced.md#docker).
 

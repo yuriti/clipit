@@ -17,8 +17,8 @@ import pytest
 REPO = Path(__file__).resolve().parents[1]
 SH = REPO / "install" / "install.sh"
 PS1 = REPO / "install" / "install.ps1"
-ISSUE = "https://github.com/streammomenttv/smtv/issues/new?template=bug.yml"
-RAW = "https://raw.githubusercontent.com/streammomenttv/smtv/main/install/"
+ISSUE = "https://github.com/yuriti/clipit/issues/new?template=bug.yml"
+RAW = "https://raw.githubusercontent.com/yuriti/clipit/main/install/"
 
 posix = pytest.mark.skipif(sys.platform == "win32", reason="install.sh is for macOS and Linux")
 

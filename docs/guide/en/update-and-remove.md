@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../update-and-remove.md) · **English** · [Қазақша](../kk/update-and-remove.md) · [Oʻzbekcha](../uz/update-and-remove.md) · [Azərbaycanca](../az/update-and-remove.md) · [Кыргызча](../ky/update-and-remove.md) · [简体中文](../zh-CN/update-and-remove.md) · [日本語](../ja/update-and-remove.md) · [한국어](../ko/update-and-remove.md) · [Tiếng Việt](../vi/update-and-remove.md) · [Bahasa Indonesia](../id/update-and-remove.md) · [हिन्दी](../hi/update-and-remove.md) · [বাংলা](../bn/update-and-remove.md) · [Español](../es/update-and-remove.md) · [Português](../pt-BR/update-and-remove.md) · [Deutsch](../de/update-and-remove.md)
 
-> 🌐 This page was translated automatically from the [Russian original](../update-and-remove.md). Help improve it: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls).
+> 🌐 This page was translated automatically from the [Russian original](../update-and-remove.md). Help improve it: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls).
 
 # Update and remove
 
@@ -20,7 +20,7 @@ Everything about updates is in **Settings → Computer check → Updates**.
 
 Downloaded SMTV for Windows or Mac? **Update** downloads the new installer, checks it and opens it: finish the
 install there (on a Mac, drag the new SMTV onto Applications and press **Replace**). The Windows copy from the ZIP does
-not update itself: download the new ZIP from [the release page](https://github.com/streammomenttv/smtv/releases/latest).
+not update itself: download the new ZIP from [the release page](https://github.com/yuriti/clipit/releases/latest).
 
 Installed SMTV in another way? In Docker a new version is a new image; see [for advanced users](../../advanced.md#docker).
 

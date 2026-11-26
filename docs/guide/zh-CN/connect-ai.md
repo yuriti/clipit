@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../connect-ai.md) · [English](../en/connect-ai.md) · [Қазақша](../kk/connect-ai.md) · [Oʻzbekcha](../uz/connect-ai.md) · [Azərbaycanca](../az/connect-ai.md) · [Кыргызча](../ky/connect-ai.md) · **简体中文** · [日本語](../ja/connect-ai.md) · [한국어](../ko/connect-ai.md) · [Tiếng Việt](../vi/connect-ai.md) · [Bahasa Indonesia](../id/connect-ai.md) · [हिन्दी](../hi/connect-ai.md) · [বাংলা](../bn/connect-ai.md) · [Español](../es/connect-ai.md) · [Português](../pt-BR/connect-ai.md) · [Deutsch](../de/connect-ai.md)
 
-> 🌐 本页面由机器自动翻译。欢迎帮助改进：[Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [原文: Русский](../connect-ai.md)。
+> 🌐 本页面由机器自动翻译。欢迎帮助改进：[Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [原文: Русский](../connect-ai.md)。
 
 # 选哪个 AI
 

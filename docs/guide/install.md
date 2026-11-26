@@ -7,10 +7,10 @@
 
 | Ваш компьютер | Скачать | Размер |
 |---|---|---|
-| **Windows 10 или 11** (64-битная) | [SMTV для Windows](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe) | около 130 МБ |
-| **Mac** — Apple silicon (M1 и новее) или Intel, macOS 13+ | [SMTV для Mac](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | около 270 МБ |
+| **Windows 10 или 11** (64-битная) | [SMTV для Windows](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | около 130 МБ |
+| **Mac** — Apple silicon (M1 и новее) или Intel, macOS 13+ | [SMTV для Mac](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | около 270 МБ |
 
-Все версии и их контрольные суммы — на [странице выпуска](https://github.com/streammomenttv/smtv/releases/latest).
+Все версии и их контрольные суммы — на [странице выпуска](https://github.com/yuriti/clipit/releases/latest).
 
 **Почему в первый раз система предупреждает.** У SMTV пока нет цифровой подписи. Подпись для Windows появится чуть
 позже, для macOS — при первой возможности; тогда это предупреждение пропадёт. Код SMTV открыт: любой может прочитать,
@@ -27,7 +27,7 @@
 
 Установщик ставит SMTV в вашу папку пользователя; SMTV появится в **Параметры → Приложения**, там же его можно удалить.
 
-**Без установки:** скачайте [ZIP-архив](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip),
+**Без установки:** скачайте [ZIP-архив](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip),
 распакуйте куда угодно (например, в «Документы») и откройте **Start SMTV** в папке `SMTV`. Такая копия не обновляется
 сама: новая версия — это новый архив.
 
@@ -72,7 +72,7 @@ SMTV проверит компьютер и покажет три шага до 
 (правой кнопкой мыши или Ctrl+V) и нажмите **Enter**:
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 Если включено Smart App Control, установщик поставит SMTV на подписанный Python с python.org (может предложить его
@@ -83,7 +83,7 @@ powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/str
 **Enter**:
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 Подождите, пока он напишет, что всё готово (2–10 минут). SMTV откроется сам; значок **SMTV** — в меню «Пуск» на
@@ -105,7 +105,7 @@ Windows, в «Программах» на Mac, в меню приложений 
   с SMTV.
 - **Mac: «Разрешить SMTV принимать входящие подключения?»** — разрешите, если хотите пользоваться SMTV с телефона.
 - **Антивирус** ругается? SMTV новый и пока без подписи, поэтому некоторые антивирусы к нему осторожны. Его код открыт,
-  а контрольные суммы каждого файла лежат на [странице выпуска](https://github.com/streammomenttv/smtv/releases/latest)
+  а контрольные суммы каждого файла лежат на [странице выпуска](https://github.com/yuriti/clipit/releases/latest)
   (`SHA256SUMS.txt`).
 
 Дальше: [первый клип](first-clip.md).

@@ -40,7 +40,7 @@ from smtv_core.tool import Tool
 from . import __version__
 
 # The public repository: issues, the README's «Report a problem». The one place to change when it moves.
-REPO = "streammomenttv/smtv"
+REPO = "yuriti/clipit"
 REPO_URL = f"https://github.com/{REPO}"
 ISSUE_TEMPLATE = "bug.yml"
 # GitHub answers 414 for longer addresses (about 8 KB); the summary is cut to stay under this.

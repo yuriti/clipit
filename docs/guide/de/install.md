@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../install.md) · [English](../en/install.md) · [Қазақша](../kk/install.md) · [Oʻzbekcha](../uz/install.md) · [Azərbaycanca](../az/install.md) · [Кыргызча](../ky/install.md) · [简体中文](../zh-CN/install.md) · [日本語](../ja/install.md) · [한국어](../ko/install.md) · [Tiếng Việt](../vi/install.md) · [Bahasa Indonesia](../id/install.md) · [हिन्दी](../hi/install.md) · [বাংলা](../bn/install.md) · [Español](../es/install.md) · [Português](../pt-BR/install.md) · **Deutsch**
 
-> 🌐 Diese Seite wurde automatisch übersetzt. Hilf mit, sie zu verbessern: [Weblate](https://hosted.weblate.org/engage/smtv/) · [Pull Request](https://github.com/streammomenttv/smtv/pulls) · [Original: Русский](../install.md).
+> 🌐 Diese Seite wurde automatisch übersetzt. Hilf mit, sie zu verbessern: [Weblate](https://hosted.weblate.org/engage/smtv/) · [Pull Request](https://github.com/yuriti/clipit/pulls) · [Original: Русский](../install.md).
 
 # SMTV installieren
 
@@ -10,10 +10,10 @@ brauchst kein Administratorpasswort.
 
 | Dein Computer | Download | Größe |
 |---|---|---|
-| **Windows 10 oder 11** (64-Bit) | [SMTV für Windows](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows-setup.exe) | etwa 130 MB |
-| **Mac** — Apple Silicon (M1 und neuer) oder Intel, macOS 13+ | [SMTV für Mac](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-mac.dmg) | etwa 270 MB |
+| **Windows 10 oder 11** (64-Bit) | [SMTV für Windows](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | etwa 130 MB |
+| **Mac** — Apple Silicon (M1 und neuer) oder Intel, macOS 13+ | [SMTV für Mac](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | etwa 270 MB |
 
-Alle Versionen und ihre Prüfsummen: [die Release-Seite](https://github.com/streammomenttv/smtv/releases/latest).
+Alle Versionen und ihre Prüfsummen: [die Release-Seite](https://github.com/yuriti/clipit/releases/latest).
 
 **Warum das System beim ersten Mal warnt.** SMTV hat noch keine digitale Signatur. Die Signatur für Windows kommt etwas
 später, die für macOS so bald wie möglich, und dann verschwindet diese Warnung. Der Code von SMTV ist offen: Jeder kann
@@ -32,7 +32,7 @@ nachlesen, was es tut.
 Das Installationsprogramm legt SMTV in deinen eigenen Benutzerordner; es erscheint unter **Einstellungen → Apps**
 (Settings → Apps), wo du es entfernen kannst.
 
-**Ohne Installation:** Lade [das ZIP](https://github.com/streammomenttv/smtv/releases/latest/download/SMTV-windows.zip)
+**Ohne Installation:** Lade [das ZIP](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)
 herunter, entpacke es irgendwohin (zum Beispiel in Dokumente) und öffne **Start SMTV** im Ordner `SMTV`. Diese Kopie
 aktualisiert sich nicht selbst: Eine neue Version ist ein neues ZIP.
 
@@ -79,7 +79,7 @@ benutzt. Es aktualisiert sich über das Fenster wie die heruntergeladene App.
 ein (Rechtsklick oder Strg+V) und drücke **Enter**:
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/yuriti/clipit/main/install/install.ps1 | iex"
 ```
 
 Bei eingeschaltetem Smart App Control installiert das Installationsprogramm SMTV auf dem signierten Python von
@@ -90,7 +90,7 @@ sagt, dass es `smtv` nicht ausführen kann, nimm stattdessen das **SMTV**-Symbol
 und drücke **Enter**:
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/streammomenttv/smtv/main/install/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/yuriti/clipit/main/install/install.sh | sh
 ```
 
 Warte, bis es meldet, dass es fertig ist (2–10 Minuten). SMTV öffnet sich von selbst; das **SMTV**-Symbol ist unter
@@ -113,7 +113,7 @@ Beide Installationsprogramme sind kurz und offen: [install.ps1](../../../install
 - **Mac: «SMTV möchte eingehende Netzwerkverbindungen akzeptieren»** – erlaube es, wenn du SMTV auf dem Handy nutzen
   willst.
 - **Das Antivirenprogramm** beschwert sich? SMTV ist neu und noch nicht signiert, deshalb sind manche Antivirenprogramme
-  vorsichtig damit. Sein Code ist offen, und die Prüfsummen jeder Datei stehen auf [der Release-Seite](https://github.com/streammomenttv/smtv/releases/latest)
+  vorsichtig damit. Sein Code ist offen, und die Prüfsummen jeder Datei stehen auf [der Release-Seite](https://github.com/yuriti/clipit/releases/latest)
   (`SHA256SUMS.txt`).
 
 Weiter: [dein erster Clip](first-clip.md).

@@ -32,7 +32,7 @@ jobs:
           persist-credentials: false
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          repository: ${{ github.repository_owner }}/prompts
+          repository: streammomenttv/prompts   # the prompts stay there while SMTV lives in yuriti/clipit
           path: prompts                # the bundled prompts must match it (check «sync»)
           persist-credentials: false
       - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0

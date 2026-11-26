@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../update-and-remove.md) · [English](../en/update-and-remove.md) · [Қазақша](../kk/update-and-remove.md) · [Oʻzbekcha](../uz/update-and-remove.md) · [Azərbaycanca](../az/update-and-remove.md) · [Кыргызча](../ky/update-and-remove.md) · **简体中文** · [日本語](../ja/update-and-remove.md) · [한국어](../ko/update-and-remove.md) · [Tiếng Việt](../vi/update-and-remove.md) · [Bahasa Indonesia](../id/update-and-remove.md) · [हिन्दी](../hi/update-and-remove.md) · [বাংলা](../bn/update-and-remove.md) · [Español](../es/update-and-remove.md) · [Português](../pt-BR/update-and-remove.md) · [Deutsch](../de/update-and-remove.md)
 
-> 🌐 本页面由机器自动翻译。欢迎帮助改进：[Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [原文: Русский](../update-and-remove.md)。
+> 🌐 本页面由机器自动翻译。欢迎帮助改进：[Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [原文: Русский](../update-and-remove.md)。
 
 # 更新和卸载
 
@@ -18,7 +18,7 @@ SMTV 每天检查一次新版本（可以关闭）。有新版本时，它会显
 
 下载的是 Windows 版或 Mac 版 SMTV？**Update**（更新）会下载新的安装程序，检查它并打开它：在那里完成安装（在 Mac 上，
 把新的 SMTV 拖到“应用程序”上，再点 **替换**（Replace））。ZIP 里的 Windows 版不会自己更新：请从
-[发布页面](https://github.com/streammomenttv/smtv/releases/latest)下载新的 ZIP。
+[发布页面](https://github.com/yuriti/clipit/releases/latest)下载新的 ZIP。
 
 用别的方式安装的 SMTV？在 Docker 中，新版本就是新镜像；见[给高级用户](../../advanced.md#docker)。
 

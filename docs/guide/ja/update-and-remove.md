@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../update-and-remove.md) · [English](../en/update-and-remove.md) · [Қазақша](../kk/update-and-remove.md) · [Oʻzbekcha](../uz/update-and-remove.md) · [Azərbaycanca](../az/update-and-remove.md) · [Кыргызча](../ky/update-and-remove.md) · [简体中文](../zh-CN/update-and-remove.md) · **日本語** · [한국어](../ko/update-and-remove.md) · [Tiếng Việt](../vi/update-and-remove.md) · [Bahasa Indonesia](../id/update-and-remove.md) · [हिन्दी](../hi/update-and-remove.md) · [বাংলা](../bn/update-and-remove.md) · [Español](../es/update-and-remove.md) · [Português](../pt-BR/update-and-remove.md) · [Deutsch](../de/update-and-remove.md)
 
-> 🌐 このページは自動翻訳されています。改善にご協力ください：[Weblate](https://hosted.weblate.org/engage/smtv/) · [プルリクエスト](https://github.com/streammomenttv/smtv/pulls) · [原文: Русский](../update-and-remove.md)。
+> 🌐 このページは自動翻訳されています。改善にご協力ください：[Weblate](https://hosted.weblate.org/engage/smtv/) · [プルリクエスト](https://github.com/yuriti/clipit/pulls) · [原文: Русский](../update-and-remove.md)。
 
 # アップデートと削除
 
@@ -21,7 +21,7 @@ SMTV は 1 日に 1 回、新しいバージョンを確認します（オフに
 Windows 版や Mac 版の SMTV をダウンロードしましたか？**Update**（アップデート）を押すと新しいインストーラーがダウンロードされ、
 確認されてから開きます：そこでインストールを最後まで進めてください（Mac では新しい SMTV をアプリケーションにドラッグし、
 **置き換える**（Replace）を押します）。ZIP 版の Windows のコピーは自動でアップデートされません：
-[リリースページ](https://github.com/streammomenttv/smtv/releases/latest)から新しい ZIP をダウンロードしてください。
+[リリースページ](https://github.com/yuriti/clipit/releases/latest)から新しい ZIP をダウンロードしてください。
 
 別の方法で SMTV をインストールしましたか？Docker では、新しいバージョンは新しいイメージです。[上級者向け](../../advanced.md#docker)を見てください。
 

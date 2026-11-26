@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../first-clip.md) · [English](../en/first-clip.md) · [Қазақша](../kk/first-clip.md) · [Oʻzbekcha](../uz/first-clip.md) · [Azərbaycanca](../az/first-clip.md) · [Кыргызча](../ky/first-clip.md) · [简体中文](../zh-CN/first-clip.md) · [日本語](../ja/first-clip.md) · [한국어](../ko/first-clip.md) · [Tiếng Việt](../vi/first-clip.md) · [Bahasa Indonesia](../id/first-clip.md) · **हिन्दी** · [বাংলা](../bn/first-clip.md) · [Español](../es/first-clip.md) · [Português](../pt-BR/first-clip.md) · [Deutsch](../de/first-clip.md)
 
-> 🌐 यह पेज अपने-आप अनुवाद किया गया है। इसे बेहतर बनाने में मदद करें: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [मूल पाठ: Русский](../first-clip.md).
+> 🌐 यह पेज अपने-आप अनुवाद किया गया है। इसे बेहतर बनाने में मदद करें: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [मूल पाठ: Русский](../first-clip.md).
 
 # आपकी पहली क्लिप
 

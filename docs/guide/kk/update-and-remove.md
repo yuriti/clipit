@@ -1,7 +1,7 @@
 <!-- languages -->
 [Русский](../update-and-remove.md) · [English](../en/update-and-remove.md) · **Қазақша** · [Oʻzbekcha](../uz/update-and-remove.md) · [Azərbaycanca](../az/update-and-remove.md) · [Кыргызча](../ky/update-and-remove.md) · [简体中文](../zh-CN/update-and-remove.md) · [日本語](../ja/update-and-remove.md) · [한국어](../ko/update-and-remove.md) · [Tiếng Việt](../vi/update-and-remove.md) · [Bahasa Indonesia](../id/update-and-remove.md) · [हिन्दी](../hi/update-and-remove.md) · [বাংলা](../bn/update-and-remove.md) · [Español](../es/update-and-remove.md) · [Português](../pt-BR/update-and-remove.md) · [Deutsch](../de/update-and-remove.md)
 
-> 🌐 Бұл бет автоматты түрде аударылған. Оны жақсартуға көмектесіңіз: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Түпнұсқа: Русский](../update-and-remove.md).
+> 🌐 Бұл бет автоматты түрде аударылған. Оны жақсартуға көмектесіңіз: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls) · [Түпнұсқа: Русский](../update-and-remove.md).
 
 # Жаңарту және жою
 
@@ -21,7 +21,7 @@ available** (… нұсқасы қолжетімді) деп жазады: **Upd
 
 SMTV-ді Windows немесе Mac үшін жүктеп алдыңыз ба? **Update** (Жаңарту) жаңа орнатқышты жүктеп алады, тексереді және
 ашады: орнатуды сонда аяқтаңыз (Mac-та жаңа SMTV-ді Applications қалтасына сүйреп, **Replace** (Ауыстыру) басыңыз).
-ZIP мұрағатынан алынған Windows көшірмесі өзі жаңармайды: жаңа ZIP-ті [шығарылым бетінен](https://github.com/streammomenttv/smtv/releases/latest) жүктеп алыңыз.
+ZIP мұрағатынан алынған Windows көшірмесі өзі жаңармайды: жаңа ZIP-ті [шығарылым бетінен](https://github.com/yuriti/clipit/releases/latest) жүктеп алыңыз.
 
 SMTV-ді басқа жолмен орнаттыңыз ба? Docker-де жаңа нұсқа — жаңа образ; [тәжірибелі пайдаланушыларға](../../advanced.md#docker) бетін қараңыз.
 
