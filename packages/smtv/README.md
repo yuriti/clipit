@@ -35,9 +35,9 @@ smtv doctor
 The SMTV window shows the entries newer than the installed version before an update: one `### <version>` per release,
 one `- ` line per change, plain text.
 
-### 0.1.0.dev0
+### 0.1.0
 - First build: SMTV in its own window with Home, Plugins, Settings and the phone by QR code.
-- Settings → AI: connect the AI through your account, your own key, or for free on this computer; Settings → AI steps: pick which AI does each step.
+- Settings → AI: connect the AI with your own key or for free on this computer (the StreamMoment account is coming soon); Settings → AI steps: pick which AI does each step.
 - VodCut: a stream recording or a file in, vertical clips with captions and the streamer's webcam out, plus a recap.
 - Requests wait in a queue; updates and plugins are installed from the window.
 - Settings → About: what's new, the SMTV core, what is coming, and support for the project.

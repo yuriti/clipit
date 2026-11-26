@@ -1,9 +1,11 @@
 <!-- languages -->
-[English](../account.md) · [Русский](../ru/account.md) · **Қазақша** · [Oʻzbekcha](../uz/account.md) · [Azərbaycanca](../az/account.md) · [Кыргызча](../ky/account.md) · [简体中文](../zh-CN/account.md) · [日本語](../ja/account.md) · [한국어](../ko/account.md) · [Tiếng Việt](../vi/account.md) · [Bahasa Indonesia](../id/account.md) · [हिन्दी](../hi/account.md) · [বাংলা](../bn/account.md) · [Español](../es/account.md) · [Português](../pt-BR/account.md) · [Deutsch](../de/account.md)
+[Русский](../account.md) · [English](../en/account.md) · **Қазақша** · [Oʻzbekcha](../uz/account.md) · [Azərbaycanca](../az/account.md) · [Кыргызча](../ky/account.md) · [简体中文](../zh-CN/account.md) · [日本語](../ja/account.md) · [한국어](../ko/account.md) · [Tiếng Việt](../vi/account.md) · [Bahasa Indonesia](../id/account.md) · [हिन्दी](../hi/account.md) · [বাংলা](../bn/account.md) · [Español](../es/account.md) · [Português](../pt-BR/account.md) · [Deutsch](../de/account.md)
 
-> 🌐 Бұл бет автоматты түрде аударылған. Оны жақсартуға көмектесіңіз: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls).
+> 🌐 Бұл бет автоматты түрде аударылған. Оны жақсартуға көмектесіңіз: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Түпнұсқа: Русский](../account.md).
 
 # StreamMoment аккаунты
+
+> 🕓 **Жақында.** StreamMoment аккаунтына кіру әлі ашылмаған. Оған дейін SMTV аккаунтсыз толық жұмыс істейді: [өз кілтіңізді](get-a-key.md) немесе [компьютердегі тегін ЖИ-ді](free-ai-on-your-computer.md) қолданыңыз, ал сілтемелер үшін **Download links myself** (Settings → VodCut) қосқышын қосыңыз. Бұл бет аккаунт ашылғаннан кейін қалай жұмыс істейтінін сипаттайды.
 
 SMTV-ге ЖИ берудің ең оңай жолы. Сіз кіресіз, балансты толтырасыз, ал SMTV StreamMoment-тің ЖИ-ін пайдаланады — кілт
 те, баптау да керек емес. Сондай-ақ аккаунт SMTV үшін Twitch пен YouTube жазбаларын **сілтемелер** бойынша алып

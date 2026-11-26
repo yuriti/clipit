@@ -1,9 +1,11 @@
 <!-- languages -->
-[English](../account.md) · [Русский](../ru/account.md) · [Қазақша](../kk/account.md) · [Oʻzbekcha](../uz/account.md) · [Azərbaycanca](../az/account.md) · [Кыргызча](../ky/account.md) · [简体中文](../zh-CN/account.md) · [日本語](../ja/account.md) · **한국어** · [Tiếng Việt](../vi/account.md) · [Bahasa Indonesia](../id/account.md) · [हिन्दी](../hi/account.md) · [বাংলা](../bn/account.md) · [Español](../es/account.md) · [Português](../pt-BR/account.md) · [Deutsch](../de/account.md)
+[Русский](../account.md) · [English](../en/account.md) · [Қазақша](../kk/account.md) · [Oʻzbekcha](../uz/account.md) · [Azərbaycanca](../az/account.md) · [Кыргызча](../ky/account.md) · [简体中文](../zh-CN/account.md) · [日本語](../ja/account.md) · **한국어** · [Tiếng Việt](../vi/account.md) · [Bahasa Indonesia](../id/account.md) · [हिन्दी](../hi/account.md) · [বাংলা](../bn/account.md) · [Español](../es/account.md) · [Português](../pt-BR/account.md) · [Deutsch](../de/account.md)
 
-> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/streammomenttv/smtv/pulls).
+> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/streammomenttv/smtv/pulls) · [원문: Русский](../account.md).
 
 # StreamMoment 계정
+
+> 🕓 **곧 제공됩니다.** StreamMoment 계정 로그인은 아직 열리지 않았습니다. 그때까지 SMTV는 계정 없이도 모든 기능을 쓸 수 있습니다: [내 키](get-a-key.md) 또는 [컴퓨터의 무료 AI](free-ai-on-your-computer.md)를 사용하고, 링크는 **Download links myself** (Settings → VodCut)를 켜세요. 이 페이지는 계정이 열린 뒤의 사용법을 설명합니다.
 
 SMTV에 AI를 연결하는 가장 간단한 방법입니다. 로그인하고 잔액을 충전하면 SMTV가 StreamMoment의 AI를 사용합니다 — 키도, 설정도 필요 없습니다.
 계정은 SMTV를 위해 Twitch와 YouTube 녹화본 **링크**도 가져옵니다.

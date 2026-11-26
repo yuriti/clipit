@@ -16,7 +16,7 @@
 При первом запуске SMTV проверит компьютер и предложит скачать распознавание речи для вашего языка
 («Проверка компьютера» → «Исправить»). Это нужно один раз: от 0,9 до 2,5 ГБ.
 
-Помощь: https://github.com/streammomenttv/smtv/blob/main/docs/guide/ru/install.md
+Помощь: https://github.com/streammomenttv/smtv/blob/main/docs/guide/install.md
 
 
 HOW TO OPEN SMTV
@@ -37,4 +37,4 @@ warning goes away. SMTV's code is open: https://github.com/streammomenttv/smtv
 On the first start SMTV checks this computer and offers to download speech recognition for your
 language («Check this computer» → «Fix»). Once, 0.9 to 2.5 GB.
 
-Help: https://github.com/streammomenttv/smtv/blob/main/docs/guide/install.md
+Help: https://github.com/streammomenttv/smtv/blob/main/docs/guide/en/install.md

@@ -3214,7 +3214,7 @@ wheels = [
 
 [[package]]
 name = "smtv"
-version = "0.1.0.dev0"
+version = "0.1.0"
 source = { editable = "packages/smtv" }
 dependencies = [
     { name = "pyobjc-framework-usernotifications", version = "12.2.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' and sys_platform == 'darwin'" },
@@ -3243,7 +3243,7 @@ provides-extras = ["vodcut", "all"]
 
 [[package]]
 name = "smtv-core"
-version = "0.1.0.dev0"
+version = "0.1.0"
 source = { editable = "packages/smtv-core" }
 dependencies = [
     { name = "fonttools", version = "4.65.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -3478,7 +3478,7 @@ wheels = [
 
 [[package]]
 name = "vodcut"
-version = "0.1.0.dev0"
+version = "0.1.0"
 source = { editable = "packages/vodcut" }
 dependencies = [
     { name = "smtv" },

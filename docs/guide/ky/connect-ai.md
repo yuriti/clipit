@@ -1,7 +1,7 @@
 <!-- languages -->
-[English](../connect-ai.md) · [Русский](../ru/connect-ai.md) · [Қазақша](../kk/connect-ai.md) · [Oʻzbekcha](../uz/connect-ai.md) · [Azərbaycanca](../az/connect-ai.md) · **Кыргызча** · [简体中文](../zh-CN/connect-ai.md) · [日本語](../ja/connect-ai.md) · [한국어](../ko/connect-ai.md) · [Tiếng Việt](../vi/connect-ai.md) · [Bahasa Indonesia](../id/connect-ai.md) · [हिन्दी](../hi/connect-ai.md) · [বাংলা](../bn/connect-ai.md) · [Español](../es/connect-ai.md) · [Português](../pt-BR/connect-ai.md) · [Deutsch](../de/connect-ai.md)
+[Русский](../connect-ai.md) · [English](../en/connect-ai.md) · [Қазақша](../kk/connect-ai.md) · [Oʻzbekcha](../uz/connect-ai.md) · [Azərbaycanca](../az/connect-ai.md) · **Кыргызча** · [简体中文](../zh-CN/connect-ai.md) · [日本語](../ja/connect-ai.md) · [한국어](../ko/connect-ai.md) · [Tiếng Việt](../vi/connect-ai.md) · [Bahasa Indonesia](../id/connect-ai.md) · [हिन्दी](../hi/connect-ai.md) · [বাংলা](../bn/connect-ai.md) · [Español](../es/connect-ai.md) · [Português](../pt-BR/connect-ai.md) · [Deutsch](../de/connect-ai.md)
 
-> 🌐 Бул барак автоматтык түрдө которулган. Аны жакшыртууга жардам бериңиз: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls).
+> 🌐 Бул барак автоматтык түрдө которулган. Аны жакшыртууга жардам бериңиз: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Түп нуска: Русский](../connect-ai.md).
 
 # Кайсы ЖИни тандоо керек
 

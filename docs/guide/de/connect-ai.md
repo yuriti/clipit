@@ -1,7 +1,7 @@
 <!-- languages -->
-[English](../connect-ai.md) · [Русский](../ru/connect-ai.md) · [Қазақша](../kk/connect-ai.md) · [Oʻzbekcha](../uz/connect-ai.md) · [Azərbaycanca](../az/connect-ai.md) · [Кыргызча](../ky/connect-ai.md) · [简体中文](../zh-CN/connect-ai.md) · [日本語](../ja/connect-ai.md) · [한국어](../ko/connect-ai.md) · [Tiếng Việt](../vi/connect-ai.md) · [Bahasa Indonesia](../id/connect-ai.md) · [हिन्दी](../hi/connect-ai.md) · [বাংলা](../bn/connect-ai.md) · [Español](../es/connect-ai.md) · [Português](../pt-BR/connect-ai.md) · **Deutsch**
+[Русский](../connect-ai.md) · [English](../en/connect-ai.md) · [Қазақша](../kk/connect-ai.md) · [Oʻzbekcha](../uz/connect-ai.md) · [Azərbaycanca](../az/connect-ai.md) · [Кыргызча](../ky/connect-ai.md) · [简体中文](../zh-CN/connect-ai.md) · [日本語](../ja/connect-ai.md) · [한국어](../ko/connect-ai.md) · [Tiếng Việt](../vi/connect-ai.md) · [Bahasa Indonesia](../id/connect-ai.md) · [हिन्दी](../hi/connect-ai.md) · [বাংলা](../bn/connect-ai.md) · [Español](../es/connect-ai.md) · [Português](../pt-BR/connect-ai.md) · **Deutsch**
 
-> 🌐 Diese Seite wurde automatisch übersetzt. Hilf mit, sie zu verbessern: [Weblate](https://hosted.weblate.org/engage/smtv/) · [Pull Request](https://github.com/streammomenttv/smtv/pulls).
+> 🌐 Diese Seite wurde automatisch übersetzt. Hilf mit, sie zu verbessern: [Weblate](https://hosted.weblate.org/engage/smtv/) · [Pull Request](https://github.com/streammomenttv/smtv/pulls) · [Original: Русский](../connect-ai.md).
 
 # Welche KI wählen
 

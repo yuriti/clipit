@@ -7,7 +7,7 @@ import shutil
 from pathlib import Path
 
 from smtv_core import agents
-from smtv_core.checks import FAIL, OK, SIGN_IN, WARN, Check, Recipe, check_ffmpeg, check_model, check_speech
+from smtv_core.checks import FAIL, OK, WARN, Check, Recipe, check_ffmpeg, check_model, check_speech
 from smtv_core.events import Journal
 from smtv_core.settings import Settings
 from smtv_core.tool import Tool
@@ -50,8 +50,9 @@ def _links_check(settings: Settings) -> Check:
     name = "vodcut: links (through StreamMoment)"
     if who:
         return Check(name, OK, f"signed in as {who.get('name') or who.get('provider') or 'an account'}", id="vodcut-links")
-    return Check(name, WARN, "not signed in: links need a StreamMoment account, files work without it",
-                 "profile menu → Sign in", id="vodcut-links", actions=(SIGN_IN,))
+    # sign-in to StreamMoment is not open yet (0.1.0): the way that works now, not «sign in»
+    return Check(name, WARN, "links through a StreamMoment account are coming soon; a video file works now. For links, turn "
+                 "on «Download links myself» in Settings → VodCut and install yt-dlp", local_download.install_hint(), id="vodcut-links")
 
 
 def _cmd_check(_args, _tools, _broken) -> int:

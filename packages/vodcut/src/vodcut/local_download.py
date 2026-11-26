@@ -78,7 +78,7 @@ def _yt_dlp():
     try:
         import yt_dlp
     except ImportError as e:
-        raise LocalDownloadError(f"«Download on this computer» is on, but yt-dlp is not installed: {install_hint()}") from e
+        raise LocalDownloadError(f"«Download links myself» is on, but yt-dlp is not installed: {install_hint()}") from e
     return yt_dlp
 
 

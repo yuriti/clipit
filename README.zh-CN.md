@@ -1,5 +1,6 @@
-<!-- Translations: README.<language>.md, the same structure. A change here changes README.ru.md in the same PR;
-     the other languages follow (each says it was translated automatically and links Weblate). Pictures: docs/images/. -->
+<!-- The source is the Russian README.md; translations: README.<language>.md, the same structure. A change to README.md
+     changes README.en.md in the same PR; the other languages follow (each says it was translated automatically from
+     the Russian original and links it and Weblate). Pictures: docs/images/. -->
 <div align="center">
 
 # SMTV
@@ -7,9 +8,9 @@
 **把一场长直播变成短视频切片和回顾视频。免费，在你自己的电脑上完成。**
 
 <!-- languages -->
-[English](README.md) · [Русский](README.ru.md) · [Қазақша](README.kk.md) · [Oʻzbekcha](README.uz.md) · [Azərbaycanca](README.az.md) · [Кыргызча](README.ky.md) · **简体中文** · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [বাংলা](README.bn.md) · [Español](README.es.md) · [Português](README.pt-BR.md) · [Deutsch](README.de.md)
+[Русский](README.md) · [English](README.en.md) · [Қазақша](README.kk.md) · [Oʻzbekcha](README.uz.md) · [Azərbaycanca](README.az.md) · [Кыргызча](README.ky.md) · **简体中文** · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [বাংলা](README.bn.md) · [Español](README.es.md) · [Português](README.pt-BR.md) · [Deutsch](README.de.md)
 
-> 🌐 本页面由机器自动翻译。欢迎帮助改进：[Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls)。
+> 🌐 本页面由机器自动翻译。欢迎帮助改进：[Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [原文: Русский](README.md)。
 
 [![最新版本](https://img.shields.io/github/v/release/streammomenttv/smtv?label=release)](https://github.com/streammomenttv/smtv/releases/latest)
 [![下载量](https://img.shields.io/pepy/dt/smtv?label=downloads)](https://pepy.tech/projects/smtv)

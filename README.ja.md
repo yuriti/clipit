@@ -1,5 +1,6 @@
-<!-- Translations: README.<language>.md, the same structure. A change here changes README.ru.md in the same PR;
-     the other languages follow (each says it was translated automatically and links Weblate). Pictures: docs/images/. -->
+<!-- The source is the Russian README.md; translations: README.<language>.md, the same structure. A change to README.md
+     changes README.en.md in the same PR; the other languages follow (each says it was translated automatically from
+     the Russian original and links it and Weblate). Pictures: docs/images/. -->
 <div align="center">
 
 # SMTV
@@ -7,9 +8,9 @@
 **長い配信を、短いクリップとまとめ動画に。無料で、あなたのパソコンの中で。**
 
 <!-- languages -->
-[English](README.md) · [Русский](README.ru.md) · [Қазақша](README.kk.md) · [Oʻzbekcha](README.uz.md) · [Azərbaycanca](README.az.md) · [Кыргызча](README.ky.md) · [简体中文](README.zh-CN.md) · **日本語** · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [বাংলা](README.bn.md) · [Español](README.es.md) · [Português](README.pt-BR.md) · [Deutsch](README.de.md)
+[Русский](README.md) · [English](README.en.md) · [Қазақша](README.kk.md) · [Oʻzbekcha](README.uz.md) · [Azərbaycanca](README.az.md) · [Кыргызча](README.ky.md) · [简体中文](README.zh-CN.md) · **日本語** · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [বাংলা](README.bn.md) · [Español](README.es.md) · [Português](README.pt-BR.md) · [Deutsch](README.de.md)
 
-> 🌐 このページは自動翻訳されています。改善にご協力ください：[Weblate](https://hosted.weblate.org/engage/smtv/) · [プルリクエスト](https://github.com/streammomenttv/smtv/pulls)。
+> 🌐 このページは自動翻訳されています。改善にご協力ください：[Weblate](https://hosted.weblate.org/engage/smtv/) · [プルリクエスト](https://github.com/streammomenttv/smtv/pulls) · [原文: Русский](README.md)。
 
 [![最新リリース](https://img.shields.io/github/v/release/streammomenttv/smtv?label=release)](https://github.com/streammomenttv/smtv/releases/latest)
 [![ダウンロード数](https://img.shields.io/pepy/dt/smtv?label=downloads)](https://pepy.tech/projects/smtv)

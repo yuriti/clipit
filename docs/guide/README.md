@@ -1,19 +1,19 @@
 <!-- languages -->
-**English** · [Русский](ru/README.md) · [Қазақша](kk/README.md) · [Oʻzbekcha](uz/README.md) · [Azərbaycanca](az/README.md) · [Кыргызча](ky/README.md) · [简体中文](zh-CN/README.md) · [日本語](ja/README.md) · [한국어](ko/README.md) · [Tiếng Việt](vi/README.md) · [Bahasa Indonesia](id/README.md) · [हिन्दी](hi/README.md) · [বাংলা](bn/README.md) · [Español](es/README.md) · [Português](pt-BR/README.md) · [Deutsch](de/README.md)
+**Русский** · [English](en/README.md) · [Қазақша](kk/README.md) · [Oʻzbekcha](uz/README.md) · [Azərbaycanca](az/README.md) · [Кыргызча](ky/README.md) · [简体中文](zh-CN/README.md) · [日本語](ja/README.md) · [한국어](ko/README.md) · [Tiếng Việt](vi/README.md) · [Bahasa Indonesia](id/README.md) · [हिन्दी](hi/README.md) · [বাংলা](bn/README.md) · [Español](es/README.md) · [Português](pt-BR/README.md) · [Deutsch](de/README.md)
 
-# SMTV guides
+# Инструкции SMTV
 
-Step by step, for people who have never installed anything from a terminal. Start at the top.
+По шагам, для тех, кто ни разу ничего не ставил из терминала. Начните сверху.
 
-1. [Install SMTV](install.md) — Windows, Mac, Linux, and what to press when the system warns you
-2. [Your first clip](first-clip.md) — from a link or a file to a finished clip
-3. [Which AI to choose](connect-ai.md) — the three ways, side by side
-   - [The StreamMoment account](account.md) — the simplest way
-   - [Where to get a key](get-a-key.md) — services with a free or cheap plan
-   - [A free AI on your computer](free-ai-on-your-computer.md) — Ollama or LM Studio with Qwen
-4. [SMTV on your phone](phone.md) — scan a QR code
-5. [Speech and languages](speech-and-languages.md) — which languages SMTV understands
-6. [Update and remove](update-and-remove.md)
-7. [Something went wrong](troubleshooting.md) — computer check, **Fix**, **Report a problem**
+1. [Установка SMTV](install.md) — Windows, Mac, Linux и что нажать, если система предупреждает
+2. [Ваш первый клип](first-clip.md) — от ссылки или файла до готового клипа
+3. [Какую нейросеть выбрать](connect-ai.md) — три способа рядом
+   - [Где взять ключ](get-a-key.md) — сервисы с бесплатным или дешёвым тарифом
+   - [Бесплатная нейросеть на вашем компьютере](free-ai-on-your-computer.md) — Ollama или LM Studio с Qwen
+   - [Аккаунт StreamMoment](account.md) — скоро: ссылки через наш сервер и подписка
+4. [SMTV на телефоне](phone.md) — наведите камеру на QR-код
+5. [Речь и языки](speech-and-languages.md) — какие языки понимает SMTV
+6. [Обновление и удаление](update-and-remove.md)
+7. [Что-то пошло не так](troubleshooting.md) — проверка компьютера, **Исправить**, **Сообщить о проблеме**
 
-Back to the [main page](../../README.md). For advanced users: [Docker, commands, every AI service](../advanced.md).
+Назад на [главную страницу](../../README.md). Для опытных пользователей: [Docker, команды, все сервисы нейросетей](../advanced.md).

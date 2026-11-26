@@ -1,65 +1,72 @@
-# Changes
+# Изменения
 
-What changes for the people who use SMTV, newest first. `smtv`, `smtv-core` and `vodcut` always come out together
-under one version number.
+Что меняется для тех, кто пользуется SMTV, — сначала самое новое. `smtv`, `smtv-core` и `vodcut` всегда выходят
+вместе, под одним номером версии.
 
-## 0.1.0 — first release (date: the day it is published)
+## 0.1.0 — первый выпуск (2026-11-26)
 
-The first public version: SMTV turns a long stream recording into vertical clips and a recap on your own computer.
+Первая публичная версия: SMTV превращает длинную запись стрима в вертикальные клипы и пересказ прямо на вашем
+компьютере.
 
-### Making clips
+### Клипы
 
-- **VodCut**: a link to a Twitch or YouTube recording, or a video file, in — 6–30 vertical clips out, for streams of
-  6–12 hours too. Clips appear one by one while the rest are still being made.
-- The streamer's webcam goes into the vertical frame next to the game; captions word by word; a short hook line at
-  the start of each clip.
-- **Precise trimming**: the start and end of every clip are moved to where the thought begins and ends.
-- **A second look**: each finished clip is checked like an editor would, and fixed once when something is off
-  (the layout, where the captions sit).
-- **Recap**: a 20–30 minute horizontal video that retells the whole stream.
-- Even loudness, the level platforms play shorts at; sponsor banners and promo codes blurred; slurs against groups of
-  people covered with a tone (ordinary swearing stays). Each can be switched off.
-- Before a request starts, SMTV says how long it should take; an interrupted request carries on from where it stopped.
-- Requests wait in a queue and run one after another.
-- A link is downloaded through the StreamMoment account, which stores nothing; a video file of your own needs no
-  account. «Download links myself» does it on this computer instead (yt-dlp, at your own risk).
+- **VodCut**: на входе — ссылка на запись с Twitch или YouTube либо видеофайл, на выходе — 6–30 вертикальных клипов,
+  в том числе из стримов на 6–12 часов. Клипы появляются по одному, пока остальные ещё делаются.
+- Вебкамера стримера встаёт в вертикальный кадр рядом с игрой; субтитры по словам; в начале каждого клипа — короткая
+  цепляющая фраза.
+- **Точная обрезка**: начало и конец каждого клипа сдвигаются туда, где мысль начинается и заканчивается.
+- **Второй взгляд**: каждый готовый клип проверяется, как это сделал бы монтажёр, и один раз исправляется, если что-то
+  не так (раскладка кадра, место субтитров).
+- **Пересказ**: горизонтальное видео на 20–30 минут, которое пересказывает весь стрим.
+- Ровная громкость — на том уровне, на котором площадки играют шортсы; рекламные баннеры и промокоды размываются;
+  оскорбления групп людей закрываются звуком (обычный мат остаётся). Каждое из этого можно выключить.
+- Перед запуском запроса SMTV говорит, сколько он займёт; прерванный запрос продолжается с того места, где
+  остановился.
+- Запросы ждут в очереди и выполняются по одному.
+- Свой видеофайл работает всегда. Ссылки на Twitch и YouTube: включите «Скачивать ссылки самому», и SMTV скачает их на
+  этом компьютере программой yt-dlp (её ставит проверка компьютера; на свой риск). Ссылки через аккаунт StreamMoment
+  в SMTV уже есть и откроются вместе со входом.
 
-### Choosing the AI
+### Выбор нейросети
 
-- Three simple ways: through the StreamMoment account, with your own key from an AI service, or a free AI on your
-  computer (Ollama, LM Studio and similar).
-- Many services by your own key: OpenAI, Claude, Gemini, OpenRouter, DeepSeek, Groq, Mistral and more.
-- Each step of the work already has a suitable model; changing it is one button.
+- Два способа, которые работают уже сейчас: свой ключ от сервиса нейросети или бесплатная нейросеть на вашем
+  компьютере (Ollama, LM Studio и похожие). Третий, через аккаунт StreamMoment, помечен «скоро», пока вход на сайте не
+  откроется.
+- Много сервисов по своему ключу: OpenAI, Claude, Gemini, OpenRouter, DeepSeek, Groq, Mistral и другие.
+- У каждого шага работы уже есть подходящая модель; поменять её — одна кнопка.
 
-### Speech to text, on your computer
+### Речь в текст — на вашем компьютере
 
-- Russian with GigaAM-v3, 25 European languages with Parakeet v3, every other language with Whisper; the language of
-  the stream is found by itself or chosen by hand.
-- Models are downloaded once, when first needed, and can be removed in Settings.
+- Русский — GigaAM-v3, 25 европейских языков — Parakeet v3, остальные языки — Whisper; язык стрима определяется сам
+  или выбирается вручную.
+- Модели скачиваются один раз, когда впервые понадобятся, и их можно удалить в настройках.
 
-### The program
+### Программа
 
-- Its own window and icon on macOS, Windows and Linux. **A download for Windows and Mac**: an installer for Windows
-  (and a ZIP without installation), one `.dmg` for every Mac, Apple silicon and Intel (SMTV starts the one made for the
-  Mac's processor) — Python, ffmpeg with captions and the caption font inside, 130–270 MB; speech recognition is downloaded on the first start, only for your
-  language. Not signed yet: the system warns the first time, and the guide says what to press. Or one command in a
-  terminal (also Linux and Windows with Smart App Control). No administrator password either way. The window's title
-  bar follows the light, dark or system theme on macOS and Windows.
-- **Computer check** finds what is missing and fixes it with one button (for example, installs ffmpeg).
-- **Phone**: open SMTV on a phone in the same Wi-Fi by a QR code and watch the clips there. Connections that send
-  nothing are closed after 30 seconds, and at most 64 are answered at once.
-- **Report a problem**: an archive with what went wrong, without keys, and a ready GitHub issue; nothing is sent by
-  itself.
-- Updates and new tools from inside the window; updates come from a list of releases signed by the authors.
-- English and Russian; the window speaks the system's language, and more languages can be added through Weblate.
-- **Docker** image for a home server or Linux without a desktop.
-- `smtv uninstall` and Settings → Remove SMTV; clips stay unless you ask otherwise.
-- **Step-by-step guides** for newcomers (`docs/guide/`): install, the first clip, a free AI on your computer, where
-  to get a key, the account, the phone, languages, updates, what to do when something goes wrong; the README and the
-  guides in 16 languages (the first translations made automatically). Settings → AI links them.
+- Своё окно и значок на macOS, Windows и Linux. **Скачать для Windows и Mac**: установщик для Windows (и ZIP без
+  установки), один `.dmg` для любого Mac, Apple silicon и Intel (SMTV сам запускает версию для процессора этого Mac), —
+  внутри Python, ffmpeg с субтитрами и шрифт субтитров, 130–270 МБ; распознавание речи скачивается при первом запуске
+  и только для вашего языка. Подписи пока нет: при первом запуске система предупредит, а инструкция подскажет, что
+  нажать. Или одна команда в терминале (также для Linux и Windows со Smart App Control). Пароль администратора не
+  нужен ни в каком случае. Заголовок окна на macOS и Windows следует светлой, тёмной или системной теме.
+- **Проверка компьютера** находит, чего не хватает, и исправляет это одной кнопкой (например, ставит ffmpeg).
+- **Телефон**: откройте SMTV на телефоне в той же Wi-Fi по QR-коду и смотрите клипы там. Соединения, которые ничего
+  не присылают, закрываются через 30 секунд, и одновременно обслуживается не больше 64.
+- **Сообщить о проблеме**: архив с тем, что пошло не так, без ключей, и готовая задача на GitHub; само ничего не
+  отправляется.
+- Обновления и новые инструменты — прямо из окна; обновления приходят из списка выпусков, подписанного авторами.
+- Русский и английский; окно говорит на языке системы, а новые языки можно добавить через Weblate.
+- **Docker**-образ для домашнего сервера или Linux без рабочего стола.
+- `smtv uninstall` и «Настройки → Удалить SMTV»; клипы остаются, если не попросить иначе.
+- **Пошаговые инструкции** для новичков (`docs/guide/`): установка, первый клип, бесплатная нейросеть на компьютере,
+  где взять ключ, аккаунт, телефон, языки, обновления, что делать, если что-то не так. README и инструкции написаны
+  по-русски и переведены ещё на 15 языков (первые переводы сделаны автоматически). Ссылки на них — в «Настройки →
+  Нейросеть».
 
-### Not yet
+### Пока нет
 
-- A signature for the apps (so the system no longer warns): for Windows a little later, for macOS as soon as
-  possible.
-- LiveCut, clips while a stream is still live: after this release.
+- Вход в аккаунт StreamMoment (его нейросеть с оплатой с баланса и ссылки через него): в SMTV он уже есть и пишет
+  «скоро», пока вход на сайте не откроется.
+- Подпись приложений (чтобы система больше не предупреждала): для Windows — чуть позже, для macOS — при первой
+  возможности.
+- LiveCut — клипы, пока стрим ещё идёт: после этого выпуска.

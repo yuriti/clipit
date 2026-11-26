@@ -1,30 +1,35 @@
 <!-- languages -->
-**English** · [Русский](ru/connect-ai.md) · [Қазақша](kk/connect-ai.md) · [Oʻzbekcha](uz/connect-ai.md) · [Azərbaycanca](az/connect-ai.md) · [Кыргызча](ky/connect-ai.md) · [简体中文](zh-CN/connect-ai.md) · [日本語](ja/connect-ai.md) · [한국어](ko/connect-ai.md) · [Tiếng Việt](vi/connect-ai.md) · [Bahasa Indonesia](id/connect-ai.md) · [हिन्दी](hi/connect-ai.md) · [বাংলা](bn/connect-ai.md) · [Español](es/connect-ai.md) · [Português](pt-BR/connect-ai.md) · [Deutsch](de/connect-ai.md)
+**Русский** · [English](en/connect-ai.md) · [Қазақша](kk/connect-ai.md) · [Oʻzbekcha](uz/connect-ai.md) · [Azərbaycanca](az/connect-ai.md) · [Кыргызча](ky/connect-ai.md) · [简体中文](zh-CN/connect-ai.md) · [日本語](ja/connect-ai.md) · [한국어](ko/connect-ai.md) · [Tiếng Việt](vi/connect-ai.md) · [Bahasa Indonesia](id/connect-ai.md) · [हिन्दी](hi/connect-ai.md) · [বাংলা](bn/connect-ai.md) · [Español](es/connect-ai.md) · [Português](pt-BR/connect-ai.md) · [Deutsch](de/connect-ai.md)
 
-# Which AI to choose
+# Какую нейросеть выбрать
 
-SMTV turns speech into text by itself, on your computer. To choose the best moments, it asks an AI (a language
-model, like the one behind ChatGPT). Pick **one** of three ways in **Settings → AI**. You can change it any time.
+Речь в текст SMTV переводит сам, на вашем компьютере. Чтобы выбрать лучшие моменты, он обращается к нейросети
+(языковой модели — такой, как та, что работает в ChatGPT). Выберите **один** из трёх способов в **Настройки →
+Нейросеть**. Поменять можно в любой момент.
 
-<img src="../images/ai.png" alt="Settings → AI: three ways to connect an AI" width="820">
+<img src="../images/ai.png" alt="Настройки → Нейросеть: три способа подключить нейросеть" width="820">
 
-| | ⭐ Through the account | 🔑 Your own key | 💻 Free, on your computer |
+| | 🔑 Свой ключ | 💻 Бесплатно на этом компьютере | 🕓 Подписка StreamMoment — *скоро* |
 |---|---|---|---|
-| What you do | Sign in, top up the balance | Get a key on a service's site, paste it | Install Ollama or LM Studio and a model |
-| Cost | Pay as you go from the balance | The service's prices; some have a free plan | Free |
-| Clip quality | Best (strong cloud models) | As good as the model you pick | Weaker |
-| Computer | Any | Any | A strong graphics card: 8–16 GB of video memory |
-| Links to Twitch and YouTube | Yes | Only with the account too (or a file) | Only with the account too (or a file) |
-| Guide | [Account](account.md) | [Where to get a key](get-a-key.md) | [Free AI on your computer](free-ai-on-your-computer.md) |
+| Что сделать | Получить ключ на сайте сервиса, вставить его | Поставить Ollama или LM Studio и нейросеть | Войти в аккаунт и оформить подписку (вход пока не открыт) |
+| Цена | Цены сервиса; у некоторых есть бесплатный тариф | Бесплатно | Месячная подписка |
+| Качество клипов | Зависит от выбранной нейросети | Слабее | Сильная облачная нейросеть OpenAI |
+| Компьютер | Любой | Мощная видеокарта: 8–16 ГБ видеопамяти | Любой |
+| Инструкция | [Где взять ключ](get-a-key.md) | [Бесплатная нейросеть на компьютере](free-ai-on-your-computer.md) | [Аккаунт](account.md) |
 
-**Not sure?** Take the account: nothing to set up. Want to spend nothing and have a gaming PC? Try the free way
-first. Already pay for OpenAI, Claude or Gemini? Use your key.
+**Не уверены?** Уже платите за OpenAI, Claude или Gemini? Используйте свой ключ. Не хотите тратить ни рубля и есть
+игровой компьютер? Попробуйте бесплатный способ. Ни то ни другое? Быстрее всего начать с ключа сервиса с бесплатным или
+дешёвым тарифом ([где его взять](get-a-key.md)).
 
-**What is a key?** A long password for an AI service (an «API key»). The service's site gives it to you after you sign
-up. SMTV keeps it only on your computer and sends it only to that service.
+**Ссылки на Twitch и YouTube** работают при любом способе: включите **Скачивать ссылки самому** в **Настройки →
+VodCut**, и SMTV будет скачивать их на вашем компьютере программой yt-dlp (её ставит проверка компьютера). Видеофайлу
+ничего не нужно.
 
-**Where does my stream go?** The video stays on your computer. Only the text of the stream goes to the AI you chose. With
-a free AI on your computer, nothing leaves it.
+**Что такое ключ?** Длинный пароль от сервиса нейросети («API-ключ»). Его выдаёт сайт сервиса после регистрации. SMTV
+хранит его только на вашем компьютере и отправляет только этому сервису.
 
-**Other ways.** Under **Other ways** SMTV can also use a ChatGPT (Codex) or Claude (Claude Code) subscription. We do
-not recommend it: the rules of these services may forbid other programs from using a subscription.
+**Куда уходит мой стрим?** Видео остаётся на вашем компьютере. В выбранную нейросеть уходит только текст стрима. С
+бесплатной нейросетью на компьютере наружу не уходит ничего.
+
+**Другие способы.** В разделе **Другие способы** SMTV может пользоваться и подпиской ChatGPT (Codex) или Claude
+(Claude Code). Мы это не советуем: правила этих сервисов могут запрещать другим программам пользоваться подпиской.

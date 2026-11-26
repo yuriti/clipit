@@ -160,7 +160,7 @@ def test_refusals_are_plain_words(fake, monkeypatch):
         media.Ticket(LINK, sleep=no_sleep)
     assert not e.value.retryable
     fake.open_error = (404, {"message": "Route POST:/api/smtv/media/open not found", "error": "Not Found"})
-    with pytest.raises(media.MediaError, match="not open yet"):
+    with pytest.raises(media.MediaError, match="coming soon.*Download links myself"):
         media.Ticket(LINK, sleep=no_sleep)
     with pytest.raises(media.MediaError, match="YouTube links do not open"):
         media.Ticket("https://www.youtube.com/watch?v=jNQXAC9IVRw")
@@ -169,9 +169,16 @@ def test_refusals_are_plain_words(fake, monkeypatch):
     assert len(fake.tickets) == 0
     monkeypatch.setattr(account, "access_token", lambda force=False: (_ for _ in ()).throw(account.NotSignedIn()))
     fake.open_error = None
-    with pytest.raises(media.MediaError, match="sign in") as e:
+    with pytest.raises(media.MediaError, match="coming soon.*choose the recording file.*Download links myself") as e:
         media.Ticket(LINK, sleep=no_sleep)
-    assert e.value.code == "not_signed_in"
+    assert e.value.code == "not_signed_in" and media.SIGN_IN in str(e.value)
+
+
+def test_a_server_without_links_says_the_same_way_out_as_no_account():
+    """Sign-in is not open on the site yet (0.1.0): the window explains it like a missing account, never a dead end."""
+    err = media.MediaError("not_open")
+    assert str(err) == str(media.MediaError("not_signed_in")) and media.SIGN_IN in str(err)
+    assert "sign in (" not in str(err).lower()
 
 
 def test_an_expired_ticket_is_opened_again_once_for_all_segments_in_flight(fake, tmp_path, monkeypatch):

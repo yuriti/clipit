@@ -1,9 +1,11 @@
 <!-- languages -->
-[English](../account.md) · [Русский](../ru/account.md) · [Қазақша](../kk/account.md) · [Oʻzbekcha](../uz/account.md) · [Azərbaycanca](../az/account.md) · [Кыргызча](../ky/account.md) · [简体中文](../zh-CN/account.md) · [日本語](../ja/account.md) · [한국어](../ko/account.md) · [Tiếng Việt](../vi/account.md) · **Bahasa Indonesia** · [हिन्दी](../hi/account.md) · [বাংলা](../bn/account.md) · [Español](../es/account.md) · [Português](../pt-BR/account.md) · [Deutsch](../de/account.md)
+[Русский](../account.md) · [English](../en/account.md) · [Қазақша](../kk/account.md) · [Oʻzbekcha](../uz/account.md) · [Azərbaycanca](../az/account.md) · [Кыргызча](../ky/account.md) · [简体中文](../zh-CN/account.md) · [日本語](../ja/account.md) · [한국어](../ko/account.md) · [Tiếng Việt](../vi/account.md) · **Bahasa Indonesia** · [हिन्दी](../hi/account.md) · [বাংলা](../bn/account.md) · [Español](../es/account.md) · [Português](../pt-BR/account.md) · [Deutsch](../de/account.md)
 
-> 🌐 Halaman ini diterjemahkan secara otomatis. Bantu kami memperbaikinya: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls).
+> 🌐 Halaman ini diterjemahkan secara otomatis. Bantu kami memperbaikinya: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Versi asli: Русский](../account.md).
 
 # Akun StreamMoment
+
+> 🕓 **Segera hadir.** Masuk ke akun StreamMoment belum dibuka. Sampai saat itu SMTV berjalan penuh tanpa akun: pakai [kunci Anda sendiri](get-a-key.md) atau [AI gratis di komputer Anda](free-ai-on-your-computer.md), dan untuk tautan nyalakan **Download links myself** (Settings → VodCut). Halaman ini menjelaskan cara kerja akun setelah dibuka.
 
 Cara paling mudah untuk memberi SMTV sebuah AI. Kamu masuk, mengisi saldo, dan SMTV memakai AI dari StreamMoment — tanpa
 key, tanpa pengaturan. Akun ini juga mengambil **link** rekaman Twitch dan YouTube untuk SMTV.

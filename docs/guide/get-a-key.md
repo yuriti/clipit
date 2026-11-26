@@ -1,47 +1,49 @@
 <!-- languages -->
-**English** · [Русский](ru/get-a-key.md) · [Қазақша](kk/get-a-key.md) · [Oʻzbekcha](uz/get-a-key.md) · [Azərbaycanca](az/get-a-key.md) · [Кыргызча](ky/get-a-key.md) · [简体中文](zh-CN/get-a-key.md) · [日本語](ja/get-a-key.md) · [한국어](ko/get-a-key.md) · [Tiếng Việt](vi/get-a-key.md) · [Bahasa Indonesia](id/get-a-key.md) · [हिन्दी](hi/get-a-key.md) · [বাংলা](bn/get-a-key.md) · [Español](es/get-a-key.md) · [Português](pt-BR/get-a-key.md) · [Deutsch](de/get-a-key.md)
+**Русский** · [English](en/get-a-key.md) · [Қазақша](kk/get-a-key.md) · [Oʻzbekcha](uz/get-a-key.md) · [Azərbaycanca](az/get-a-key.md) · [Кыргызча](ky/get-a-key.md) · [简体中文](zh-CN/get-a-key.md) · [日本語](ja/get-a-key.md) · [한국어](ko/get-a-key.md) · [Tiếng Việt](vi/get-a-key.md) · [Bahasa Indonesia](id/get-a-key.md) · [हिन्दी](hi/get-a-key.md) · [বাংলা](bn/get-a-key.md) · [Español](es/get-a-key.md) · [Português](pt-BR/get-a-key.md) · [Deutsch](de/get-a-key.md)
 
-# Where to get a key
+# Где взять ключ
 
-A **key** (an «API key») is a long password that lets SMTV use an AI service on your behalf. You get it on the
-service's site after you sign up. SMTV keeps it only on your computer and sends it only to that service; it never
-shows up in logs or problem reports.
+**Ключ** («API-ключ») — длинный пароль, с которым SMTV пользуется сервисом нейросети от вашего имени. Вы получаете его
+на сайте сервиса после регистрации. SMTV хранит его только на вашем компьютере и отправляет только этому сервису; в
+логах и отчётах о проблемах он никогда не появляется.
 
-> Prices and free plans change. What is written here was checked on the services' own pages on **23.11.2026** — check
-> the service's page before you start.
+> Цены и бесплатные тарифы меняются. Написанное здесь сверено со страницами самих сервисов **23.11.2026** — перед
+> началом проверьте страницу сервиса.
 
-## Which service
+## Какой сервис
 
-| Service | Free plan | Where to get the key | Good to know |
+| Сервис | Бесплатный тариф | Где взять ключ | Полезно знать |
 |---|---|---|---|
-| **Google Gemini** | Yes, with limits per minute and per day; the free models are listed on Google's pricing page | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) | The easiest free start; billing is set up only for the paid plan. On the free plan Google may use what you send to improve its products and people may read it — except in the EEA, Switzerland and the UK. Not available in every country (not in Russia, for example): see Google's list of regions. |
-| **Groq** | Yes, with limits shown in its console | [console.groq.com/keys](https://console.groq.com/keys) | Very fast. Also turns speech into text in the cloud, cheaply (about $0.04 per hour of audio with Whisper large-v3 turbo). |
-| **OpenRouter** | Models whose name ends in `:free`: 20 requests a minute, 50 a day (1,000 a day once you have bought $10 of credit) | [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys) | One key for hundreds of models from different companies. 50 requests a day is not enough for a long stream. |
-| **Mistral** | Check on its site: its pages did not state free terms for the API | [console.mistral.ai](https://console.mistral.ai) | A European company. |
-| **DeepSeek** | No | [platform.deepseek.com/api_keys](https://platform.deepseek.com/api_keys) | Paid from a balance you top up first. |
-| **OpenAI** | No free credit is promised: a new account pays in advance, from $5 | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) | The models behind ChatGPT. A ChatGPT subscription is not the same as a key: the key is paid separately. Only in supported countries (not in Russia). |
-| **Claude (Anthropic)** | No | [platform.claude.com/settings/keys](https://platform.claude.com/settings/keys) | A Claude subscription is not the same as a key. Only in supported regions (not in Russia). |
+| **Google Gemini** | Да, с лимитами в минуту и в день; бесплатные модели перечислены на странице цен Google | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) | Самый простой бесплатный старт; оплата подключается только для платного тарифа. На бесплатном тарифе Google может использовать то, что вы отправляете, для улучшения своих продуктов, и это могут читать люди — кроме ЕЭЗ, Швейцарии и Великобритании. Доступен не во всех странах (например, не в России): см. список регионов Google. |
+| **Groq** | Да, с лимитами, они видны в его консоли | [console.groq.com/keys](https://console.groq.com/keys) | Очень быстрый. Умеет ещё и переводить речь в текст в облаке, недорого (около $0,04 за час звука на Whisper large-v3 turbo). |
+| **OpenRouter** | Модели, чьё имя кончается на `:free`: 20 запросов в минуту, 50 в день (1000 в день, если вы купили кредитов на $10) | [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys) | Один ключ для сотен моделей разных компаний. 50 запросов в день мало для длинного стрима. |
+| **Mistral** | Уточните на сайте: на его страницах бесплатные условия для API не указаны | [console.mistral.ai](https://console.mistral.ai) | Европейская компания. |
+| **DeepSeek** | Нет | [platform.deepseek.com/api_keys](https://platform.deepseek.com/api_keys) | Оплата с баланса, который сначала пополняют. |
+| **OpenAI** | Бесплатных кредитов не обещают: новый аккаунт платит вперёд, от $5 | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) | Модели, на которых работает ChatGPT. Подписка ChatGPT — не то же самое, что ключ: ключ оплачивается отдельно. Только в поддерживаемых странах (не в России). |
+| **Claude (Anthropic)** | Нет | [platform.claude.com/settings/keys](https://platform.claude.com/settings/keys) | Подписка Claude — не то же самое, что ключ. Только в поддерживаемых регионах (не в России). |
 
-SMTV also knows xAI, Together, Fireworks, Qwen, Kimi, GLM, Cerebras and any OpenAI-compatible address — see
-[for advanced users](../advanced.md#ai-services-and-keys).
+Ещё SMTV знает xAI, Together, Fireworks, Qwen, Kimi, GLM, Cerebras и любой адрес, совместимый с OpenAI, — см.
+[для опытных пользователей](../advanced.md#ai-services-and-keys).
 
-**A free plan has limits.** A long stream sends many requests; when the limit is reached the service answers «too
-many requests» and SMTV waits or stops. For a 6–12 hour stream a paid plan or the [account](account.md) works better.
+**У бесплатного тарифа есть лимиты.** Длинный стрим отправляет много запросов; когда лимит исчерпан, сервис отвечает
+«слишком много запросов» (too many requests), и SMTV ждёт или останавливается. Для стрима на 6–12 часов лучше подойдёт
+платный тариф или [аккаунт](account.md).
 
-## Example: a free Gemini key, step by step
+## Пример: бесплатный ключ Gemini по шагам
 
-1. Open [aistudio.google.com/apikey](https://aistudio.google.com/apikey) and sign in with a Google account.
-2. Accept the terms if asked.
-3. Press **Create API key**. Copy the key (it starts with `AIza…`). Keep it secret, like a password.
-4. In SMTV: **Settings → AI → Your own key → Add a key**.
-5. Choose **Gemini**, paste the key, press **Check**. SMTV says whether the key works.
-6. Done. Every step of the AI now uses Gemini with a suitable model; **Settings → AI steps** shows which.
+1. Откройте [aistudio.google.com/apikey](https://aistudio.google.com/apikey) и войдите через аккаунт Google.
+2. Если попросят, примите условия.
+3. Нажмите **Create API key**. Скопируйте ключ (он начинается с `AIza…`). Храните его в секрете, как пароль.
+4. В SMTV: **Настройки → Нейросеть → Свой ключ → Добавить ключ**.
+5. Выберите **Gemini**, вставьте ключ, нажмите **Проверить**. SMTV скажет, работает ли ключ.
+6. Готово. Теперь каждый шаг нейросети использует Gemini с подходящей моделью; какой именно — видно в **Настройки →
+   Шаги нейросети**.
 
-Other services work the same way: sign up, find **API keys**, create one, paste it into SMTV, press **Check**.
-Paid services first ask you to add a card or top up a balance.
+С другими сервисами всё так же: зарегистрируйтесь, найдите **API keys**, создайте ключ, вставьте его в SMTV, нажмите
+**Проверить**. Платные сервисы сначала попросят привязать карту или пополнить баланс.
 
-## Your key is safe
+## Ваш ключ в безопасности
 
-- Kept on your computer, encrypted.
-- Sent only to the service it belongs to. StreamMoment never sees it.
-- Lost or leaked? Delete it on the service's site and create a new one.
+- Хранится на вашем компьютере, в зашифрованном виде.
+- Отправляется только тому сервису, которому принадлежит. StreamMoment его никогда не видит.
+- Потеряли или он утёк? Удалите его на сайте сервиса и создайте новый.

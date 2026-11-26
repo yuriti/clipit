@@ -1,50 +1,54 @@
 <!-- languages -->
-**English** · [Русский](ru/troubleshooting.md) · [Қазақша](kk/troubleshooting.md) · [Oʻzbekcha](uz/troubleshooting.md) · [Azərbaycanca](az/troubleshooting.md) · [Кыргызча](ky/troubleshooting.md) · [简体中文](zh-CN/troubleshooting.md) · [日本語](ja/troubleshooting.md) · [한국어](ko/troubleshooting.md) · [Tiếng Việt](vi/troubleshooting.md) · [Bahasa Indonesia](id/troubleshooting.md) · [हिन्दी](hi/troubleshooting.md) · [বাংলা](bn/troubleshooting.md) · [Español](es/troubleshooting.md) · [Português](pt-BR/troubleshooting.md) · [Deutsch](de/troubleshooting.md)
+**Русский** · [English](en/troubleshooting.md) · [Қазақша](kk/troubleshooting.md) · [Oʻzbekcha](uz/troubleshooting.md) · [Azərbaycanca](az/troubleshooting.md) · [Кыргызча](ky/troubleshooting.md) · [简体中文](zh-CN/troubleshooting.md) · [日本語](ja/troubleshooting.md) · [한국어](ko/troubleshooting.md) · [Tiếng Việt](vi/troubleshooting.md) · [Bahasa Indonesia](id/troubleshooting.md) · [हिन्दी](hi/troubleshooting.md) · [বাংলা](bn/troubleshooting.md) · [Español](es/troubleshooting.md) · [Português](pt-BR/troubleshooting.md) · [Deutsch](de/troubleshooting.md)
 
-# Something went wrong
+# Что-то пошло не так
 
-## 1. Computer check → Fix
+## 1. Проверка компьютера → Исправить
 
-**Settings → Computer check** looks at everything SMTV needs and says, line by line, what is fine and what is not.
-Next to a problem there is a **Fix** button: SMTV installs or repairs what it can by itself and shows what it does.
+**Настройки → Проверка компьютера** проверяет всё, что нужно SMTV, и построчно говорит, что в порядке, а что нет. Рядом
+с проблемой есть кнопка **Исправить**: SMTV сам ставит или чинит, что может, и показывает, что делает.
 
-<img src="../images/check.png" alt="Settings → Computer check: every line with its state and a Fix button" width="820">
+<img src="../images/check.png" alt="Настройки → Проверка компьютера: каждая строка со своим состоянием и кнопкой «Исправить»" width="820">
 
-| The line says | What to do |
+| Строка говорит | Что делать |
 |---|---|
-| **Video (ffmpeg)** is missing | Press **Fix**: SMTV installs ffmpeg, the video tool it uses. |
-| **Captions** do not work | Press **Fix**: SMTV installs an ffmpeg that can draw captions. |
-| **AI**: nothing connected | Choose one in **Settings → AI** — [which one](connect-ai.md). |
-| **Connection to StreamMoment** fails | Check the internet; a VPN or a firewall may block it. Files still work without it. |
-| **Free space** is low | Free some disk space: a 6-hour stream needs about 20 GB while it is processed. |
-| **Speech to text**: a model is not downloaded | It downloads by itself at the first request; or press **Download** in **Settings → Speech to text**. |
+| **Видео (ffmpeg)**: не найдено | Нажмите **Исправить**: SMTV поставит ffmpeg — программу для видео, которой он пользуется. |
+| Не работают **Субтитры** | Нажмите **Исправить**: SMTV поставит ffmpeg, который умеет рисовать субтитры. |
+| **Нейросеть**: ничего не подключено | Выберите её в **Настройки → Нейросеть** — [какую](connect-ai.md). |
+| **Связь со StreamMoment** не работает | Проверьте интернет; её может блокировать VPN или брандмауэр. Файлы работают и без неё. |
+| **Свободное место**: мало | Освободите место на диске: стриму на 6 часов во время обработки нужно около 20 ГБ. |
+| **Распознавание речи**: модель не скачана | Она скачается сама при первом запросе; или нажмите **Скачать** в **Настройки → Распознавание речи**. |
 
-A fix that needs an administrator password is never run silently: SMTV opens a terminal with the command, so you see
-what it does.
+Исправление, которому нужен пароль администратора, никогда не запускается молча: SMTV открывает терминал с командой,
+чтобы вы видели, что она делает.
 
-## 2. Common problems
+## 2. Частые проблемы
 
-- **A link does not work.** Links need the [StreamMoment account](account.md). No account? Download the recording
-  yourself and give SMTV the file.
-- **No clips, or very few.** SMTV keeps only the moments the AI rated as good. A short or quiet stream may give few. A
-  free AI on your computer finds fewer good moments than a cloud one.
-- **«Too many requests».** The free plan of your AI service hit its limit: wait, or use a paid plan or the account.
-- **The phone does not open SMTV.** Same Wi-Fi, no VPN, allow SMTV in the firewall — see [phone](phone.md).
-- **Windows: a terminal refuses `smtv`.** That is Smart App Control; start SMTV from its icon.
-- **The window lost its connection to SMTV.** Close the window and open SMTV again.
+- **Не работает ссылка.** Включите **Скачивать ссылки самому** в **Настройки → VodCut**, затем нажмите **Исправить**
+  рядом с yt-dlp в **Настройки → Проверка компьютера** (ссылки через [аккаунт StreamMoment](account.md) скоро
+  появятся). Всё равно не выходит? Скачайте запись сами и дайте SMTV файл.
+- **Клипов нет или очень мало.** SMTV оставляет только моменты, которые нейросеть оценила как хорошие. Короткий или
+  тихий стрим может дать мало. Бесплатная нейросеть на компьютере находит меньше хороших моментов, чем облачная.
+- **«Слишком много запросов» (too many requests).** Бесплатный тариф вашего сервиса нейросети упёрся в лимит:
+  подождите или перейдите на платный тариф.
+- **Телефон не открывает SMTV.** Та же Wi-Fi, без VPN, разрешите SMTV в брандмауэре — см. [телефон](phone.md).
+- **Windows: терминал отказывается запускать `smtv`.** Это Интеллектуальное управление приложениями (Smart App
+  Control); запускайте SMTV со значка.
+- **Окно потеряло связь с SMTV.** Закройте окно и откройте SMTV снова.
 
-A request that stopped can go on: press **Continue** — SMTV picks up from the same step and does not redo what is done.
+Остановившийся запрос можно продолжить: нажмите **Продолжить** — SMTV продолжит с того же шага и не будет переделывать
+то, что уже сделано.
 
-## 3. Report a problem
+## 3. Сообщить о проблеме
 
-Still stuck? Tell us — it helps everyone.
+Всё равно не получается? Напишите нам — это помогает всем.
 
-1. **Settings → Computer check → Report a problem** (the **Report…** button; it is also in **Settings → About**), or
-   the button under a failed request.
-2. SMTV shows what goes into the report: versions, the computer check, settings and logs. **Keys and tokens are cut
-   out**, your home folder shows as `~`. Links and file names stay out unless you tick the box.
-3. Press **Save and open GitHub**. SMTV saves the archive, and a new issue opens in the browser with the summary filled
-   in. Drag the archive into it and press **Submit**.
+1. **Настройки → Проверка компьютера → Сообщить о проблеме** (кнопка **Сообщить…**; она есть и в **Настройки → О
+   программе**) или кнопка под запросом, который завершился ошибкой.
+2. SMTV покажет, что попадёт в отчёт: версии, проверка компьютера, настройки и логи. **Ключи и токены вырезаются**,
+   ваша домашняя папка показывается как `~`. Ссылки и имена файлов не попадают в отчёт, если вы не поставите галочку.
+3. Нажмите **Сохранить и открыть GitHub**. SMTV сохранит архив, а в браузере откроется новое обращение (issue) с уже
+   заполненной сводкой. Перетащите в него архив и нажмите **Submit**.
 
-SMTV sends nothing by itself. Without the window: run `smtv report` in a terminal. You can also
-[open an issue](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml) directly.
+Сам SMTV ничего не отправляет. Без окна: выполните `smtv report` в терминале. Можно и сразу
+[открыть обращение](https://github.com/streammomenttv/smtv/issues/new?template=bug.yml).

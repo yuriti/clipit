@@ -314,7 +314,8 @@ def check_model(settings: Settings, verify: Verify | None = None) -> Check:
     free request: a key the provider refuses does not count."""
     providers = settings.enabled()
     if not providers:
-        return Check("Model", FAIL, "no provider set up", "Add one in «Settings → Providers», or: smtv model set --provider openai --model <model id>",
+        return Check("Model", FAIL, "no provider set up", "Connect an AI in «Settings → AI»: your own key, or a free AI on this computer (Ollama, LM Studio). "
+                     "Or: smtv model set --provider openai --model <model id>",
                      id="model", actions=(PROVIDERS,))
     ok, problems = [], []
     for p in providers:

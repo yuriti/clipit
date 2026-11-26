@@ -1,24 +1,24 @@
 <!-- languages -->
-**English** · [Русский](ru/phone.md) · [Қазақша](kk/phone.md) · [Oʻzbekcha](uz/phone.md) · [Azərbaycanca](az/phone.md) · [Кыргызча](ky/phone.md) · [简体中文](zh-CN/phone.md) · [日本語](ja/phone.md) · [한국어](ko/phone.md) · [Tiếng Việt](vi/phone.md) · [Bahasa Indonesia](id/phone.md) · [हिन्दी](hi/phone.md) · [বাংলা](bn/phone.md) · [Español](es/phone.md) · [Português](pt-BR/phone.md) · [Deutsch](de/phone.md)
+**Русский** · [English](en/phone.md) · [Қазақша](kk/phone.md) · [Oʻzbekcha](uz/phone.md) · [Azərbaycanca](az/phone.md) · [Кыргызча](ky/phone.md) · [简体中文](zh-CN/phone.md) · [日本語](ja/phone.md) · [한국어](ko/phone.md) · [Tiếng Việt](vi/phone.md) · [Bahasa Indonesia](id/phone.md) · [हिन्दी](hi/phone.md) · [বাংলা](bn/phone.md) · [Español](es/phone.md) · [Português](pt-BR/phone.md) · [Deutsch](de/phone.md)
 
-# SMTV on your phone
+# SMTV на телефоне
 
-Watch the clips, start requests and follow the work from your phone, while SMTV runs on your computer. Nothing to
-install on the phone: it opens in the browser.
+Смотрите клипы, запускайте запросы и следите за работой с телефона, пока SMTV работает на компьютере. На телефон ничего
+ставить не нужно: всё открывается в браузере.
 
-1. In SMTV press the **phone** button at the bottom left.
-2. Turn on **Open access from a phone**.
-3. Several networks? In **Address in the network** pick the one of the Wi-Fi your phone is on.
-4. Point the phone's camera at the **QR code** and open the link.
+1. В SMTV нажмите кнопку **Телефон** внизу слева.
+2. Включите **Открыть доступ с телефона**.
+3. Сетей несколько? В **Адрес в сети** выберите адрес той Wi-Fi, к которой подключён телефон.
+4. Наведите камеру телефона на **QR-код** и откройте ссылку.
 
-<img src="../images/phone.png" alt="Connect a phone: a QR code to scan" width="820">
+<img src="../images/phone.png" alt="Подключить телефон: QR-код для сканирования" width="820">
 
-## What to know
+## Что нужно знать
 
-- The phone must be on the **same Wi-Fi** as the computer. Guest networks often keep devices apart, and a VPN on the
-  phone or the computer gets in the way.
-- The first time, macOS or Windows asks whether SMTV may accept connections: **allow** it.
-- The connection is plain, without encryption: use it **only at home**, never on public Wi-Fi.
-- The code holds a key; without it the page does not open. Turning access off cuts every phone, and a new code is made
-  next time.
-- The computer must stay on while you use the phone.
+- Телефон должен быть в **той же Wi-Fi**, что и компьютер. Гостевые сети часто разделяют устройства, а VPN на телефоне
+  или компьютере мешает.
+- В первый раз macOS или Windows спросит, можно ли SMTV принимать подключения: **разрешите**.
+- Соединение простое, без шифрования: пользуйтесь им **только дома**, никогда в публичной Wi-Fi.
+- В коде зашит ключ; без него страница не откроется. Если выключить доступ, отключатся все телефоны, а в следующий раз
+  будет создан новый код.
+- Пока вы пользуетесь телефоном, компьютер должен быть включён.

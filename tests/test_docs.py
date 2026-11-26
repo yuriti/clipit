@@ -1,5 +1,6 @@
-"""The README, its translations and the guides for newcomers (stage V7): every language listed at the top of README.md
-has its README and every guide, each translation says it was translated automatically and links Weblate, every link
+"""The README, its translations and the guides for newcomers (stage V7): Russian is the source (README.md, docs/guide/*.md);
+every language listed at the top of README.md has its README and every guide, each translation says it was translated
+automatically from the Russian original and links it and Weblate, every link
 inside the repository leads to a file that exists (and to a heading that exists, when it names one), the window's link
 to the guides is alive, and the pictures stay small enough for git."""
 from __future__ import annotations
@@ -24,7 +25,7 @@ MAX_IMAGES = 25 * 1024 * 1024        # all of docs/images together (the rule and
 
 
 def languages() -> list[str]:
-    """The language codes the English README's switcher links (README.<code>.md), in its order."""
+    """The language codes the Russian README's switcher links (README.<code>.md), in its order."""
     text = (ROOT / "README.md").read_text(encoding="utf-8")
     line = text.split(MARK, 1)[1].strip().splitlines()[0]
     return re.findall(r"\(README\.([A-Za-z-]+)\.md\)", line)
@@ -87,6 +88,16 @@ def test_a_translation_says_it_is_automatic_and_links_weblate(code):
         text = path.read_text(encoding="utf-8")
         assert MARK in text, f"{path.relative_to(ROOT)}: no language switcher"
         assert WEBLATE in text, f"{path.relative_to(ROOT)}: no «translated automatically» line with the Weblate link"
+        source = "README.md" if path.parent == ROOT else f"../{path.name}"
+        note = next((ln for ln in text.splitlines() if ln.startswith("> 🌐")), "")
+        assert f"]({source})" in note, f"{path.relative_to(ROOT)}: the «translated automatically» line does not link the Russian original"
+
+
+def test_the_russian_source_is_not_marked_as_a_translation():
+    for path in [ROOT / "README.md", *sorted(GUIDE.glob("*.md"))]:
+        text = path.read_text(encoding="utf-8")
+        assert "> 🌐" not in text, f"{path.relative_to(ROOT)}: the source says it was translated"
+        assert "**Русский**" in text.split(MARK, 1)[1].strip().splitlines()[0], f"{path.relative_to(ROOT)}: not Russian"
 
 
 def test_every_page_with_a_switcher_links_every_language():

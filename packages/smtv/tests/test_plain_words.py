@@ -35,10 +35,11 @@ RU, EN = strings(WEB, "ru"), strings(WEB, "en")
 VC_RU, VC_EN = strings(vodcut_page.WEB, "ru"), strings(vodcut_page.WEB, "en")
 
 # what a newcomer reads on the way from the first run to the first clip
-NEWCOMER = ["ob_title", "ob_text", "ob_step1", "ob_step1_text", "ob_step2", "ob_step2_text", "ob_step3", "ob_step3_text", "ob_btn",
-            "ch_title", "ch_account", "ch_account_text", "ch_account_btn", "ch_key", "ch_key_text", "ch_key_btn",
+NEWCOMER = ["ob_title", "ob_text", "ob_step1", "ob_step1_now", "ob_step2_pick", "ob_step2_pick_text", "ob_step3", "ob_step3_text", "ob_btn",
+            "ch_title", "ch_account", "ch_account_soon_text", "ch_account_btn", "ch_key", "ch_key_text", "ch_key_btn",
             "ch_local", "ch_local_text", "ch_local_btn", "ch_other", "pv_none", "ag_set_intro", "ag_intro", "sp_intro",
-            "sm_add_note", "sm_out", "fx_first", "fx_providers", "chd_model_none", "chd_gpu_none", "chd_links_out",
+            "sm_soon_note", "sm_soon_btn", "sm_out_soon", "sm_not_open", "fx_first", "fx_providers", "chd_model_none",
+            "chd_gpu_none", "chd_links_soon",
             "providers", "agents_set", "speech_set", "sm_account", "system", "switches", "ag_tab_agents", "pv_list", "pv_agents"]
 
 
@@ -78,6 +79,38 @@ def test_the_three_ways_to_connect_an_ai_and_the_subscriptions_hidden():
     assert 't("pv_add")))].filter' not in body                               # the old «Add a provider» row is gone
 
 
+def test_sign_in_is_coming_soon_so_the_ways_that_work_now_come_first():
+    """0.1.0: sign-in to the account is not open on the site. Your own key and the free AI on this computer come first
+    (the key is the primary button), the account last with «soon», never «simplest»; the account page says so and leads
+    to «Settings → AI»; «Sign in» stays, and the site's «not open yet» is told in the window's words."""
+    ways = _function(APP_JS, "renderProviders")
+    ways = ways[ways.index("const ways = () =>"):]
+    assert ways.index('t("ch_key")') < ways.index('t("ch_local")') < ways.index('t("ch_account")')
+    assert 'none ? "button.btn.btn-primary.btn-sm"' in ways and 'title(t("ch_account"), t("soon"))' in ways
+    assert '"a.btn.btn-primary.btn-sm" : "a.btn.btn-sm", { href: "#/settings/account" }' not in ways
+    for lang in (RU, EN):
+        assert "ch_account_tag" not in lang and "sm_add_note" not in lang          # «simplest» is gone
+        assert not re.search(r"прост|simplest|easiest", lang["sm_soon_note"] + lang["ch_account_soon_text"] + lang["ob_step1_now"], re.I)
+    assert re.search(r"скоро", RU["sm_soon_note"] + RU["ch_account_soon_text"] + RU["sm_out_soon"]) and "soon" in EN["sm_soon_note"]
+    page = _function(APP_JS, "renderAccount")
+    assert 't("sm_soon_note")' in page and '"#/settings/providers"' in page
+    panel = _function(APP_JS, "accountPanel")
+    assert 'login("browser"), login("device")' in panel                       # «Sign in» is still there
+    assert 'e.code !== "not_open"' in panel and 't("sm_not_open"), soft: true' in panel   # expected, so not red
+    assert 'problem.soft ? "div.result.warn" : "div.result.bad"' in panel
+    menu = _function(APP_JS, "openProfile")
+    assert 't("sm_login"), h("span.menu-soon", t("soon"))' in menu and 'e.code === "not_open" ? t("sm_not_open")' in menu
+    assert ".menu-soon" in APP_CSS
+
+
+def test_a_link_without_the_account_leads_to_vodcut_s_switch_not_to_sign_in():
+    assert 'API.t("link_no_account")' in SECTION_JS and 'API.openSettings("tool-" + API.tool.name)' in SECTION_JS
+    assert 'openSettings("account")' not in SECTION_JS
+    for lang, switch in ((VC_RU, "Скачивать ссылки самому"), (VC_EN, "Download links myself")):
+        assert "sm_sign_in" not in lang and switch in lang["link_no_account"] and lang["opt_local_download"] == switch
+        assert "yt-dlp" in lang["link_no_account"]
+
+
 def test_the_first_run_is_a_welcome_with_three_steps():
     body = _function(APP_JS, "blockIfNotReady")
     assert 'r.id === "model"' in body and 't("ob_title")' in body
@@ -93,7 +126,8 @@ def test_vodcut_no_longer_repeats_the_window_s_model_note():
 
 
 @pytest.mark.parametrize("key", ["episodes", "model", "m_calls", "episodes_empty", "calls_empty", "opt_precise_about",
-                                 "opt_critic_about", "opt_recap_about", "opt_ad_blur_about", "sm_sign_in"])
+                                 "opt_critic_about", "opt_recap_about", "opt_ad_blur_about", "link_no_account",
+                                 "opt_local_download_about"])
 def test_vodcut_words_are_plain(key):
     assert not re.search(r"модел|провайдер|агент|токен|LUFS", VC_RU[key], re.I), (key, VC_RU[key])
     assert not re.search(r"\bmodel|provider|agent|token|LUFS", VC_EN[key], re.I), (key, VC_EN[key])
@@ -102,7 +136,7 @@ def test_vodcut_words_are_plain(key):
 def test_the_checks_are_told_in_plain_words():
     body = _function(APP_JS, "plainDetail")
     for server_text in ("no provider set up", "none found", "used to speed things up", "GB free", "own window$",
-                        "signed in as", "not signed in", "is on this computer", "is not downloaded yet", "ffmpeg version"):
+                        "signed in as", "coming soon", "is on this computer", "is not downloaded yet", "ffmpeg version"):
         assert server_text in body, server_text
     for key in re.findall(r't\("(chd_\w+)"', body):
         assert key in RU and key in EN, key

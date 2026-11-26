@@ -35,11 +35,12 @@ const STAGE_ICON = { audio: I.wave, speech: I.chip, scan: I.search, rating: I.st
 
 
 // YouTube asked to sign in (the error carries [youtube_sign_in]): say why in plain words; VodCut never reads the browser.
-// A link without a StreamMoment account ([streammoment_sign_in], stage 23): the way to sign in, or a file.
+// A link without a StreamMoment account ([streammoment_sign_in], stage 23): sign-in is not open yet (0.1.0), so the way
+// that works now — a file, or «Download links myself» in VodCut's settings.
 let API = null;
 function signInOr(message, plain) {
   if (API && String(message).includes("streammoment_sign_in"))
-    return [API.h("span", API.t("sm_sign_in")), " ", API.h("button.btn.btn-sm", { type: "button", onclick: () => API.openSettings("account") }, API.t("sm_sign_in_btn"))];
+    return [API.h("span", API.t("link_no_account")), " ", API.h("button.btn.btn-sm", { type: "button", onclick: () => API.openSettings("tool-" + API.tool.name) }, API.t("link_no_account_btn"))];
   if (!API || !String(message).includes("youtube_sign_in")) return [plain];
   return [API.h("span", API.t("yt_sign_in"))];
 }

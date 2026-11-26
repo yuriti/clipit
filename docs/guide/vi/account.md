@@ -1,9 +1,11 @@
 <!-- languages -->
-[English](../account.md) · [Русский](../ru/account.md) · [Қазақша](../kk/account.md) · [Oʻzbekcha](../uz/account.md) · [Azərbaycanca](../az/account.md) · [Кыргызча](../ky/account.md) · [简体中文](../zh-CN/account.md) · [日本語](../ja/account.md) · [한국어](../ko/account.md) · **Tiếng Việt** · [Bahasa Indonesia](../id/account.md) · [हिन्दी](../hi/account.md) · [বাংলা](../bn/account.md) · [Español](../es/account.md) · [Português](../pt-BR/account.md) · [Deutsch](../de/account.md)
+[Русский](../account.md) · [English](../en/account.md) · [Қазақша](../kk/account.md) · [Oʻzbekcha](../uz/account.md) · [Azərbaycanca](../az/account.md) · [Кыргызча](../ky/account.md) · [简体中文](../zh-CN/account.md) · [日本語](../ja/account.md) · [한국어](../ko/account.md) · **Tiếng Việt** · [Bahasa Indonesia](../id/account.md) · [हिन्दी](../hi/account.md) · [বাংলা](../bn/account.md) · [Español](../es/account.md) · [Português](../pt-BR/account.md) · [Deutsch](../de/account.md)
 
-> 🌐 Trang này được dịch tự động. Hãy giúp cải thiện bản dịch: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls).
+> 🌐 Trang này được dịch tự động. Hãy giúp cải thiện bản dịch: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [Bản gốc: Русский](../account.md).
 
 # Tài khoản StreamMoment
+
+> 🕓 **Sắp ra mắt.** Đăng nhập tài khoản StreamMoment chưa mở. Trong lúc chờ, SMTV vẫn chạy đầy đủ mà không cần tài khoản: dùng [khóa của riêng bạn](get-a-key.md) hoặc [AI miễn phí trên máy tính](free-ai-on-your-computer.md), còn với liên kết thì bật **Download links myself** (Settings → VodCut). Trang này mô tả cách tài khoản sẽ hoạt động khi mở.
 
 Cách đơn giản nhất để cho SMTV một AI. Bạn đăng nhập, nạp tiền vào số dư, và SMTV dùng AI của StreamMoment — không cần
 key, không cần cài đặt gì. Tài khoản cũng tải các **link** tới bản ghi Twitch và YouTube giúp SMTV.

@@ -4,7 +4,7 @@ import sys
 
 import pytest
 
-from smtv_core.checks import FAIL, OK, SIGN_IN, WARN
+from smtv_core.checks import FAIL, OK, WARN
 from smtv_core.settings import Settings
 from vodcut import local_download, options, tool
 
@@ -21,9 +21,12 @@ def links(s):
     return next(r for r in tool.checks(s) if r.id.startswith("vodcut-"))
 
 
-def test_without_an_account_links_warn_and_offer_to_sign_in():
+def test_without_an_account_links_warn_and_point_to_the_way_that_works_now():
+    """Sign-in is not open yet (0.1.0): no «Sign in» button that leads nowhere; the fix names the switch and yt-dlp."""
     row = links(Settings.load())
-    assert row.status == WARN and row.actions == (SIGN_IN,) and row.recipe is None
+    assert row.status == WARN and row.actions == () and row.recipe is None
+    assert "coming soon" in row.detail and "video file works" in row.detail and "Download links myself" in row.detail
+    assert row.fix == local_download.install_hint()                          # one command, ready to copy
 
 
 def test_yt_dlp_missing_fails_with_a_recipe_into_smtvs_own_environment(monkeypatch):

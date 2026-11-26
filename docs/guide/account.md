@@ -1,38 +1,44 @@
 <!-- languages -->
-**English** · [Русский](ru/account.md) · [Қазақша](kk/account.md) · [Oʻzbekcha](uz/account.md) · [Azərbaycanca](az/account.md) · [Кыргызча](ky/account.md) · [简体中文](zh-CN/account.md) · [日本語](ja/account.md) · [한국어](ko/account.md) · [Tiếng Việt](vi/account.md) · [Bahasa Indonesia](id/account.md) · [हिन्दी](hi/account.md) · [বাংলা](bn/account.md) · [Español](es/account.md) · [Português](pt-BR/account.md) · [Deutsch](de/account.md)
+**Русский** · [English](en/account.md) · [Қазақша](kk/account.md) · [Oʻzbekcha](uz/account.md) · [Azərbaycanca](az/account.md) · [Кыргызча](ky/account.md) · [简体中文](zh-CN/account.md) · [日本語](ja/account.md) · [한국어](ko/account.md) · [Tiếng Việt](vi/account.md) · [Bahasa Indonesia](id/account.md) · [हिन्दी](hi/account.md) · [বাংলা](bn/account.md) · [Español](es/account.md) · [Português](pt-BR/account.md) · [Deutsch](de/account.md)
 
-# The StreamMoment account
+# Аккаунт StreamMoment
 
-The simplest way to give SMTV an AI. You sign in, top up the balance, and SMTV uses StreamMoment's AI — no keys, no
-setup. The account also fetches **links** to Twitch and YouTube recordings for SMTV.
+> 🕓 **Скоро.** Вход в аккаунт StreamMoment пока не открыт: кнопка **Войти** в SMTV так и скажет. SMTV полностью
+> работает и без аккаунта — ниже сказано, что делать уже сейчас.
 
-## Sign in
+## Что даст аккаунт
 
-1. In SMTV open **Settings → Account** (or press **Go to the account** in Settings → AI).
-2. Press **Sign in**. The browser opens StreamMoment's page.
-3. Sign in with **Google**, **Twitch** or **Telegram**.
-4. Go back to SMTV: it shows «Signed in» by itself.
+Через аккаунт будут работать две вещи:
 
-The browser did not open? Press **Sign in with a code**: SMTV shows an address and a code; open the address on any
-device and type the code.
+- **Ссылки на Twitch и YouTube.** Запись будет скачиваться через наш сервер — быстро и без настройки: вставили
+  ссылку, и готово. Сервер передаёт запись в SMTV кусками и ничего у себя не хранит. Это ближайшее обновление.
+- **Подписка.** Платите раз в месяц, и SMTV сам пользуется нейросетью OpenAI: не нужно разбираться с ключами и
+  сервисами. Этого хватит примерно на 50 стримов, или около 90 часов записей в месяц (цифры предварительные).
 
-## Balance
+Войти можно будет через **Google**, **Twitch** или **Telegram** в **Настройки → Аккаунт**. Подробнее о планах —
+в разделе [«Что дальше»](../../README.md#что-дальше).
 
-**Settings → Account** shows the balance in tokens and about how many hours of streams it is enough for. A token is a
-small piece of text the AI reads or writes, about half a word; a package shows its price and how many tokens it gives. **Buy** opens the
-payment page in the browser; the balance in SMTV updates by itself. SMTV holds a little from the balance while a
-request runs and returns what was not used.
+## Что делать сейчас
 
-## What the account sees
+**Нейросеть.** Выберите одну в **Настройки → Нейросеть**:
 
-- Your clips and video files stay on your computer.
-- For a link, StreamMoment's server takes the recording from the platform and passes it to SMTV in pieces; it stores
-  nothing.
-- The text of the stream goes through the account to the AI, to choose the moments.
+- [свой ключ](get-a-key.md) от сервиса нейросети — например, OpenAI или подешевле DeepSeek; платите сервису
+  напрямую, только за то, что потратили;
+- [бесплатная нейросеть на компьютере](free-ai-on-your-computer.md) — Qwen через Ollama или LM Studio; нужна мощная
+  видеокарта.
 
-## Sign out
+Не знаете, что выбрать? [Какую нейросеть выбрать](connect-ai.md).
 
-**Settings → Account → Sign out on this computer.** The balance stays with the account.
+**Запись стрима.**
 
-Prefer not to have an account? Use [your own key](get-a-key.md) or [a free AI on your computer](free-ai-on-your-computer.md),
-and give SMTV video files instead of links.
+- Скачайте запись сами и выберите файл — это работает всегда.
+- Или включите **Скачивать ссылки самому** в **Настройки → VodCut**: ссылку скачает программа yt-dlp на вашем
+  компьютере (её ставит **Настройки → Проверка компьютера**). Работает не всегда: YouTube может попросить войти.
+
+Подробнее — в инструкции [«Первый клип»](first-clip.md).
+
+## Что увидит аккаунт
+
+- Ваши клипы и видеофайлы остаются на вашем компьютере.
+- По ссылке сервер StreamMoment берёт запись с площадки и передаёт её в SMTV кусками; у себя ничего не хранит.
+- С подпиской текст стрима идёт через аккаунт в нейросеть, чтобы выбрать моменты.

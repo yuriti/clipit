@@ -1,7 +1,7 @@
 <!-- languages -->
-[English](../first-clip.md) · [Русский](../ru/first-clip.md) · [Қазақша](../kk/first-clip.md) · [Oʻzbekcha](../uz/first-clip.md) · [Azərbaycanca](../az/first-clip.md) · [Кыргызча](../ky/first-clip.md) · [简体中文](../zh-CN/first-clip.md) · [日本語](../ja/first-clip.md) · [한국어](../ko/first-clip.md) · [Tiếng Việt](../vi/first-clip.md) · [Bahasa Indonesia](../id/first-clip.md) · [हिन्दी](../hi/first-clip.md) · **বাংলা** · [Español](../es/first-clip.md) · [Português](../pt-BR/first-clip.md) · [Deutsch](../de/first-clip.md)
+[Русский](../first-clip.md) · [English](../en/first-clip.md) · [Қазақша](../kk/first-clip.md) · [Oʻzbekcha](../uz/first-clip.md) · [Azərbaycanca](../az/first-clip.md) · [Кыргызча](../ky/first-clip.md) · [简体中文](../zh-CN/first-clip.md) · [日本語](../ja/first-clip.md) · [한국어](../ko/first-clip.md) · [Tiếng Việt](../vi/first-clip.md) · [Bahasa Indonesia](../id/first-clip.md) · [हिन्दी](../hi/first-clip.md) · **বাংলা** · [Español](../es/first-clip.md) · [Português](../pt-BR/first-clip.md) · [Deutsch](../de/first-clip.md)
 
-> 🌐 এই পাতাটি স্বয়ংক্রিয়ভাবে অনুবাদ করা হয়েছে। এটিকে আরও ভালো করতে সাহায্য করুন: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls).
+> 🌐 এই পাতাটি স্বয়ংক্রিয়ভাবে অনুবাদ করা হয়েছে। এটিকে আরও ভালো করতে সাহায্য করুন: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [মূল লেখা: Русский](../first-clip.md).
 
 # আপনার প্রথম ক্লিপ
 

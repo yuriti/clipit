@@ -11,5 +11,5 @@ License: MIT
 The SMTV window shows the entries newer than the installed version before an update: one `### <version>` per release,
 one `- ` line per change, plain text.
 
-### 0.1.0.dev0
+### 0.1.0
 - First build.

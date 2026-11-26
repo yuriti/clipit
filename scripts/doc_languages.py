@@ -3,8 +3,9 @@
     python scripts/doc_languages.py            rewrite every language line
     python scripts/doc_languages.py --check    only report; exit 1 if a line differs
 
-The line comes right after `<!-- languages -->` and links every language of LANGS: `README.<code>.md` in the root,
-`docs/guide/<code>/<page>.md` for a guide. A new language: add it to LANGS, add its README and guides, run this.
+The line comes right after `<!-- languages -->` and links every language of LANGS. Russian is the source and the
+default: `README.md` and `docs/guide/<page>.md`; every other language, English included, is `README.<code>.md` in the
+root and `docs/guide/<code>/<page>.md` for a guide. A new language: add it to LANGS, add its README and guides, run this.
 `tests/test_docs.py` checks the result (every language has every page, every link leads somewhere).
 """
 from __future__ import annotations
@@ -15,7 +16,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 MARK = "<!-- languages -->"
-LANGS = [("en", "English"), ("ru", "Русский"), ("kk", "Қазақша"), ("uz", "Oʻzbekcha"), ("az", "Azərbaycanca"),
+SOURCE = "ru"           # the language the README and the guides are written in; the others are translated from it
+LANGS = [("ru", "Русский"), ("en", "English"), ("kk", "Қазақша"), ("uz", "Oʻzbekcha"), ("az", "Azərbaycanca"),
          ("ky", "Кыргызча"), ("zh-CN", "简体中文"), ("ja", "日本語"), ("ko", "한국어"), ("vi", "Tiếng Việt"),
          ("id", "Bahasa Indonesia"), ("hi", "हिन्दी"), ("bn", "বাংলা"), ("es", "Español"), ("pt-BR", "Português"),
          ("de", "Deutsch")]
@@ -24,10 +26,10 @@ LANGS = [("en", "English"), ("ru", "Русский"), ("kk", "Қазақша"), 
 def target(page: str | None, current: str, lang: str) -> str:
     """Where the link to `lang` goes from a page in `current` (page None: the README)."""
     if page is None:
-        return "README.md" if lang == "en" else f"README.{lang}.md"
-    if current == "en":
-        return page if lang == "en" else f"{lang}/{page}"
-    return f"../{page}" if lang == "en" else f"../{lang}/{page}"
+        return "README.md" if lang == SOURCE else f"README.{lang}.md"
+    if current == SOURCE:
+        return page if lang == SOURCE else f"{lang}/{page}"
+    return f"../{page}" if lang == SOURCE else f"../{lang}/{page}"
 
 
 def line(page: str | None, current: str) -> str:
@@ -52,9 +54,9 @@ def pages() -> list[tuple[Path, str | None, str]]:
     for p in ROOT.glob("README*.md"):
         m = re.fullmatch(r"README(?:\.(.+))?\.md", p.name)
         if m:
-            found.append((p, None, m.group(1) or "en"))
+            found.append((p, None, m.group(1) or SOURCE))
     guide = ROOT / "docs" / "guide"
-    found += [(p, p.name, "en") for p in guide.glob("*.md")]
+    found += [(p, p.name, SOURCE) for p in guide.glob("*.md")]
     for code, _ in LANGS[1:]:
         found += [(p, p.name, code) for p in (guide / code).glob("*.md")]
     return sorted(found)

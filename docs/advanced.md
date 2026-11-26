@@ -1,6 +1,6 @@
 # SMTV for advanced users
 
-The [README](../README.md) is enough to install SMTV and make clips. This page is for the rest: Docker, every AI
+The [README](../README.en.md) is enough to install SMTV and make clips. This page is for the rest: Docker, every AI
 service SMTV works with, speech models, where keys are kept, and the commands.
 
 ## Commands
@@ -25,12 +25,12 @@ affected.
 
 ## Links and files
 
-A video file of your own is read where it is, with no account; the recording itself is sent nowhere. A link (Twitch, YouTube) is
-downloaded through the StreamMoment account: its server takes the recording from the platform in pieces and passes
-them straight to SMTV, writing nothing to its disk; only the sound and the pieces the clips and the recap need are
-fetched. To download links on this computer instead, turn on **Download links myself** in VodCut's settings: it needs
-the yt-dlp program (`uv tool install "smtv[vodcut]" --with "vodcut[local]"`, or Settings → Computer check), at your
-own risk — platforms change often, and YouTube may ask to sign in.
+A video file of your own is read where it is, with no account; the recording itself is sent nowhere. A link (Twitch,
+YouTube) needs **Download links myself** in VodCut's settings for now: the yt-dlp program downloads it on this computer
+(`uv tool install "smtv[vodcut]" --with "vodcut[local]"`, or Settings → Computer check), at your own risk — platforms
+change often, and YouTube may ask to sign in. Links through the StreamMoment account are built in and open together
+with sign-in (coming soon): its server takes the recording from the platform in pieces and passes them straight to
+SMTV, writing nothing to its disk; only the sound and the pieces the clips and the recap need are fetched.
 
 ## Without the installer
 

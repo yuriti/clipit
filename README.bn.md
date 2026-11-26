@@ -1,5 +1,6 @@
-<!-- Translations: README.<language>.md, the same structure. A change here changes README.ru.md in the same PR;
-     the other languages follow (each says it was translated automatically and links Weblate). Pictures: docs/images/. -->
+<!-- The source is the Russian README.md; translations: README.<language>.md, the same structure. A change to README.md
+     changes README.en.md in the same PR; the other languages follow (each says it was translated automatically from
+     the Russian original and links it and Weblate). Pictures: docs/images/. -->
 <div align="center">
 
 # SMTV
@@ -7,9 +8,9 @@
 **লম্বা স্ট্রিম থেকে বানান ছোট ক্লিপ আর একটি রিক্যাপ। বিনামূল্যে, আপনার নিজের কম্পিউটারে।**
 
 <!-- languages -->
-[English](README.md) · [Русский](README.ru.md) · [Қазақша](README.kk.md) · [Oʻzbekcha](README.uz.md) · [Azərbaycanca](README.az.md) · [Кыргызча](README.ky.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · **বাংলা** · [Español](README.es.md) · [Português](README.pt-BR.md) · [Deutsch](README.de.md)
+[Русский](README.md) · [English](README.en.md) · [Қазақша](README.kk.md) · [Oʻzbekcha](README.uz.md) · [Azərbaycanca](README.az.md) · [Кыргызча](README.ky.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · **বাংলা** · [Español](README.es.md) · [Português](README.pt-BR.md) · [Deutsch](README.de.md)
 
-> 🌐 এই পাতাটি স্বয়ংক্রিয়ভাবে অনুবাদ করা হয়েছে। এটিকে আরও ভালো করতে সাহায্য করুন: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls).
+> 🌐 এই পাতাটি স্বয়ংক্রিয়ভাবে অনুবাদ করা হয়েছে। এটিকে আরও ভালো করতে সাহায্য করুন: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [মূল লেখা: Русский](README.md).
 
 [![সর্বশেষ রিলিজ](https://img.shields.io/github/v/release/streammomenttv/smtv?label=release)](https://github.com/streammomenttv/smtv/releases/latest)
 [![ডাউনলোড](https://img.shields.io/pepy/dt/smtv?label=downloads)](https://pepy.tech/projects/smtv)

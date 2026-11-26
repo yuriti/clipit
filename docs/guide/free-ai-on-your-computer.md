@@ -1,55 +1,57 @@
 <!-- languages -->
-**English** · [Русский](ru/free-ai-on-your-computer.md) · [Қазақша](kk/free-ai-on-your-computer.md) · [Oʻzbekcha](uz/free-ai-on-your-computer.md) · [Azərbaycanca](az/free-ai-on-your-computer.md) · [Кыргызча](ky/free-ai-on-your-computer.md) · [简体中文](zh-CN/free-ai-on-your-computer.md) · [日本語](ja/free-ai-on-your-computer.md) · [한국어](ko/free-ai-on-your-computer.md) · [Tiếng Việt](vi/free-ai-on-your-computer.md) · [Bahasa Indonesia](id/free-ai-on-your-computer.md) · [हिन्दी](hi/free-ai-on-your-computer.md) · [বাংলা](bn/free-ai-on-your-computer.md) · [Español](es/free-ai-on-your-computer.md) · [Português](pt-BR/free-ai-on-your-computer.md) · [Deutsch](de/free-ai-on-your-computer.md)
+**Русский** · [English](en/free-ai-on-your-computer.md) · [Қазақша](kk/free-ai-on-your-computer.md) · [Oʻzbekcha](uz/free-ai-on-your-computer.md) · [Azərbaycanca](az/free-ai-on-your-computer.md) · [Кыргызча](ky/free-ai-on-your-computer.md) · [简体中文](zh-CN/free-ai-on-your-computer.md) · [日本語](ja/free-ai-on-your-computer.md) · [한국어](ko/free-ai-on-your-computer.md) · [Tiếng Việt](vi/free-ai-on-your-computer.md) · [Bahasa Indonesia](id/free-ai-on-your-computer.md) · [हिन्दी](hi/free-ai-on-your-computer.md) · [বাংলা](bn/free-ai-on-your-computer.md) · [Español](es/free-ai-on-your-computer.md) · [Português](pt-BR/free-ai-on-your-computer.md) · [Deutsch](de/free-ai-on-your-computer.md)
 
-# A free AI on your computer
+# Бесплатная нейросеть на вашем компьютере
 
-The AI can run right on your computer, for free: nothing leaves it, and there is nothing to pay. You need a program
-that runs AI models — **Ollama** or **LM Studio** — and a model, for example **Qwen**. SMTV finds the program by itself.
+Нейросеть может работать прямо на вашем компьютере, бесплатно: наружу ничего не уходит, и платить не за что. Нужна
+программа, которая запускает модели нейросетей, — **Ollama** или **LM Studio** — и модель, например **Qwen**. SMTV
+находит программу сам.
 
-**Honestly:** models that fit on a home computer are weaker than the cloud ones, so the clips come out worse, and none
-of the recommended models was tested with SMTV yet. If the result disappoints you, try the [account](account.md) or
-[a key](get-a-key.md).
+**Честно:** модели, которые помещаются на домашний компьютер, слабее облачных, поэтому клипы получаются хуже, и ни
+одна из рекомендованных моделей ещё не проверялась с SMTV. Если результат разочарует, попробуйте [аккаунт](account.md)
+или [ключ](get-a-key.md).
 
-## 1. Which model fits your computer
+## 1. Какая модель подойдёт вашему компьютеру
 
-What matters is the **video memory** of your graphics card (on a Mac with Apple silicon: the whole memory).
+Важна **видеопамять** вашей видеокарты (на Mac с Apple silicon — вся память).
 
-| Video memory | Model | Download | Notes |
+| Видеопамять | Модель | Скачать | Примечания |
 |---|---|---|---|
-| less than 8 GB | — | — | Too little: use the account or a key |
-| 8 GB | `qwen3:8b` | 5.2 GB | The lightest that works well enough |
-| 10–12 GB | `qwen3-vl:8b` or `gemma3:12b` | 6.1 / 8.1 GB | These also look at frames of the video |
-| 16 GB and more | `qwen3:14b` | 9.3 GB | The best of the four |
+| меньше 8 ГБ | — | — | Слишком мало: используйте аккаунт или ключ |
+| 8 ГБ | `qwen3:8b` | 5,2 ГБ | Самая лёгкая из тех, что работают достаточно хорошо |
+| 10–12 ГБ | `qwen3-vl:8b` или `gemma3:12b` | 6,1 / 8,1 ГБ | Эти ещё и смотрят на кадры видео |
+| 16 ГБ и больше | `qwen3:14b` | 9,3 ГБ | Лучшая из четырёх |
 
-Models smaller than 7B («7 billion») are not recommended: they break the answers SMTV needs.
+Модели меньше 7B («7 миллиардов») не советуем: они ломают ответы, которые нужны SMTV.
 
-**How to find your video memory:**
-- **Windows:** press Ctrl+Shift+Esc → **Performance** → **GPU** → **Dedicated GPU memory**.
-- **Mac:** Apple menu → **About This Mac** → **Memory**. A Mac shares memory with the AI: with 16 GB take `qwen3:8b`,
-  with 32 GB or more `qwen3:14b`.
+**Как узнать свою видеопамять:**
+- **Windows:** нажмите Ctrl+Shift+Esc → **Производительность** (Performance) → **Графический процессор** (GPU) →
+  **Выделенная память графического процессора** (Dedicated GPU memory).
+- **Mac:** меню Apple → **Об этом Mac** (About This Mac) → **Память** (Memory). Mac делит память с нейросетью: при
+  16 ГБ берите `qwen3:8b`, при 32 ГБ и больше — `qwen3:14b`.
 
-## 2a. Ollama (simplest)
+## 2a. Ollama (проще всего)
 
-1. Download Ollama from [ollama.com/download](https://ollama.com/download) and install it like any program. It starts
-   by itself and lives near the clock.
-2. In SMTV: **Settings → AI → Free, on this computer → Find on this computer**. SMTV finds Ollama.
-3. Open **Ollama** in the list: SMTV shows the recommended models with their size. Press **Download** next to the one
-   from the table above and wait (5–10 GB).
-4. Done. SMTV picks that model for its steps by itself.
+1. Скачайте Ollama с [ollama.com/download](https://ollama.com/download) и установите как любую программу. Она
+   запускается сама и живёт рядом с часами.
+2. В SMTV: **Настройки → Нейросеть → Бесплатно на этом компьютере → Найти на компьютере**. SMTV найдёт Ollama.
+3. Откройте **Ollama** в списке: SMTV покажет рекомендованные модели с их размером. Нажмите **Скачать** рядом с
+   моделью из таблицы выше и подождите (5–10 ГБ).
+4. Готово. SMTV сам выберет эту модель для своих шагов.
 
-SMTV sets Ollama's memory for each request so that the whole stream text fits; you do not need to change Ollama's
-settings.
+SMTV настраивает память Ollama под каждый запрос так, чтобы поместился весь текст стрима; менять настройки Ollama не
+нужно.
 
 ## 2b. LM Studio
 
-1. Download LM Studio from [lmstudio.ai/download](https://lmstudio.ai/download) and install it.
-2. In LM Studio open **Discover**, search for **Qwen3 8B** (or 14B, by the table) and press **Download**.
-3. Open the **Developer** tab and turn on **Start server** (it listens on port 1234). Load the model there.
-4. In SMTV: **Settings → AI → Free, on this computer → Find on this computer**. SMTV finds LM Studio.
+1. Скачайте LM Studio с [lmstudio.ai/download](https://lmstudio.ai/download) и установите.
+2. В LM Studio откройте **Discover**, найдите **Qwen3 8B** (или 14B, по таблице) и нажмите **Download**.
+3. Откройте вкладку **Developer** и включите **Start server** (сервер слушает порт 1234). Загрузите там модель.
+4. В SMTV: **Настройки → Нейросеть → Бесплатно на этом компьютере → Найти на компьютере**. SMTV найдёт LM Studio.
 
-## 3. Make a clip
+## 3. Сделайте клип
 
-Give SMTV a [video file](first-clip.md). A link to Twitch or YouTube needs the [account](account.md) even with a free
-AI: the account fetches the recording.
+Дайте SMTV [видеофайл](first-clip.md). Для ссылки на Twitch или YouTube даже с бесплатной нейросетью нужен
+[аккаунт](account.md): запись скачивает аккаунт.
 
-The free AI works slower than a cloud one; a long stream can take a few hours. Leave the computer on.
+Бесплатная нейросеть работает медленнее облачной; длинный стрим может занять несколько часов. Не выключайте компьютер.

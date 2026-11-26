@@ -1,51 +1,54 @@
 <!-- languages -->
-**English** · [Русский](ru/first-clip.md) · [Қазақша](kk/first-clip.md) · [Oʻzbekcha](uz/first-clip.md) · [Azərbaycanca](az/first-clip.md) · [Кыргызча](ky/first-clip.md) · [简体中文](zh-CN/first-clip.md) · [日本語](ja/first-clip.md) · [한국어](ko/first-clip.md) · [Tiếng Việt](vi/first-clip.md) · [Bahasa Indonesia](id/first-clip.md) · [हिन्दी](hi/first-clip.md) · [বাংলা](bn/first-clip.md) · [Español](es/first-clip.md) · [Português](pt-BR/first-clip.md) · [Deutsch](de/first-clip.md)
+**Русский** · [English](en/first-clip.md) · [Қазақша](kk/first-clip.md) · [Oʻzbekcha](uz/first-clip.md) · [Azərbaycanca](az/first-clip.md) · [Кыргызча](ky/first-clip.md) · [简体中文](zh-CN/first-clip.md) · [日本語](ja/first-clip.md) · [한국어](ko/first-clip.md) · [Tiếng Việt](vi/first-clip.md) · [Bahasa Indonesia](id/first-clip.md) · [हिन्दी](hi/first-clip.md) · [বাংলা](bn/first-clip.md) · [Español](es/first-clip.md) · [Português](pt-BR/first-clip.md) · [Deutsch](de/first-clip.md)
 
-# Your first clip
+# Ваш первый клип
 
-<img src="../images/new-request.gif" alt="A new request: a video file is picked, SMTV starts and shows every step" width="820">
+<img src="../images/new-request.gif" alt="Новый запрос: выбран видеофайл, SMTV начинает работу и показывает каждый шаг" width="820">
 
-## 1. Choose an AI (once)
+## 1. Выберите нейросеть (один раз)
 
-SMTV turns the stream's speech into text on your computer, and an AI reads that text and picks the moments. The
-first time, SMTV shows three ways to give it an AI. The simplest is the StreamMoment account. Not sure? Read
-[which AI to choose](connect-ai.md).
+Речь стрима SMTV переводит в текст на вашем компьютере, а нейросеть читает этот текст и выбирает моменты. При первом
+запуске SMTV показывает способы дать ему нейросеть: свой ключ или бесплатная нейросеть на компьютере (вход в аккаунт
+StreamMoment скоро появится). Не уверены? Прочитайте, [какую нейросеть выбрать](connect-ai.md).
 
-## 2. Give SMTV a stream
+## 2. Дайте SMTV стрим
 
-On the home screen («What shall we cut into clips?»):
+На главном экране («Что нарежем на клипы?»):
 
-- **A link** — paste a link to a recording on Twitch (`twitch.tv/videos/…`) or YouTube. A link needs the
-  [StreamMoment account](account.md): its server fetches the recording for SMTV and keeps nothing.
-- **A file** — press the file button or **A file from this computer** and pick a video. A file needs no account and
-  never leaves your computer.
+- **Ссылка** — вставьте ссылку на запись с Twitch (`twitch.tv/videos/…`) или YouTube. Пока для ссылки нужно включить
+  **Скачивать ссылки самому** в **Настройки → VodCut**: тогда SMTV скачивает запись на вашем компьютере бесплатной
+  программой yt-dlp, которую **Настройки → Проверка компьютера** ставит одной кнопкой (на свой риск: площадки часто
+  меняются, YouTube иногда просит войти). Позже ссылки будут работать и через [аккаунт StreamMoment](account.md) — он
+  скоро появится.
+- **Файл** — нажмите кнопку с файлом или **Файл с компьютера** и выберите видео. Для файла аккаунт не нужен, и файл
+  никогда не покидает ваш компьютер.
 
-Press **Enter** or the arrow button.
+Нажмите **Enter** или кнопку со стрелкой.
 
-## 3. Watch it work
+## 3. Смотрите, как идёт работа
 
-The request opens on the right of the list. **Progress** shows the step and the time:
+Запрос открывается справа от списка. **Обработка** показывает шаг и время:
 
-1. **Speech to text** — on your computer; a 2-hour stream takes a few minutes.
-2. **Finding moments** and **rating** — the AI reads the text.
-3. **Montage** — each clip is cut, framed 9:16, given captions and a title card.
-4. **Recap** — after the clips, a 20–30 minute video of the whole stream.
+1. **Речь в текст** — на вашем компьютере; стрим на 2 часа занимает несколько минут.
+2. **Поиск моментов** и **Оценка** — нейросеть читает текст.
+3. **Монтаж** — каждый клип вырезается, кадрируется в 9:16, получает субтитры и заставку с заголовком.
+4. **Пересказ** — после клипов, ролик на 20–30 минут из всего стрима.
 
-You can close the window: SMTV asks whether to go on in the background. **Pause** stops the work; **Continue** picks
-up from the same step.
+Окно можно закрыть: SMTV спросит, продолжать ли в фоне. **Пауза** останавливает работу; **Продолжить** продолжает с
+того же шага.
 
-## 4. Get the clips
+## 4. Заберите клипы
 
-Clips appear one by one under the recap. Click a clip to watch it next to its text and see why SMTV picked it.
-Download it with the download button and post it.
+Клипы появляются по одному под пересказом. Нажмите на клип, чтобы посмотреть его рядом с текстом и узнать, почему SMTV
+его выбрал. Скачайте его кнопкой скачивания и выкладывайте.
 
-<img src="../images/viewer.png" alt="A clip playing next to its transcript" width="820">
+<img src="../images/viewer.png" alt="Клип играет рядом со своей расшифровкой" width="820">
 
-Where are the files? In SMTV's own folder on your computer; the download button saves a copy where you want.
+Где файлы? В собственной папке SMTV на вашем компьютере; кнопка скачивания сохраняет копию, куда вы скажете.
 
-## Good to know
+## Полезно знать
 
-- A 6–12 hour stream gives up to 30 clips. A short or quiet stream may give only a few, or none: SMTV keeps only the
-  moments the AI rated as good.
-- Before the request starts, SMTV shows how long it should take.
-- Something stopped? See [something went wrong](troubleshooting.md).
+- Стрим на 6–12 часов даёт до 30 клипов. Короткий или тихий стрим может дать всего несколько клипов или ни одного:
+  SMTV оставляет только моменты, которые нейросеть оценила как хорошие.
+- Перед запуском запроса SMTV показывает, сколько он должен занять.
+- Что-то остановилось? См. [что-то пошло не так](troubleshooting.md).

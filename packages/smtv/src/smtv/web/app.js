@@ -472,7 +472,7 @@ async function renderProviders(body) {
       key ? setRow(t("key"), h("p", keyText(s.where), c.choice === "custom" ? " " + t("pv_key_optional") : "",
         c.key_url ? [" ", h("a", { href: c.key_url, target: "_blank", rel: "noopener noreferrer" }, t("where_key"))] : null), key) : null,
       c?.cli ? h("div.set-row.pv-cli-row", cliNotice(c)) : null,
-      c?.account ? h("div.set-row", h("p.hint", t("sm_add_note"))) : null),
+      c?.account ? h("div.set-row", h("p.hint", t("sm_soon_note"))) : null),
       c ? result : null,
       h("div.set-actions.pv-actions", h("button.btn.btn-ghost.btn-sm", { type: "button", onclick: () => { adding = null; draw(); } }, t("ag_cancel")), c ? check : null, c ? add : null));
   };
@@ -510,18 +510,19 @@ async function renderProviders(body) {
       h("div.ag-actions", btn, h("button.btn.btn-ghost.btn-sm", { type: "button", onclick: () => { added = null; draw(); } }, t("pv_later"))));
   };
 
-  // V1 (owner 22.11): a newcomer picks one of three plain ways — through the account (our key), their own key, free on
-  // this computer; the subscriptions of the CLIs are hidden under «Other ways». The kinds of each way are in «Connect».
+  // V1 (owner 22.11): a newcomer picks one of three plain ways — their own key, free on this computer, through the
+  // account (our key); the subscriptions of the CLIs are hidden under «Other ways». The kinds of each way are in «Connect».
+  // Sign-in to the account is not open yet (0.1.0): the two ways that work now come first, the account last, «soon».
   const ways = () => {
     const none = !s.providers.length;
     const hasAccount = s.providers.some((p) => p.kind === "streammoment");
     const open = (groups) => () => { adding = { choice: "", groups }; draw(); };
-    const title = (text, tag) => h("span.pv-way-title", text, tag ? h("span.chip.accent", tag) : null);
+    const title = (text, tag) => h("span.pv-way-title", text, tag ? h("span.chip", tag) : null);
     return h("section.set-group.pv-ways", h("h2.set-group-title", t(none ? "ch_title" : "ch_more_title")), h("div.set-card",
-      hasAccount ? null : setRow(title(t("ch_account"), t("ch_account_tag")), t("ch_account_text"),
-        h(none ? "a.btn.btn-primary.btn-sm" : "a.btn.btn-sm", { href: "#/settings/account" }, t("ch_account_btn"))),
-      setRow(title(t("ch_key")), t("ch_key_text"), h("button.btn.btn-sm", { type: "button", onclick: open(["main", "cloud"]) }, t("ch_key_btn"))),
-      setRow(title(t("ch_local")), t("ch_local_text"), findBtn(t("ch_local_btn")))),
+      setRow(title(t("ch_key")), t("ch_key_text"), h(none ? "button.btn.btn-primary.btn-sm" : "button.btn.btn-sm", { type: "button", onclick: open(["main", "cloud"]) }, t("ch_key_btn"))),
+      setRow(title(t("ch_local")), t("ch_local_text"), findBtn(t("ch_local_btn"))),
+      hasAccount ? null : setRow(title(t("ch_account"), t("soon")), t("ch_account_soon_text"),
+        h("a.btn.btn-sm", { href: "#/settings/account" }, t("ch_account_btn")))),
       h("details.pv-more", h("summary", t("ch_other")),
         h("div.set-row", h("div.set-text", h("p", t("ch_cli_text"))), h("div.set-ctl", h("button.btn.btn-sm", { type: "button", onclick: open(["cli"]) }, t("ch_cli_btn"))))),
       h("p.hint.pv-term", t("ch_term")),
@@ -551,8 +552,10 @@ Object.assign(ICONS, {
 // until the balance changes) and by the person's buttons. A sign-in in progress is followed locally (/api/account).
 
 // Settings → Account: the StreamMoment account on its own page (owner, 21.11: signing in must be found without adding a provider).
+// Sign-in is not open on the site yet (0.1.0): the page says so first and leads to the ways that work now.
 function renderAccount(body) {
-  body.replaceChildren(h("p.muted.set-lead", t("sm_add_note")), setGroup(null, h("div.set-row.sm-row", accountPanel())));
+  body.replaceChildren(h("div.set-lead", h("p.muted", t("sm_soon_note")), h("a.btn.btn-sm", { href: "#/settings/providers" }, t("sm_soon_btn"))),
+    setGroup(null, h("div.set-row.sm-row", accountPanel())));
 }
 // a language by its own name: «Русский», «English», «Português (Brasil)»
 const langName = (code) => { try { return (new Intl.DisplayNames([code], { type: "language" }).of(code) || code).replace(/^./, (x) => x.toUpperCase()); } catch { return code; } };
@@ -601,9 +604,13 @@ function accountPanel() {
     const b = h("button." + cls, { type: "button", onclick: async () => { b.disabled = true; try { await fn(); } catch (e) { toast(e.message, "bad"); } b.disabled = false; } }, label);
     return b;
   };
+  // the site has no sign-in yet (not_open): said in the panel in the window's words, not as an error in English
   const login = (mode) => act(mode === "device" ? t("sm_login_code") : t("sm_login"), async () => {
-    paying = null; a = await postJSON("/api/account/login", { mode }); draw(); later(2000, () => load(false));
-  }, mode === "device" ? "btn.btn-sm" : "btn.btn-primary.btn-sm");
+    paying = null;
+    try { a = await postJSON("/api/account/login", { mode }); }
+    catch (e) { if (e.code !== "not_open") throw e; problem = { detail: t("sm_not_open"), soft: true }; draw(); return; }
+    draw(); later(2000, () => load(false));
+  }, "btn.btn-sm");
   const check = act(t("sm_check"), async () => {
     const r = await postJSON("/api/account/check", {});
     problem = r.reachable ? null : { detail: r.detail, hint: r.hint }; toast(r.reachable ? t("sm_reachable") : r.detail, r.reachable ? "ok" : "bad"); draw();
@@ -614,7 +621,7 @@ function accountPanel() {
     const rows = [];
     const lg = a.login;
     if (!a.signed_in) {
-      rows.push(["out", null, () => h("p", t("sm_out"))]);
+      rows.push(["out", null, () => h("p", t("sm_out_soon"))]);
       if (lg?.state === "waiting" && lg.user_code) rows.push(["code", sig(lg.url, lg.user_code), () => h("div.sm-lines", h("p", t("sm_code", { url: lg.url })), h("p.sm-code", lg.user_code))]);
       else if (lg?.state === "waiting") rows.push(["waiting", lg.url, () => h("p.hint", t("sm_waiting"), " ", h("a", { href: lg.url, target: "_blank", rel: "noopener noreferrer" }, t("sm_open_again")))]);
       if (lg?.state === "failed" && lg.error !== "cancelled") rows.push(["failed", lg.error, () => h("div.result.bad", icon(ICONS.x), h("span", t("sm_failed", { why: lg.error })))]);
@@ -642,7 +649,7 @@ function accountPanel() {
         stop(); paying = null; a = await postJSON("/api/account/logout", {}); refreshDoctorDot(); draw();
       }, "btn.btn-ghost.btn-sm"))]);
     }
-    if (problem) rows.push(["problem", sig(problem), () => h("div.result.bad", icon(ICONS.warn), h("span", problem.detail + (problem.hint ? " " + problem.hint : "")))]);
+    if (problem) rows.push(["problem", sig(problem), () => h(problem.soft ? "div.result.warn" : "div.result.bad", icon(ICONS.warn), h("span", problem.detail + (problem.hint ? " " + problem.hint : "")))]);
     blocks(box, rows);
   };
   draw();
@@ -987,7 +994,7 @@ function plainDetail(r) {
     case "window": if (ok && /own window$/.test(d)) return t("chd_window_ok"); break;
     case "vodcut-links":
       if (ok && (m = d.match(/^signed in as (.*)$/))) return t("chd_links_in", { name: m[1] });
-      if (/^not signed in/.test(d)) return t("chd_links_out");
+      if (/^links through a StreamMoment account are coming soon/.test(d)) return t("chd_links_soon");
       break;
     case "speech":
       if ((m = d.match(/^(.*) is on this computer$/))) return t("chd_speech_here", { m: m[1] });
@@ -1110,8 +1117,8 @@ async function blockIfNotReady(hv, pick, page, form) {
   form.before(h("div.ob",
     h("h2.ob-title", t("ob_title")), h("p.ob-lead", t("ob_text")),
     h("ol.ob-steps",
-      step(1, t("ob_step1"), t("ob_step1_text"), h("a.btn.btn-primary.btn-sm.ob-go", { href: "#/settings/providers" }, t("ob_btn"))),
-      step(2, t("ob_step2"), t("ob_step2_text")),
+      step(1, t("ob_step1"), t("ob_step1_now"), h("a.btn.btn-primary.btn-sm.ob-go", { href: "#/settings/providers" }, t("ob_btn"))),
+      step(2, t("ob_step2_pick"), t("ob_step2_pick_text")),
       step(3, t("ob_step3"), t("ob_step3_text"))),
     rest.length ? h("div.fix-first.ob-more", h("b.fix-first-title", t("ob_other")), ...rest.map(fixRow)) : null,
     speech.length ? h("div.fix-first.ob-more", h("b.fix-first-title", t("ob_speech")), ...speech.map(fixRow)) : null));
@@ -1464,9 +1471,9 @@ function openProfile(anchor) {
   const acct = h("div.menu-account"), signOut = h("div.menu-account");
   const signIn = h("button.menu-btn", { type: "button", onclick: async () => {
     closeMenu();
-    try { await postJSON("/api/account/login", { mode: "browser" }); } catch (e) { toast(e.message, "bad"); }
+    try { await postJSON("/api/account/login", { mode: "browser" }); } catch (e) { toast(e.code === "not_open" ? t("sm_not_open") : e.message, e.code === "not_open" ? "" : "bad"); }
     location.hash = "#/settings/account";
-  } }, icon(ICONS.user), t("sm_login"));
+  } }, icon(ICONS.user), t("sm_login"), h("span.menu-soon", t("soon")));
   if (!PHONE) getJSON("/api/account").then((a) => {
     if (!menuEl) return;
     if (!a.signed_in) { acct.replaceChildren(signIn); return; }

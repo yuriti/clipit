@@ -11,8 +11,9 @@ Thank you for helping. You do not need to write code for it.
   wanted to do and what got in the way.
 - **Tell us which clips were bad and why.** A link to the recording and the clip numbers help the most: the choice of
   moments gets better from such examples.
-- **Translate**: SMTV's window and README are being prepared for translation; once the project is on Weblate, you can
-  translate right in the browser, with nothing to install.
+- **Translate**: SMTV's window is translated on [Weblate](https://hosted.weblate.org/engage/smtv/), right in the
+  browser, with nothing to install. The README and the guides are written in Russian; their translations are the files
+  `README.<language>.md` and `docs/guide/<language>/` — send fixes as a pull request.
 
 ## With code
 
@@ -25,3 +26,10 @@ follow [REVIEW.md](REVIEW.md). Two rules are worth knowing up front:
   refuse any other.
 
 By sending a pull request you agree that it is published under the MIT license, like the rest of SMTV.
+
+---
+
+**По-русски, коротко.** О проблемах и идеях — через шаблоны выше или прямо из SMTV («Настройки → Сообщить о
+проблеме»). Окно переводится на Weblate; README и инструкции написаны по-русски, их переводы — целые файлы
+(`README.<язык>.md`, `docs/guide/<язык>/`). Для кода прочитайте [AGENTS.md](AGENTS.md) и [REVIEW.md](REVIEW.md) и
+запустите `python scripts/check.py`. Pull request'ы публикуются под лицензией MIT.

@@ -1,9 +1,11 @@
 <!-- languages -->
-[English](../account.md) · [Русский](../ru/account.md) · [Қазақша](../kk/account.md) · [Oʻzbekcha](../uz/account.md) · [Azərbaycanca](../az/account.md) · [Кыргызча](../ky/account.md) · [简体中文](../zh-CN/account.md) · [日本語](../ja/account.md) · [한국어](../ko/account.md) · [Tiếng Việt](../vi/account.md) · [Bahasa Indonesia](../id/account.md) · **हिन्दी** · [বাংলা](../bn/account.md) · [Español](../es/account.md) · [Português](../pt-BR/account.md) · [Deutsch](../de/account.md)
+[Русский](../account.md) · [English](../en/account.md) · [Қазақша](../kk/account.md) · [Oʻzbekcha](../uz/account.md) · [Azərbaycanca](../az/account.md) · [Кыргызча](../ky/account.md) · [简体中文](../zh-CN/account.md) · [日本語](../ja/account.md) · [한국어](../ko/account.md) · [Tiếng Việt](../vi/account.md) · [Bahasa Indonesia](../id/account.md) · **हिन्दी** · [বাংলা](../bn/account.md) · [Español](../es/account.md) · [Português](../pt-BR/account.md) · [Deutsch](../de/account.md)
 
-> 🌐 यह पेज अपने-आप अनुवाद किया गया है। इसे बेहतर बनाने में मदद करें: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls).
+> 🌐 यह पेज अपने-आप अनुवाद किया गया है। इसे बेहतर बनाने में मदद करें: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/streammomenttv/smtv/pulls) · [मूल पाठ: Русский](../account.md).
 
 # StreamMoment अकाउंट
+
+> 🕓 **जल्द आ रहा है।** StreamMoment खाते में साइन-इन अभी खुला नहीं है। तब तक SMTV बिना खाते के पूरी तरह काम करता है: [अपनी key](get-a-key.md) या [अपने कंप्यूटर पर मुफ़्त AI](free-ai-on-your-computer.md) इस्तेमाल करें, और लिंक के लिए **Download links myself** (Settings → VodCut) चालू करें। यह पेज बताता है कि खाता खुलने के बाद कैसे काम करेगा।
 
 SMTV को AI देने का सबसे आसान तरीका। आप साइन इन करते हैं, बैलेंस टॉप अप करते हैं, और SMTV StreamMoment का AI इस्तेमाल
 करता है — न कुंजी, न सेटअप। अकाउंट SMTV के लिए Twitch और YouTube रिकॉर्डिंग के **लिंक** भी लाता है।

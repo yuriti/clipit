@@ -1,9 +1,11 @@
 <!-- languages -->
-[English](../account.md) · [Русский](../ru/account.md) · [Қазақша](../kk/account.md) · [Oʻzbekcha](../uz/account.md) · [Azərbaycanca](../az/account.md) · [Кыргызча](../ky/account.md) · [简体中文](../zh-CN/account.md) · [日本語](../ja/account.md) · [한국어](../ko/account.md) · [Tiếng Việt](../vi/account.md) · [Bahasa Indonesia](../id/account.md) · [हिन्दी](../hi/account.md) · [বাংলা](../bn/account.md) · [Español](../es/account.md) · [Português](../pt-BR/account.md) · **Deutsch**
+[Русский](../account.md) · [English](../en/account.md) · [Қазақша](../kk/account.md) · [Oʻzbekcha](../uz/account.md) · [Azərbaycanca](../az/account.md) · [Кыргызча](../ky/account.md) · [简体中文](../zh-CN/account.md) · [日本語](../ja/account.md) · [한국어](../ko/account.md) · [Tiếng Việt](../vi/account.md) · [Bahasa Indonesia](../id/account.md) · [हिन्दी](../hi/account.md) · [বাংলা](../bn/account.md) · [Español](../es/account.md) · [Português](../pt-BR/account.md) · **Deutsch**
 
-> 🌐 Diese Seite wurde automatisch übersetzt. Hilf mit, sie zu verbessern: [Weblate](https://hosted.weblate.org/engage/smtv/) · [Pull Request](https://github.com/streammomenttv/smtv/pulls).
+> 🌐 Diese Seite wurde automatisch übersetzt. Hilf mit, sie zu verbessern: [Weblate](https://hosted.weblate.org/engage/smtv/) · [Pull Request](https://github.com/streammomenttv/smtv/pulls) · [Original: Русский](../account.md).
 
 # Das StreamMoment-Konto
+
+> 🕓 **Demnächst.** Die Anmeldung bei einem StreamMoment-Konto ist noch nicht geöffnet. Bis dahin funktioniert SMTV vollständig ohne Konto: Nutze [deinen eigenen Schlüssel](get-a-key.md) oder [eine kostenlose KI auf deinem Computer](free-ai-on-your-computer.md), und schalte für Links **Download links myself** (Settings → VodCut) ein. Diese Seite beschreibt, wie das Konto funktionieren wird, sobald es öffnet.
 
 Der einfachste Weg, SMTV eine KI zu geben. Du meldest dich an, lädst das Guthaben auf, und SMTV nutzt die KI von
 StreamMoment – keine Schlüssel, keine Einrichtung. Das Konto ruft für SMTV auch **Links** zu Twitch- und

@@ -69,14 +69,14 @@ def test_a_refused_link_says_what_to_do(tmp_path, monkeypatch):
         raise media.MediaError("not_signed_in")
 
     monkeypatch.setattr(media, "Ticket", refuses)
-    with pytest.raises(ingest.IngestError, match="sign in.*choose the recording file.*streammoment_sign_in"):
+    with pytest.raises(ingest.IngestError, match="coming soon.*choose the recording file.*Download links myself.*streammoment_sign_in"):
         ingest.from_link("https://www.twitch.tv/videos/2934906889", tmp_path)
 
 
 def test_youtube_is_not_downloaded_here_without_the_switch(tmp_path, monkeypatch):
     local_on(monkeypatch, False)
     monkeypatch.setitem(sys.modules, "yt_dlp", None)        # even when yt-dlp is installed it is not used
-    with pytest.raises(ingest.IngestError, match="YouTube links do not open through StreamMoment yet.*Download on this computer"):
+    with pytest.raises(ingest.IngestError, match="YouTube links do not open through StreamMoment yet.*Download links myself"):
         ingest.from_link("https://www.youtube.com/watch?v=x", tmp_path)
 
 
@@ -168,7 +168,7 @@ def test_doctor_checks_links_not_yt_dlp(monkeypatch, tmp_path):
     s = Settings.load()
     monkeypatch.setattr(account, "signed_in", lambda: None)
     row = tool.checks(s)[0]
-    assert row.status == WARN and "StreamMoment" in row.name and "files work" in row.detail
+    assert row.status == WARN and "StreamMoment" in row.name and "video file works" in row.detail
     monkeypatch.setattr(account, "signed_in", lambda: {"name": "Аня"})
     assert tool.checks(s)[0].status == OK
     options.set_option(s, "local_download", True)

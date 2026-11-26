@@ -38,12 +38,16 @@ SIGN_IN = "streammoment_sign_in"        # in the error text: the window shows it
 TWITCH_VOD = re.compile(r"^https?://(www\.|m\.)?twitch\.tv/(\w{1,40}/)?(videos|v)/\d{5,20}/?(\?.*)?$", re.I)
 YOUTUBE = re.compile(r"^https?://([a-z0-9-]+\.)?(youtube\.com|youtu\.be)/", re.I)
 
+OWN_DOWNLOAD = "«Download links myself»"     # VodCut's switch, named as the window names it
+# Sign-in to a StreamMoment account is not open yet (0.1.0): a link without it says how to go on now, never «sign in».
+NO_ACCOUNT = (f"Links through a StreamMoment account are coming soon. For now: choose the recording file, or turn on {OWN_DOWNLOAD} "
+              f"in VodCut's settings and install yt-dlp (smtv doctor shows the command) [{SIGN_IN}]")
+
 MESSAGES = {
-    "not_signed_in": "Links are downloaded through your StreamMoment account: sign in (profile menu → Sign in), or choose the "
-                     f"recording file [{SIGN_IN}]",
-    "not_open": "Links through StreamMoment are not open yet: choose the recording file",
+    "not_signed_in": NO_ACCOUNT,
+    "not_open": NO_ACCOUNT,
     "media_unsupported": "Links from this site do not open through StreamMoment yet (Twitch only for now): choose the recording "
-                         "file, or turn on «Download on this computer» in VodCut's settings (at your own risk)",
+                         f"file, or turn on {OWN_DOWNLOAD} in VodCut's settings (at your own risk)",
     "media_link_invalid": "This does not look like a link to a recording (a Twitch VOD looks like twitch.tv/videos/123…)",
     "media_not_found": "Twitch has no such recording: it may have been deleted or the link is mistyped",
     "media_restricted": "Twitch gives this recording only to subscribers or not at all: choose the recording file",
@@ -71,7 +75,7 @@ def supported(url: str) -> bool:
 def unsupported_message(url: str) -> str:
     if YOUTUBE.match(url.strip()):
         return ("YouTube links do not open through StreamMoment yet: download the recording and choose the file, or turn on "
-                "«Download on this computer» in VodCut's settings (at your own risk: YouTube may ask to sign in)")
+                f"{OWN_DOWNLOAD} in VodCut's settings (at your own risk: YouTube may ask to sign in)")
     return MESSAGES["media_unsupported"]
 
 

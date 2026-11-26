@@ -16,11 +16,14 @@ Each file is a flat JSON object `{"key": "text"}`. A file is named by its langua
 `de`, `pt-BR`, `zh-Hans`. `{name}` in a text is a value SMTV fills in; a translation keeps the same ones (a test checks).
 A key a language lacks, or an empty text, is shown in English, so a language can go out half translated.
 
-What is not here: the README and the guides for newcomers are translated as whole files — `README.<language>.md` and
-`docs/guide/<language>/` — sent as ordinary pull requests; the English `README.md` lists every language, and a test
-(`tests/test_docs.py`) checks that each has its README and every guide, that each says it was first translated
-automatically with a link to Weblate, and that every link leads to a file and heading that exist. A new language adds
-both, and its name to `LANGS` in `scripts/doc_languages.py`, which writes the language line at the top of every page.
+What is not here: the README and the guides for newcomers. They are written in Russian — `README.md` and
+`docs/guide/*.md` are the source — and every other language, English included, is translated from them as whole files:
+`README.<language>.md` and `docs/guide/<language>/`, sent as ordinary pull requests. A change to the Russian source
+changes the English translation in the same pull request; the other languages follow. The Russian `README.md` lists
+every language, and a test (`tests/test_docs.py`) checks that each has its README and every guide, that each says it
+was translated automatically from the Russian original with a link to it and to Weblate, and that every link leads to a
+file and heading that exist. A new language adds both, and its name to `LANGS` in `scripts/doc_languages.py`, which
+writes the language line at the top of every page. The window's words below keep English as their source.
 
 The AI's steps and a tool's own places are in the same files: a step's name, its one sentence, what it does, the step
 of the tool it serves, how much it reads and why — keys `agent.<id>.title`, `.short`, `.does`, `.stage`, `.needs`,

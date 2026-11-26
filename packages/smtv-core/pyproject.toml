@@ -1,6 +1,6 @@
 [project]
 name = "smtv-core"
-version = "0.1.0.dev0"
+version = "0.1.0"
 description = "Shared core of StreamMoment tools: settings, model access, system checks; later speech recognition and 9:16 rendering"
 readme = "README.md"
 license = "MIT"

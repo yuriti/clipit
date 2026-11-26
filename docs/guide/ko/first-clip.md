@@ -1,7 +1,7 @@
 <!-- languages -->
-[English](../first-clip.md) · [Русский](../ru/first-clip.md) · [Қазақша](../kk/first-clip.md) · [Oʻzbekcha](../uz/first-clip.md) · [Azərbaycanca](../az/first-clip.md) · [Кыргызча](../ky/first-clip.md) · [简体中文](../zh-CN/first-clip.md) · [日本語](../ja/first-clip.md) · **한국어** · [Tiếng Việt](../vi/first-clip.md) · [Bahasa Indonesia](../id/first-clip.md) · [हिन्दी](../hi/first-clip.md) · [বাংলা](../bn/first-clip.md) · [Español](../es/first-clip.md) · [Português](../pt-BR/first-clip.md) · [Deutsch](../de/first-clip.md)
+[Русский](../first-clip.md) · [English](../en/first-clip.md) · [Қазақша](../kk/first-clip.md) · [Oʻzbekcha](../uz/first-clip.md) · [Azərbaycanca](../az/first-clip.md) · [Кыргызча](../ky/first-clip.md) · [简体中文](../zh-CN/first-clip.md) · [日本語](../ja/first-clip.md) · **한국어** · [Tiếng Việt](../vi/first-clip.md) · [Bahasa Indonesia](../id/first-clip.md) · [हिन्दी](../hi/first-clip.md) · [বাংলা](../bn/first-clip.md) · [Español](../es/first-clip.md) · [Português](../pt-BR/first-clip.md) · [Deutsch](../de/first-clip.md)
 
-> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/streammomenttv/smtv/pulls).
+> 🌐 이 페이지는 자동으로 번역되었습니다. 개선에 참여해 주세요: [Weblate](https://hosted.weblate.org/engage/smtv/) · [풀 리퀘스트](https://github.com/streammomenttv/smtv/pulls) · [원문: Русский](../first-clip.md).
 
 # 첫 클립
 

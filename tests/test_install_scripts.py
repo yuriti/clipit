@@ -122,7 +122,7 @@ def test_both_installers_agree():
 
 def test_readmes_point_at_the_installers():
     names = sorted(p.name for p in REPO.glob("README*.md"))
-    assert {"README.md", "README.ru.md"} <= set(names)
+    assert {"README.md", "README.en.md"} <= set(names)
     for name in names:
         text = (REPO / name).read_text(encoding="utf-8")
         assert f"curl -LsSf {RAW}install.sh | sh" in text, name
