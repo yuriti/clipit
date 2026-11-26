@@ -11,8 +11,8 @@ authors = [{ name = "StreamMoment" }]
 # SMTV would not install on an Intel Mac at all. The second line keeps every other computer on the newer one (the lock
 # would otherwise take the older version for everybody).
 dependencies = ["jsonschema>=4.18", "numpy>=1.26", "onnx-asr[cpu,hub]>=0.12", "fonttools>=4.40",
-                "onnxruntime<1.24; sys_platform == 'darwin' and platform_machine == 'x86_64'",
-                "onnxruntime>=1.24; sys_platform != 'darwin' or platform_machine != 'x86_64'"]
+                "onnxruntime<1.33; sys_platform == 'darwin' and platform_machine == 'x86_64'",
+                "onnxruntime>=1.32.0; sys_platform != 'darwin' or platform_machine != 'x86_64'"]
 
 [project.optional-dependencies]
 # Keys in the system keychain (macOS Keychain, Windows Credential Manager, Secret Service).
