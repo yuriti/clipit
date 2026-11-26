@@ -92,15 +92,30 @@ def audit(repo: Repo) -> Outcome:
 
 
 def workflows(repo: Repo) -> Outcome:
-    """The GitHub workflows, by zizmor (offline): template injection, credentials left in checkouts, risky triggers."""
+    """The GitHub workflows: each parses as YAML, then zizmor (offline): template injection, credentials left in checkouts, risky triggers."""
     out = Outcome("workflows")
     folder = repo.root / ".github" / "workflows"
     if not folder.is_dir():
         out.skipped = "no .github/workflows"
         return out
+    # zizmor silently passes over a file it cannot read, and GitHub then rejects it on push: parse each one first.
+    try:
+        import yaml
+    except ImportError:
+        out.skipped = "PyYAML is not installed (dev group)"
+        return out
+    for path in sorted(folder.glob("*.y*ml")):
+        try:
+            yaml.safe_load(path.read_text(encoding="utf-8"))
+        except yaml.YAMLError as e:
+            mark = getattr(e, "problem_mark", None)
+            line = mark.line + 1 if mark else 0
+            out.add(str(path.relative_to(repo.root)), line, f"not valid YAML, GitHub will reject it: {getattr(e, 'problem', None) or e}"
+                    " (quote a value that holds «: » or « #»)")
     exe = shutil.which("zizmor") or shutil.which("zizmor", path=str(Path(sys.executable).parent))
     if exe is None:
-        out.skipped = "zizmor is not installed (dev group)"
+        if not out.findings:
+            out.skipped = "zizmor is not installed (dev group)"
         return out
     res = run([exe, "--offline", "--format", "plain", "--min-severity", "medium", str(folder)], repo.root, timeout=300)
     if res.returncode not in (0,):

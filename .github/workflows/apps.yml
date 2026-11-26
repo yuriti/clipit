@@ -22,7 +22,7 @@ jobs:
       - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
         with:
           python-version: "3.12"
-      - name: Rosetta, for the Intel Python (without it that half could not be checked: the job stops)
+      - name: Rosetta, for the Intel Python (without it that half could not be checked and the job stops)
         run: |
           arch -x86_64 /usr/bin/true 2>/dev/null || softwareupdate --install-rosetta --agree-to-license
           arch -x86_64 /usr/bin/true

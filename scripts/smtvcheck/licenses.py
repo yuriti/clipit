@@ -10,7 +10,7 @@ from .common import Outcome, Repo
 
 # Permissive licenses: code under them may ship inside or next to SMTV. Anything else needs a reasoned exception in
 # [tool.smtv-check.license-exceptions]; copyleft (GPL and the like) never gets one.
-ALLOWED = {"MIT", "MIT-CMU", "BSD-2-Clause", "BSD-3-Clause", "0BSD", "Apache-2.0", "ISC", "PSF-2.0", "Python-2.0",
+ALLOWED = {"MIT", "MIT-0", "MIT-CMU", "BSD-2-Clause", "BSD-3-Clause", "0BSD", "Apache-2.0", "ISC", "PSF-2.0", "Python-2.0",
            "Unlicense", "Zlib", "CC0-1.0", "HPND"}
 COPYLEFT = re.compile(r"(?<![A-Za-z])(A?GPL|LGPL|GNU|SSPL|EUPL|CDDL|EPL|OSL|BUSL|CC-BY-NC|CC-BY-SA|Commons.Clause)",
                       re.IGNORECASE)

@@ -57,6 +57,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--diff", type=Path, help="only personal traces in the lines this patch adds (CI, private list)")
     ap.add_argument("--authors", type=Path, help="with --diff: commit authors, one «sha NUL name NUL email NUL …» per line")
     args = ap.parse_args(argv)
+    for stream in (sys.stdout, sys.stderr):        # a Windows console is cp1252: «», … and → came out as «�»
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
     if args.list:
         for name, (_, fast, what) in CHECKS.items():
             print(f"{name:11} {'fast' if fast else '    '}  {what}")

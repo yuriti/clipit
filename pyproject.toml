@@ -16,7 +16,7 @@ markers = ["doctor: keeps the stage 24 blocking of new requests by failed checks
 # code), pip-audit (known vulnerabilities from the PyPI advisory database, free), pre-commit (runs the quick checks
 # before every commit), zizmor (finds injection and token mistakes in the GitHub workflows). gitleaks is a separate program (brew install gitleaks); CI installs it.
 [dependency-groups]
-dev = ["pytest>=8", "ruff>=0.15", "mypy>=1.18", "vulture>=2.14", "pip-audit>=2.9", "pre-commit>=4", "packaging>=24", "zizmor>=1.0"]
+dev = ["pytest>=8", "ruff>=0.15", "mypy>=1.18", "vulture>=2.14", "pip-audit>=2.9", "pre-commit>=4", "packaging>=24", "zizmor>=1.0", "pyyaml>=6"]
 
 [tool.ruff]
 line-length = 130
@@ -47,7 +47,9 @@ placeholder-users = ["O'Brien Smith"]
 traces-skip = ["tests/test_repo_checks.py", "packages/smtv-core/src/smtv_core/render/models/LICENSE-YuNet.txt"]
 # MPL-2.0 is copyleft per file: using tqdm unchanged is fine, changing its files would have to stay MPL. Comes with
 # huggingface_hub (speech model downloads). Owner's call before a release.
-license-exceptions = { tqdm = { license = "MPL-2.0 AND MIT", why = "progress bars inside huggingface_hub; used unchanged, file-level copyleft" } }
+# clr-loader (Windows only, under pythonnet, which draws the window): its metadata names no license; the LICENSE file
+# inside the clr_loader-0.3.1 wheel is MIT (github.com/pythonnet/clr-loader). A release that names it makes this stale.
+license-exceptions = { tqdm = { license = "MPL-2.0 AND MIT", why = "progress bars inside huggingface_hub; used unchanged, file-level copyleft" }, clr-loader = { license = "UNKNOWN", why = "metadata names none; the LICENSE in the 0.3.1 wheel is MIT" } }
 hosts = [
   # Where the code connects
   "pypi.org", "github.com", "*.githubusercontent.com", "huggingface.co", "*.huggingface.co", "*.hf.co",

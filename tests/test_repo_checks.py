@@ -79,7 +79,7 @@ def test_license_is_read_from_expression_then_classifiers_then_the_free_text_fie
 
 
 @pytest.mark.parametrize("expr, ok", [
-    ("MIT", True), ("Apache-2.0 OR BSD-2-Clause", True), ("BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0", True),
+    ("MIT", True), ("MIT-0", True), ("Apache-2.0 OR BSD-2-Clause", True), ("BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0", True),
     ("GPL-3.0-only", False), ("LGPL-2.1-or-later", False), ("MIT AND GPL-2.0", False), ("GPL-2.0 OR MIT", True),
     ("MPL-2.0", False), ("UNKNOWN", False), ("AGPL-3.0", False),
 ])
@@ -119,6 +119,10 @@ def test_an_exception_needs_the_exact_license_and_a_reason_and_never_covers_copy
     stale = {"license-exceptions": {"mpl": {"license": "MPL-1.1", "why": "old"}}}
     out = licenses.check(repo(tmp_path, {"pyproject.toml": PROJECT}, stale), lookup_from(dists))
     assert any("mpl: exception must say" in m for m in messages(out))
+    silent = {"ourtool": FakeDist("ourtool", ["quiet"], expression="MIT"), "quiet": FakeDist("quiet")}   # clr-loader
+    assert licenses.check(repo(tmp_path, {"pyproject.toml": PROJECT}), lookup_from(silent)).findings
+    known = {"license-exceptions": {"quiet": {"license": "UNKNOWN", "why": "the LICENSE file in the wheel is MIT"}}}
+    assert not licenses.check(repo(tmp_path, {"pyproject.toml": PROJECT}, known), lookup_from(silent)).findings
 
 
 def test_a_font_needs_its_license_next_to_it(tmp_path):
@@ -261,6 +265,23 @@ wheels = [{ url = "w" }]
 name = "ours"
 source = { editable = "packages/ours" }
 """
+
+
+def test_a_workflow_github_cannot_read_fails_before_the_push(tmp_path, monkeypatch):
+    # zizmor passes over a file it cannot parse, so the YAML is read first: «: » in an unquoted step name broke apps.yml.
+    monkeypatch.setattr(supply.shutil, "which", lambda *a, **k: None)
+    good = "on: push\njobs:\n  a:\n    runs-on: ubuntu-latest\n    steps:\n      - name: \"one: two\"\n        run: true\n"
+    bad = good.replace('"one: two"', "Rosetta (without it: the job stops)")
+    found = supply.workflows(repo(tmp_path, {".github/workflows/bad.yml": bad, ".github/workflows/good.yml": good}))
+    assert [(f.path, f.line) for f in found.findings] == [(".github/workflows/bad.yml", 6)]
+    assert "not valid YAML" in messages(found)[0] and not found.skipped
+    assert supply.workflows(repo(tmp_path / "ok", {".github/workflows/good.yml": good})).skipped   # no zizmor here
+
+
+def test_every_workflow_of_this_repository_is_valid_yaml():
+    import yaml
+    for path in sorted((ROOT / ".github" / "workflows").glob("*.y*ml")):
+        assert isinstance(yaml.safe_load(path.read_text(encoding="utf-8")), dict), path.name
 
 
 def test_supply_chain_lock_hashes_install_scripts_and_build_hooks(tmp_path):
