@@ -19,7 +19,6 @@ import json
 import os
 import socket
 import subprocess
-import sys
 import tempfile
 import time
 import urllib.error
@@ -34,12 +33,15 @@ from smtv_core import checks
 from smtv_core.render.fonts import FONTS_DIR
 if not list(FONTS_DIR.glob("*.woff")):
     raise SystemExit(f"no caption font in {FONTS_DIR}")
+import platform, subprocess, time
+started = time.monotonic()
 folder, captions = checks.find_ffmpeg()
-import platform, subprocess
+took = time.monotonic() - started
+again = checks.has_libass(folder) if folder and not captions else None   # a slow first start, or no libass at all
 translated = subprocess.run(["sysctl", "-n", "sysctl.proc_translated"], capture_output=True, text=True).stdout.strip() \
     if sys.platform == "darwin" else ""
 print(json.dumps({"machine": platform.machine(), "rosetta": translated == "1", "prefix": sys.prefix, "version": sys.version.split()[0], "kind": updates.install_kind(),
-                  "ffmpeg": folder, "libass": captions, "fonts": str(FONTS_DIR)}))
+                  "ffmpeg": folder, "libass": captions, "libass_s": round(took, 1), "libass_again": again, "fonts": str(FONTS_DIR)}))
 """
 
 ASS = """[Script Info]
@@ -172,7 +174,8 @@ def smoke(app: Path, kinds: tuple[str, ...], arch: str = "arm64") -> list[str]:
         if not info["ffmpeg"] or Path(info["ffmpeg"]).resolve() != (Path(info["prefix"]) / "ffmpeg").resolve():
             failed.append(f"SMTV picked ffmpeg in {info['ffmpeg']}, not the one inside the app")
         if not info["libass"]:
-            failed.append("the ffmpeg SMTV picked cannot burn captions (no libass)")
+            failed.append(f"the ffmpeg SMTV picked cannot burn captions (no libass): finding it took {info['libass_s']} s, "
+                          f"asked once more it {'has' if info['libass_again'] else 'still has no'} libass")
 
         if info["ffmpeg"]:
             ffmpeg = str(Path(info["ffmpeg"]) / ("ffmpeg.exe" if os.name == "nt" else "ffmpeg"))
@@ -219,7 +222,7 @@ def smoke(app: Path, kinds: tuple[str, ...], arch: str = "arm64") -> list[str]:
                 server.kill()
                 out, _ = server.communicate()
             if failed:
-                print(out[-3000:])
+                print("smtv serve printed:\n" + "\n".join("    " + line for line in out[-3000:].splitlines()))
     return failed
 
 
@@ -232,9 +235,11 @@ def main(argv: list[str] | None = None) -> int:
     kinds = tuple(a.kind or (("dmg",) if a.app.suffix == ".app" else ("exe", "zip")))
     arch = a.arch or (native_arch() if a.app.suffix == ".app" else "x86_64")
     failed = smoke(a.app.resolve(), kinds, arch)
+    # on stdout, right under this run's own output: on stderr they landed next to the other Python's run in CI logs
     for f in failed:
-        print(f"FAILED: {f}", file=sys.stderr)
-    print("smoke: ok" if not failed else f"smoke: {len(failed)} failed")
+        print(f"FAILED: {f}")
+    print(f"smoke ({arch if a.app.suffix == '.app' else 'windows'}): " + ("ok" if not failed else f"{len(failed)} failed"),
+          flush=True)
     return 1 if failed else 0
 
 

@@ -34,7 +34,7 @@ SMTV, writing nothing to its disk; only the sound and the pieces the clips and t
 
 ## Without the installer
 
-With uv: `uv tool install "smtv[vodcut]"` (on Windows add `--python ">=3.10,<3.14"`: SMTV's window is
+With uv: `uv tool install "smtv[vodcut]"` (on Windows add `--python ">=3.11,<3.14"`: SMTV's window is
 tested up to Python 3.13 there), or `uvx "smtv[vodcut]" doctor` to try without installing.
 
 ## The downloaded apps

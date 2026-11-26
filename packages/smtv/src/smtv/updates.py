@@ -27,6 +27,7 @@ import subprocess
 import sys
 import threading
 import time
+import tomllib
 import urllib.parse
 from dataclasses import dataclass
 from importlib import metadata
@@ -230,33 +231,11 @@ SPECIFIER = re.compile(r"^[<>=!~][<>=!~ 0-9A-Za-z.*,+-]{0,100}$")
 def _receipt_requirements(text: str) -> list[dict]:
     """`[tool] requirements = [{ name = …, extras = […], specifier = … }, …]` of uv-receipt.toml."""
     try:
-        import tomllib  # Python 3.11+
         data = tomllib.loads(text)
-        reqs = (data.get("tool") or {}).get("requirements") or []
-        return [r for r in reqs if isinstance(r, dict)]
-    except ImportError:
-        pass
     except ValueError:
         return []
-    m = re.search(r"(?m)^\s*requirements\s*=\s*\[", text)
-    if not m:
-        return []
-    depth, i = 1, m.end()
-    while i < len(text) and depth:
-        depth += {"[": 1, "]": -1}.get(text[i], 0)
-        i += 1
-    out = []
-    for table in re.findall(r"\{([^{}]*)\}", text[m.end():i]):
-        r: dict = {}
-        for key, value in re.findall(r'(\w+)\s*=\s*("(?:[^"\\]|\\.)*"|\[[^\]]*\]|true|false)', table):
-            if value.startswith("["):
-                r[key] = re.findall(r'"((?:[^"\\]|\\.)*)"', value)
-            elif value in ("true", "false"):
-                r[key] = value == "true"
-            else:
-                r[key] = value[1:-1]
-        out.append(r)
-    return out
+    reqs = (data.get("tool") or {}).get("requirements") or []
+    return [r for r in reqs if isinstance(r, dict)]
 
 
 def carried(prefix: str | None = None) -> tuple[list[str], dict[str, list[str]]]:

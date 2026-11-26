@@ -722,14 +722,11 @@ entrypoints = [{ name = "smtv", install-path = "/x/bin/smtv" }]
 '''
 
 
-@pytest.mark.parametrize("no_tomllib", [False, True])
-def test_an_update_keeps_what_was_added_with_uv_with(tmp_path, monkeypatch, no_tomllib):
+def test_an_update_keeps_what_was_added_with_uv_with(tmp_path, monkeypatch):
     """A14: `uv tool install --reinstall` keeps only what its command names: yt-dlp, pywebview[qt], smtv-core[keyring]
     and a plugin go into the new command and into the rollback."""
     (tmp_path / "uv-receipt.toml").write_text(RECEIPT, encoding="utf-8")
     monkeypatch.setattr(updates.sys, "prefix", str(tmp_path))
-    if no_tomllib:
-        monkeypatch.setitem(sys.modules, "tomllib", None)        # Python 3.10: the small reader
     cur = {"smtv": "0.1.0", "smtv-core": "0.1.0", "vodcut": "0.1.0"}
     plan = updates.make_plan("update", "uv", ["vodcut"], cur, {n: "0.2.0" for n in cur}, ["vodcut"], 8642, uv="uv",
                              relaunch=["smtv", "app"])

@@ -220,6 +220,8 @@ def test_the_installer_is_per_user_keeps_its_id_and_names_its_file_as_the_releas
     assert ("exe", "x64", "SMTV-{v}-windows-x64-setup.exe") in release_manifest.APPS
     assert r'Name: "{autoprograms}\SMTV"; Filename: "{app}\SMTV.exe"; Parameters: "-m smtv app"' in iss
     assert 'Excludes: "Start SMTV.cmd"' in iss and "[UninstallDelete]" in iss
+    # ISCC is 32-bit: the compressor runs apart, in 64 bits, with few threads (4 threads ran out of memory, v0.1.0)
+    assert "LZMAUseSeparateProcess=yes" in iss and int(re.search(r"LZMANumBlockThreads=(\d+)", iss)[1]) <= 2
     # the file build.py looks for after ISCC is the one smtv.iss writes
     assert "SMTV-{v}-windows-x64-setup.exe" in (APP / "build.py").read_text(encoding="utf-8")
 
@@ -390,7 +392,11 @@ def test_the_smoke_check_fails_when_the_app_does_not_start(tmp_path, capsys):
     app = tmp_path / "SMTV"
     app.mkdir()
     assert smoke.main([str(app)]) == 1
-    assert "FAILED" in capsys.readouterr().err
+    out = capsys.readouterr()
+    # the cause sits in this run's own output, right above its summary (not on stderr, next to the other run's)
+    lines = out.out.splitlines()
+    assert lines[-2].startswith("FAILED: the app's Python did not start") and lines[-1] == "smoke (windows): 1 failed"
+    assert out.err == ""
 
 
 def test_the_build_sources_are_ascii_named_and_have_their_callers():

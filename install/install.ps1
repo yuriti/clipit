@@ -18,7 +18,7 @@
 $ErrorActionPreference = "Stop"
 $UvInstaller = "https://astral.sh/uv/install.ps1"   # uv's official installer (Astral)
 # pythonnet, which draws SMTV's window on Windows, is tested up to Python 3.13; uv picks an installed one that fits.
-$PythonVersion = ">=3.10,<3.14"
+$PythonVersion = ">=3.11,<3.14"
 $SignedPython = "Python.Python.3.13"                # winget id of python.org's Python, signed by the Python Software Foundation
 $Tools = if ($env:SMTV_TOOLS) { $env:SMTV_TOOLS } else { "vodcut" }
 $DryRun = $env:SMTV_DRY_RUN -eq "1"

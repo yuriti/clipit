@@ -125,8 +125,11 @@ def _ffmpeg_candidates() -> list[str]:
     return out
 
 
+LIBASS_WAIT_S = 60   # the first start of a new ffmpeg can be slow: macOS scans it, Rosetta translates all of it (20+ s)
+
+
 def has_libass(folder: str) -> bool:
-    filters = _run([str(Path(folder) / _exe("ffmpeg")), "-hide_banner", "-filters"]) or ""
+    filters = _run([str(Path(folder) / _exe("ffmpeg")), "-hide_banner", "-filters"], timeout=LIBASS_WAIT_S) or ""
     return any(line.split()[1:2] == ["ass"] for line in filters.splitlines() if line.strip())
 
 

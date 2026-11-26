@@ -38,6 +38,13 @@ def test_a_check_shows_its_recipe_as_text_and_only_while_not_ok():
     assert Recipe("z", ["a"], shown="what runs").line() == "what runs"
 
 
+def test_the_libass_check_waits_for_a_slow_first_start(tmp_path, monkeypatch):
+    # the Intel ffmpeg of SMTV.app under Rosetta took more than 15 s to start the first time: «no libass», doctor then ok
+    asked = []
+    monkeypatch.setattr(checks, "_run", lambda argv, timeout=15: asked.append(timeout) or " .. ass  V->V  Render ASS\n")
+    assert checks.has_libass(str(tmp_path)) and asked == [checks.LIBASS_WAIT_S] and checks.LIBASS_WAIT_S >= 60
+
+
 def test_ffmpeg_with_captions_is_preferred_and_put_first_on_path(tmp_path, monkeypatch):
     plain = fake_ffmpeg(tmp_path / "plain")
     full = fake_ffmpeg(tmp_path / "full")

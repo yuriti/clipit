@@ -30,7 +30,7 @@ select = ["E4", "E9", "F", "E711", "E712", "E721", "E722"]
 [tool.mypy]
 ignore_missing_imports = true
 check_untyped_defs = false
-python_version = "3.10"
+python_version = "3.11"
 
 [tool.vulture]
 # Arguments a signature must have (signal handlers, context managers, logging overrides, pywebview callbacks).

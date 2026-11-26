@@ -38,9 +38,12 @@ OutputBaseFilename=SMTV-{#AppVersion}-windows-x64-setup
 SetupIconFile={#SourceDir}\smtv.ico
 UninstallDisplayIcon={app}\smtv.ico
 UninstallDisplayName=SMTV
+; ISCC itself is a 32-bit program: the 64 MB dictionary with 4 threads needs about 3 GB and stopped the build with
+; «Out of memory». The compressor runs in its own 64-bit process (islzma64.exe), with 2 threads: about 1.5 GB.
 Compression=lzma2/ultra64
 SolidCompression=yes
-LZMANumBlockThreads=4
+LZMAUseSeparateProcess=yes
+LZMANumBlockThreads=2
 WizardStyle=modern
 ; an update closes the running SMTV first (its files cannot be replaced while it runs)
 CloseApplications=yes

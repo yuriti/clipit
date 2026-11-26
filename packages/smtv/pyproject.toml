@@ -5,7 +5,7 @@ description = "One command to install and run StreamMoment tools: stream clipper
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 authors = [{ name = "StreamMoment" }]
 # pywebview: SMTV's own window, drawn by the system's own engine (WebKit on macOS, WebView2 on Windows), so SMTV is one
 # program with one icon and no browser is needed; the standard library has no window that shows a web page. On macOS it
