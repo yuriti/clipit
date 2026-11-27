@@ -1,9 +1,9 @@
-"""Every icon of Clip It! from its three drawings in packages/smtv/src/smtv/web/icons (run on a Mac: sips draws SVG):
+"""Every icon of Clip It! from its two drawings in packages/smtv/src/smtv/web/icons (run on a Mac: sips draws SVG):
 
     python scripts/make_icons.py
 
-- clip-it.svg        the logo: «Clip / It!» on the purple square (Bitter Black Italic, outlined; SIL OFL 1.1);
-- clip-it-small.svg  the same art as «C!», for 32 px and less, where two lines of letters turn to mush;
+- clip-it.svg        the logo: «Clip / It!» on the purple square (Bitter Black Italic, outlined; SIL OFL 1.1), drawn
+                     at each size straight from the drawing (16 px included), never a smaller copy of a large PNG;
 - clip-it-mac.svg    the logo on Apple's icon grid: an 824 px rounded square, 185 px corners, a soft shadow.
 The PNGs are committed (Windows' .ico, the .icns, the page's manifest and notifications use them); make them again
 after a drawing changes. Only the image itself is kept in each PNG: nothing the drawing tool adds (EXIF and the like).
@@ -18,8 +18,7 @@ import tempfile
 from pathlib import Path
 
 ICONS = Path(__file__).resolve().parents[1] / "packages" / "smtv" / "src" / "smtv" / "web" / "icons"
-SMALL = (16, 24, 32)            # clip-it-small.svg
-FULL = (48, 64, 256)            # clip-it.svg
+FULL = (16, 24, 32, 48, 64, 256)   # clip-it.svg
 MAC = (512, 1024)               # clip-it-mac.svg → icon-mac-<size>.png
 KEEP = (b"IHDR", b"PLTE", b"tRNS", b"sRGB", b"IDAT", b"IEND")
 
@@ -47,8 +46,6 @@ def main() -> int:
     if not shutil.which("sips"):
         print("sips is macOS's own tool: make the icons on a Mac")
         return 1
-    for size in SMALL:
-        render(ICONS / "clip-it-small.svg", size, ICONS / f"icon-{size}.png")
     for size in FULL:
         render(ICONS / "clip-it.svg", size, ICONS / f"icon-{size}.png")
     for size in MAC:

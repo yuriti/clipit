@@ -367,12 +367,13 @@ def test_every_icon_is_made_from_the_clip_it_drawings_and_holds_only_its_image()
     finally:
         _sys.path.pop(0)
     assert make_icons.ICONS == launcher.ICONS
-    assert set(make_icons.SMALL + make_icons.FULL) == set(launcher.WIN_ICON_SIZES)
+    assert set(make_icons.FULL) == set(launcher.WIN_ICON_SIZES)
     for name, size in [(f"icon-{n}.png", n) for n in launcher.WIN_ICON_SIZES] + [(f"icon-mac-{n}.png", n) for n in make_icons.MAC]:
         data = (launcher.ICONS / name).read_bytes()
         assert struct.unpack(">II", data[16:24]) == (size, size), name
         assert make_icons.plain_png(data) == data, name            # no EXIF or other chunks from the drawing tool
-    for svg in ("clip-it.svg", "clip-it-small.svg", "clip-it-mac.svg"):
+    assert not (launcher.ICONS / "clip-it-small.svg").exists()     # the logo itself at every size, as it was drawn
+    for svg in ("clip-it.svg", "clip-it-mac.svg"):
         text = (launcher.ICONS / svg).read_text(encoding="utf-8")
         assert "<path" in text and "<text" not in text and "font-family" not in text, svg   # outlines: no font ships
     assert not list(launcher.ICONS.glob("*sm*tv*")) and "Bitter" in (launcher.ICONS / "README.md").read_text(encoding="utf-8")

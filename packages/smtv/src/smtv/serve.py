@@ -91,7 +91,7 @@ PAGE_ID = re.compile(r"^[A-Za-z0-9_-]{8,64}$")
 PAGE_RUN = "page-run.json"   # what the page started in this job folder, so it can be started again after a stop
 HELLO_APP = "smtv"
 ANY_ADDRESS = "0.0.0.0"   # only in Docker: the published port reaches the server inside the container this way
-DOCKER_OPEN = {"/healthz", "/manifest.webmanifest", "/favicon.ico", "/static/icons/clip-it-small.svg"}   # no key: nothing secret in them
+DOCKER_OPEN = {"/healthz", "/manifest.webmanifest", "/favicon.ico", "/static/icons/clip-it.svg"}   # no key: nothing secret in them
 MANIFEST = {"name": "Clip It!", "short_name": "Clip It!", "id": "/", "start_url": "/", "scope": "/", "display": "standalone",
             "background_color": "#181818", "theme_color": "#181818",
             "icons": [{"src": "/static/icons/icon-256.png", "sizes": "256x256", "type": "image/png"},
@@ -1988,7 +1988,7 @@ class Handler(BaseHTTPRequestHandler):
             if path in ("/", "/index.html"):
                 return self._index(query)
             if path == "/favicon.ico":
-                return self._static(WEB / "icons", "clip-it-small.svg", cache=True)   # a tab's icon is 16-32 px: «C!»
+                return self._static(WEB / "icons", "clip-it.svg", cache=True)
             if self.app.docker and path == "/healthz":
                 return self._json({"ok": True})
             if self.app.docker and path == "/manifest.webmanifest":
