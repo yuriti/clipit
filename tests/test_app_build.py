@@ -56,7 +56,10 @@ def test_every_download_is_pinned_by_https_and_sha256_and_versions_agree():
     for t in build.TARGETS.values():
         for d in (t.python, *t.ffmpeg):
             assert d.url.startswith("https://") and re.fullmatch(r"[0-9a-f]{64}", d.sha256), d
-        assert "cpython-3.12." in t.python.url and t.python.url.split("/")[-1].startswith("cpython-")
+        if t.system == "win":    # python.org's own CPython, signed by the PSF (Smart App Control), from its NuGet package
+            assert t.python.url.startswith(build.NUGET + "python/3.12.") and t.python.url.endswith(".nupkg")
+        else:
+            assert "cpython-3.12." in t.python.url and t.python.url.split("/")[-1].startswith("cpython-")
         names = {name for d in t.ffmpeg for _, name in d.members}
         exe = ".exe" if t.system == "win" else ""
         assert f"ffmpeg{exe}" in names and not any("ffprobe" in n for n in names)   # proc.probe asks ffmpeg itself
@@ -210,6 +213,27 @@ def win_python(tmp_path):
     (py / "LICENSE.txt").write_text("PSF", encoding="utf-8")
     (py / build.KIND_MARKER).write_text("exe\n", encoding="utf-8")
     return py
+
+
+def test_python_org_s_nuget_package_unpacks_into_the_same_layout(tmp_path):
+    nupkg = tmp_path / "python.3.12.10.nupkg"
+    with zipfile.ZipFile(nupkg, "w") as z:
+        z.writestr("python.nuspec", "<package/>")
+        z.writestr("tools/pythonw.exe", "MZ signed")
+        z.writestr("tools/python312.dll", "MZ dll")
+        z.writestr("tools/DLLs/_ssl.pyd", "MZ ssl")
+        z.writestr("tools/Lib/os.py", "")
+        z.writestr("build/native/python.props", "")
+    py = build.unpack_python(nupkg, tmp_path / "python")
+    assert sorted(str(f.relative_to(py)).replace("\\", "/") for f in py.rglob("*") if f.is_file()) == \
+        ["DLLs/_ssl.pyd", "Lib/os.py", "python312.dll", "pythonw.exe"]
+    evil = tmp_path / "evil.nupkg"
+    with zipfile.ZipFile(evil, "w") as z:
+        z.writestr("tools/../../escaped.txt", "x")
+    with pytest.raises(SystemExit, match="outside"):
+        build.unpack_python(evil, tmp_path / "python2")
+    apps = (REPO / ".github" / "workflows" / "apps.yml").read_text(encoding="utf-8")
+    assert "Get-AuthenticodeSignature" in apps and "O=Python Software Foundation" in apps   # checked on Windows, per build
 
 
 def test_the_windows_folder_shows_one_program_a_how_to_and_app_with_the_rest(tmp_path):

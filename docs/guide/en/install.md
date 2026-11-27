@@ -52,6 +52,8 @@ If **Smart App Control** is on (Windows Security → App & browser control), Win
 signature start, and there is no button to let them through. You do not need to turn it off for Clip It!:
 
 1. Take the **ZIP** and open **ClipIt.exe** (the steps above): that way Clip It! works with Smart App Control on.
+   ClipIt.exe is Python's official program, signed by its authors (the Python Software Foundation), and Windows lets
+   signed programs run.
 2. If that does not open either, install Clip It! with [one line in a terminal](#for-experienced-users-one-line-in-a-terminal).
 
 ## Mac

@@ -60,6 +60,7 @@ hosts = [
   "dashscope-intl.aliyuncs.com", "api.moonshot.ai", "api.z.ai", "api.cerebras.ai",   # model providers the person picks
   "ollama.com",                                                    # Ollama's model library (names, sizes)
   "astral.sh",                                                     # uv's official installer, fetched by install/install.sh and install.ps1
+  "api.nuget.org",                                                 # python.org's signed CPython for the Windows app, fetched by install/app/build.py (pinned, SHA-256)
   "files.pythonhosted.org",                                        # PyPI's files: Whisper's engine for the Windows app on first use (smtv_core/parts.py; pinned, SHA-256)
   "ffmpeg.martin-riedl.de",                                        # ffmpeg with captions for the macOS app, fetched by install/app/build.py (pinned, SHA-256)
   # Links shown to a person (help, keys, prices, licenses); SMTV does not fetch them

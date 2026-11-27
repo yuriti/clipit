@@ -3,8 +3,8 @@
 What it makes, for the person who is signed in (no administrator rights anywhere):
 - macOS: `~/Applications/SMTV.app`, whose script hands over to `smtv app` (SMTV's own window, `window.py`): the process
   is SMTV.app's, with its name and icon in the Dock, and a second click brings the running window forward.
-- Windows: `SMTV.lnk` on the desktop and in the Start menu, running `pythonw` (no console window; in the ZIP of the
-  desktop app its `SMTV.exe`), with SMTV's taskbar id (`APP_ID`, `winlink.py`).
+- Windows: `Clip It!.lnk` on the desktop and in the Start menu, running `pythonw` (no console window), with the
+  taskbar id (`APP_ID`, `winlink.py`). The desktop apps make no shortcut (`own_shortcut`).
 - Linux: `smtv.desktop` in the applications menu and on the desktop.
 
 Everything that touches the system goes through `System` (files under `home`, helper commands), so the tests check what
@@ -63,7 +63,7 @@ def this_system() -> System:
     platform = sys.platform
     python = sys.executable
     if platform == "win32":
-        # the desktop app's SMTV.exe (pythonw under SMTV's name), else the environment's pythonw
+        # the Windows app's ClipIt.exe (pythonw under its name; SMTV.exe before 0.1.1), else the environment's pythonw
         windowless = next((p for p in (Path(sys.executable).with_name(n) for n in ("ClipIt.exe", "SMTV.exe", "pythonw.exe"))
                            if p.exists()),
                           Path(sys.executable))

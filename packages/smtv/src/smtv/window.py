@@ -404,8 +404,8 @@ def browser_profile() -> str | None:
 
 def win_taskbar(app: Path | None = None, set_id=None):
     """Windows: SMTV's taskbar id for this process (the window is one button with SMTV's shortcuts and the installer's
-    icons, not Python's) and the icon file for the window. SMTV.exe stays Python's own program byte for byte (Smart
-    App Control), so its icon is Python's: the window's comes from here. Neither failing stops the window."""
+    icons, not Python's) and the icon file for the window. ClipIt.exe stays python.org's signed program byte for byte
+    (Smart App Control), so its icon is Python's: the window's comes from here. Neither failing stops the window."""
     from . import launcher
     try:
         if set_id is None and sys.platform == "win32":

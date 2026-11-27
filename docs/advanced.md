@@ -39,7 +39,9 @@ tested up to Python 3.13 there), or `uvx "smtv[vodcut]" doctor` to try without i
 
 ## The downloaded apps
 
-The `.dmg` and the Windows installer hold their own Python 3.12 ([python-build-standalone](https://github.com/astral-sh/python-build-standalone)),
+The `.dmg` and the Windows ZIP hold their own Python 3.12 (macOS: [python-build-standalone](https://github.com/astral-sh/python-build-standalone);
+Windows: python.org's own build, from its [NuGet package](https://www.nuget.org/packages/python), signed by the Python
+Software Foundation),
 SMTV with every dependency at the versions of `uv.lock`, and ffmpeg 9.1 with libass (macOS: Martin Riedl's static
 build; Windows: Gyan's «essentials» build; both GPL, their license and source in the `ffmpeg` folder inside). Where:
 
@@ -51,7 +53,8 @@ build; Windows: Gyan's «essentials» build; both GPL, their license and source 
   `~/.smtv/logs/launch.log`.
 - Windows: `%LOCALAPPDATA%\Programs\ClipIt` (installed by 0.1.0: `Programs\SMTV`, where updates stay; the ZIP:
   wherever it was unpacked). On top only `ClipIt.exe` (Python's
-  `pythonw.exe` under the program's name, byte for byte, so Smart App Control lets it run), `ClipIt.exe.config`, the DLLs
+  `pythonw.exe` under the program's name, byte for byte: signed by the Python Software Foundation, so Smart App Control
+  lets it run whatever its reputation; renaming keeps the signature valid), `ClipIt.exe.config`, the DLLs
   Windows loads before Python, `python312._pth` (Python's paths: everything else is in `app\`) and a how-to text. There
   is no `python.exe`: `ClipIt.exe` prints into a file or a pipe like it. A double click on `ClipIt.exe` opens the window
   (`app\Lib\site-packages\sitecustomize.py`); the Start menu icon runs `ClipIt.exe -m smtv app`.

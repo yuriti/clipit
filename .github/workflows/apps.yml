@@ -60,6 +60,25 @@ jobs:
           Expand-Archive $zip.FullName -DestinationPath "$env:RUNNER_TEMP\zip"
           uv run --no-project python install/app/smoke.py "$env:RUNNER_TEMP\zip\ClipIt" --kind zip
           if ($LASTEXITCODE -ne 0) { throw "the ZIP failed its check" }
+      # Smart App Control lets a signed program run whatever its reputation: the program and Python's own libraries must
+      # be python.org's, signed by the Python Software Foundation. The other unsigned files are listed to watch.
+      - name: The program is python.org's, signed by the Python Software Foundation
+        shell: pwsh
+        run: |
+          $app = Join-Path $env:RUNNER_TEMP 'zip\ClipIt'
+          foreach ($name in 'ClipIt.exe', 'python312.dll', 'python3.dll') {
+            $s = Get-AuthenticodeSignature -LiteralPath (Join-Path $app $name)
+            $who = if ($s.SignerCertificate) { $s.SignerCertificate.Subject } else { 'nobody' }
+            if ($s.Status -ne 'Valid' -or $who -notlike '*O=Python Software Foundation*') {
+              throw "${name} is not signed by the Python Software Foundation: $($s.Status), $who"
+            }
+            "${name}: $($s.Status), $who"
+          }
+          "Programs and libraries without a valid signature (watched, not a failure):"
+          Get-ChildItem -LiteralPath $app -Recurse -File | Where-Object { $_.Extension -in '.exe', '.dll', '.pyd' } | ForEach-Object {
+            $s = Get-AuthenticodeSignature -LiteralPath $_.FullName
+            if ($s.Status -ne 'Valid') { "  $($s.Status)  $($_.FullName.Substring($app.Length + 1))" }
+          }
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: apps-windows

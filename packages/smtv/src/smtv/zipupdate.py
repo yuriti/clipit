@@ -2,8 +2,8 @@
 put into the folder are never touched.
 
 The window downloads the new ZIP (checked against the signed list of releases, `updates.py`), unpacks it into
-data\\run\\update-app and starts the new copy's own ClipIt.exe from there (Python's own program, byte for byte: Smart
-App Control lets it run, and no script is needed). That process, `python -m smtv.zipupdate swap`, waits for this one
+data\\run\\update-app and starts the new copy's own ClipIt.exe from there (python.org's own program, byte for byte, signed
+by the Python Software Foundation: Smart App Control lets it run, and no script is needed). That process, `python -m smtv.zipupdate swap`, waits for this one
 to end, moves the old program's files aside into data\\run\\update-old, copies the new ones in and starts the new
 ClipIt.exe. A failure at any step removes only what the copy made and moves the old files back.
 

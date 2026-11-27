@@ -1,8 +1,9 @@
 """ClipIt.exe opened with a double click (the Windows ZIP): no arguments, so SMTV's window starts.
 
 build.py puts this file into the Windows app as app/Lib/site-packages/sitecustomize.py, which Python runs on every
-start. ClipIt.exe is Python's own windowless program (pythonw.exe) byte for byte: Smart App Control lets it run
-by its reputation, and any new or changed program would be blocked, so the start is done here, in Python. Only
+start. ClipIt.exe is python.org's own windowless program (pythonw.exe) byte for byte, signed by the Python Software
+Foundation: Smart App Control lets it run by that signature, and any program of our own (unsigned) would be blocked,
+so the start is done here, in Python. Only
 ClipIt.exe with nothing after it is touched: `ClipIt.exe -m smtv …`, `ClipIt.exe -c …`, the installer's icon and every job
 keep doing exactly what they say. It starts `ClipIt.exe -m smtv app` as a new process
 and ends this one, so the window runs in an interpreter that finished starting. SMTV_LAUNCH_CHECK=<file> (smoke.py)

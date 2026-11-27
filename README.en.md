@@ -153,7 +153,8 @@ later, the one for macOS as soon as possible, and then this warning goes away. U
 
 - **Windows** («Windows protected your PC»): **More info** → **Run anyway**.
 - **Mac**: open Clip It! once, then **System Settings → Privacy & Security** → **Open Anyway**.
-- **Windows 11 with Smart App Control**: **ClipIt.exe** from the ZIP works with it on. If it does not open, install
+- **Windows 11 with Smart App Control**: **ClipIt.exe** from the ZIP works with it on: it is Python's official program,
+  signed by its authors. If it does not open, install
   Clip It! with one line (below).
 
 [Every step with pictures](docs/guide/en/install.md).

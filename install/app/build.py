@@ -10,7 +10,8 @@ One SMTV.app for Apple silicon and Intel: it holds two Pythons (python-arm64, py
 and libraries) and a small universal program (launcher.c) that starts the one native to the Mac. Files that are the same
 in both (Python code, fonts, the window's page) are kept once: the Intel copy is a link to the Apple silicon one.
 
-What goes in: Python 3.12 (python-build-standalone: a relocatable build of CPython, the one uv itself installs), SMTV
+What goes in: Python 3.12 (macOS: python-build-standalone, a relocatable build of CPython, the one uv itself installs;
+Windows: python.org's own build from its NuGet package, every file of it signed by the Python Software Foundation), SMTV
 with every dependency at the versions of uv.lock (hashes checked), ffmpeg 9.1 with libass and libx264 (the captions and
 clips need both; no ffprobe: SMTV asks ffmpeg itself), the caption fonts (inside smtv-core). What stays out: the speech models (downloaded on
 the first run, only for the person's language: «Check this computer → Fix»), a local AI model and yt-dlp (optional,
@@ -49,6 +50,12 @@ from smtv import launcher  # noqa: E402 — the icon files and Info.plist of `sm
 
 PY = "3.12"
 PBS = "https://github.com/astral-sh/python-build-standalone/releases/download/20261110/"
+# Windows: python.org's own CPython, from its NuGet package (tools\: the same files as the python.org installer), every
+# program and library of it signed by the Python Software Foundation. Smart App Control lets a signed file run whatever
+# its reputation; an unsigned build (python-build-standalone's) is judged by reputation in Microsoft's cloud, and that
+# changed for it in 0.1.1's week: the same file ran in the morning and was blocked by night. 3.12.10 is the last 3.12
+# with Windows files from python.org (later 3.12 releases are source-only security fixes).
+NUGET = "https://api.nuget.org/v3-flatcontainer/"
 RIEDL = "https://ffmpeg.martin-riedl.de/download/macos/"
 WIN_FOLDER = "ClipIt"     # the Windows app's folder (the ZIP's top); its program ClipIt.exe, Python's pythonw.exe
 APP_FOLDER = "app"        # paths.APP_FOLDER: the Windows app's own files, below ClipIt.exe
@@ -112,8 +119,8 @@ TARGETS = {
         (("darwin", "x86_64"),), "13.0"),
     "win-x64": Target(
         "win-x64", "win", "x86_64-pc-windows-msvc",
-        Download(PBS + "cpython-3.12.16%2B20261110-x86_64-pc-windows-msvc-install_only.tar.gz",
-                 "e23fe5b16926de1d81661b1a97352e89fb167549c55a6825796ccd0f32ec7f1b"),
+        Download(NUGET + "python/3.12.10/python.3.12.10.nupkg",
+                 "0eb85c2dfccccf1b17352de4c397f69194035b7d37149eacc16f1147d93de3b8"),
         (Download("https://github.com/GyanD/codexffmpeg/releases/download/9.1/ffmpeg-9.1-essentials_build.zip",
                   "b9bbbb3acece000cbeec994f856649354e52c773807841e78908374b24d658fd",
                   (("ffmpeg-9.1-essentials_build/bin/ffmpeg.exe", "ffmpeg.exe"),
@@ -137,7 +144,7 @@ TRIM_PYTHON = ("lib/python3.12/tkinter", "lib/python3.12/idlelib", "lib/python3.
                "lib/itcl4.3.8", "lib/thread3.0.6", "lib/tcl9", "lib/tcl9.0", "lib/tk9.0", "lib/libtcl9.0.dylib",
                "lib/libtcl9tk9.0.dylib", "lib/libpython3.12.dylib", "bin/idle3", "bin/idle3.12", "bin/pydoc3",
                "bin/pydoc3.12", "bin/python3-config", "bin/python3.12-config",
-               # Windows layout (python-build-standalone keeps the standard library in Lib/)
+               # Windows layout (the standard library in Lib/, as python.org's own build has it)
                "Lib/tkinter", "Lib/idlelib", "Lib/turtledemo", "Lib/lib2to3", "Lib/ensurepip", "Lib/turtle.py", "tcl",
                "DLLs/_tkinter.pyd", "DLLs/tcl86t.dll", "DLLs/tk86t.dll", "DLLs/tcl90.dll", "DLLs/tk90.dll", "libs",
                "include")
@@ -193,15 +200,30 @@ def site_packages(python: Path, t: Target) -> Path:
 
 
 def unpack_python(archive: Path, dest: Path) -> Path:
-    """python-build-standalone's install_only archive holds one folder, python/; it becomes `dest`."""
+    """python-build-standalone's install_only archive holds one folder, python/; python.org's NuGet package (a zip)
+    holds the same layout under tools/. Either becomes `dest`."""
     if dest.exists():
         shutil.rmtree(dest)
     tmp = dest.parent / (dest.name + ".unpack")
     if tmp.exists():
         shutil.rmtree(tmp)
     tmp.mkdir(parents=True)
-    with tarfile.open(archive) as tar:
-        tar.extractall(tmp, filter="data")
+    if archive.suffix == ".nupkg":
+        with zipfile.ZipFile(archive) as z:
+            for info in z.infolist():
+                name = info.filename
+                if not name.startswith("tools/") or info.is_dir():
+                    continue
+                parts = Path(name).parts[1:]
+                if ".." in parts or name.startswith("/"):
+                    raise SystemExit(f"{archive.name}: a path outside its folder ({name[:80]})")
+                target = tmp.joinpath("python", *parts)
+                target.parent.mkdir(parents=True, exist_ok=True)
+                with z.open(info) as src, open(target, "wb") as out:
+                    shutil.copyfileobj(src, out)
+    else:
+        with tarfile.open(archive) as tar:
+            tar.extractall(tmp, filter="data")
     (tmp / "python").replace(dest)
     tmp.rmdir()
     return dest
