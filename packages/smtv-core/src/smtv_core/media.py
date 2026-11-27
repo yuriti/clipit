@@ -1,9 +1,10 @@
-"""Recordings by link, through StreamMoment (stage 23).
+"""Recordings by link, through the StreamMoment server (stage 23).
 
-SMTV does not download from Twitch or YouTube itself: a link goes to our server, which takes the platform's HLS segments
-and passes them straight on — nothing is stored there, nothing is transcoded. It works only with a StreamMoment account
-(stage 22); a file of one's own always works without one. Only what the job needs is fetched: first the audio, later
-only the pieces of video under the clips and the recap.
+Clip It! does not download from Twitch or YouTube itself: a link goes to our server, which takes the platform's HLS
+segments and passes them straight on — nothing is stored there, nothing is transcoded. No sign-in is needed: every
+request carries the app key and a hash of this computer's id (`appkey`, `device`; PRIVACY.md says what that is for). A file
+of one's own always works without a key or the internet. Only what the job needs is fetched: first the audio, later only
+the pieces of video under the clips and the recap.
 
     with media.Ticket(url, on_wait=...) as ticket:      # our queue: «waiting, N-th», then ready
         ticket.source                                   # title, channel, length, date of the recording
@@ -26,7 +27,7 @@ from concurrent.futures import Future, ThreadPoolExecutor
 from pathlib import Path
 from typing import Callable
 
-from . import account
+from . import appkey, device, endpoint
 
 FRAGMENTS_AT_ONCE = 16          # the server allows 16 segments of one ticket in flight
 SEGMENT_TIMEOUT_S = 60.0
@@ -39,21 +40,23 @@ TWITCH_VOD = re.compile(r"^https?://(www\.|m\.)?twitch\.tv/(\w{1,40}/)?(videos|v
 YOUTUBE = re.compile(r"^https?://([a-z0-9-]+\.)?(youtube\.com|youtu\.be)/", re.I)
 
 OWN_DOWNLOAD = "«Download links myself»"     # VodCut's switch, named as the window names it
-# Sign-in to a StreamMoment account is not open yet (0.1.0): a link without it says how to go on now, never «sign in».
-NO_ACCOUNT = (f"Links through a StreamMoment account are coming soon. For now: choose the recording file, or turn on {OWN_DOWNLOAD} "
-              f"in VodCut's settings and install yt-dlp (smtv doctor shows the command) [{SIGN_IN}]")
+NO_KEY = (f"Links are not available in this copy of Clip It!: choose the recording file, or turn on {OWN_DOWNLOAD} "
+          f"in VodCut's settings and install yt-dlp (smtv doctor shows the command) [{SIGN_IN}]")
+NO_ACCOUNT = NO_KEY             # a server without these addresses says the same way out
 
 MESSAGES = {
-    "not_signed_in": NO_ACCOUNT,
+    "no_app_key": NO_KEY,
     "not_open": NO_ACCOUNT,
-    "media_unsupported": "Links from this site do not open through StreamMoment yet (Twitch only for now): choose the recording "
+    "app_key": "This copy of Clip It! is too old or not genuine, so links are refused: install the latest version from the "
+               f"project page, or choose the recording file [{SIGN_IN}]",
+    "media_unsupported": "Links from this site do not open through StreamMoment yet (Twitch and YouTube only): choose the recording "
                          f"file, or turn on {OWN_DOWNLOAD} in VodCut's settings (at your own risk)",
     "media_link_invalid": "This does not look like a link to a recording (a Twitch VOD looks like twitch.tv/videos/123…)",
     "media_not_found": "Twitch has no such recording: it may have been deleted or the link is mistyped",
     "media_restricted": "Twitch gives this recording only to subscribers or not at all: choose the recording file",
     "media_too_long": "The recording is longer than StreamMoment takes in one request: cut it into parts as files",
     "media_daily_limit": "Today's hours of links through StreamMoment are used up: tomorrow, or choose the recording file now",
-    "media_too_many": "Two links of this account are already downloading: wait for one of them",
+    "media_too_many": "Two links of this computer are already downloading: wait for one of them",
     "media_segment_gone": "Twitch no longer gives a part of this recording: it may have been deleted",
     "media_live": "The stream is still going: its recording can be processed when it ends",
 }
@@ -62,73 +65,111 @@ MESSAGES = {
 class MediaError(Exception):
     """Something the person can act on; `code` is the server's code or ours."""
 
-    def __init__(self, code: str, message: str = "", retryable: bool = False):
+    def __init__(self, code: str, message: str = "", retryable: bool = False, retry_after: float | None = None):
         super().__init__(message or MESSAGES.get(code) or f"StreamMoment refused the link: {code}")
-        self.code, self.retryable = code, retryable
+        self.code, self.retryable, self.retry_after = code, retryable, retry_after
 
 
 def supported(url: str) -> bool:
     """A link StreamMoment downloads today (the server decides; this only saves a round trip in the window)."""
-    return bool(TWITCH_VOD.match(url.strip()))
+    return bool(TWITCH_VOD.match(url.strip()) or YOUTUBE.match(url.strip()))
 
 
 def unsupported_message(url: str) -> str:
-    if YOUTUBE.match(url.strip()):
-        return ("YouTube links do not open through StreamMoment yet: download the recording and choose the file, or turn on "
-                f"{OWN_DOWNLOAD} in VodCut's settings (at your own risk: YouTube may ask to sign in)")
     return MESSAGES["media_unsupported"]
+
+
+def _wait_text(seconds: float | None) -> str:
+    if not seconds or seconds <= 0:
+        return "later"
+    minutes = int(seconds // 60) + (1 if seconds % 60 else 0)
+    if minutes <= 1:
+        return "in a minute"
+    if minutes < 120:
+        return f"in {minutes} minutes"
+    return f"in {round(minutes / 60)} hours"
 
 
 def _error(status: int, answer: dict) -> MediaError:
     code = str((answer or {}).get("error") or f"http_{status}")
+    if status == 401 and code == "app_key":
+        return MediaError("app_key")
+    if status == 429 and code == "limit":
+        retry = (answer or {}).get("retry_after")
+        retry = float(retry) if isinstance(retry, (int, float)) and not isinstance(retry, bool) else None
+        return MediaError("limit", f"Links have reached their limit for this computer: try again {_wait_text(retry)}, "
+                          "or choose the recording file", retry_after=retry)
     if status == 404 and code in ("Not Found", "http_404"):      # our server without these addresses: links are off there
         return MediaError("not_open")
     retryable = status in (429, 502, 503) and code not in ("media_daily_limit", "media_too_many", "media_segment_gone")
     return MediaError(code, retryable=retryable)
 
 
-def _json(method: str, path: str, body: dict | None = None) -> dict:
+def _headers() -> dict[str, str]:
+    key = appkey.get()
+    if not key:
+        raise MediaError("no_app_key")
+    return {"User-Agent": "smtv", **device.headers(key)}
+
+
+def _url(path: str) -> str:
     try:
-        status, answer = account.authorized(method, path, body)
-    except account.NotSignedIn as e:
-        raise MediaError("not_signed_in") from e
-    except account.AccountError as e:
-        if e.code == "not_open":
-            raise MediaError("not_open") from e
-        raise MediaError(e.code, f"{e}{(' ' + e.hint) if e.hint else ''}", retryable=e.code in ("unreachable", "server_unavailable")) from e
+        return endpoint.server() + path
+    except endpoint.BadServer as e:
+        raise MediaError("bad_server", str(e)) from e
+
+
+def _unreachable(e: BaseException) -> MediaError:
+    return MediaError("unreachable", f"streammoment.tv did not answer: {str(getattr(e, 'reason', e))[:160]}. "
+                      "A VPN may be on: turn it off or add streammoment.tv to its exceptions", retryable=True)
+
+
+def _json(method: str, path: str, body: dict | None = None, timeout: float = 15.0) -> dict:
+    data = json.dumps(body).encode("utf-8") if body is not None else None
+    request = urllib.request.Request(_url(path), data=data, method=method,
+                                     headers={**_headers(), "Accept": "application/json", **({"Content-Type": "application/json"} if data else {})})
+    try:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
+            raw, status = response.read(), response.status
+    except urllib.error.HTTPError as e:
+        raw, status = e.read(), e.code
+    except (urllib.error.URLError, TimeoutError, OSError, ssl.SSLError) as e:
+        raise _unreachable(e) from e
+    try:
+        answer = json.loads(raw.decode("utf-8")) if raw else {}
+    except ValueError:
+        answer = None
+    if not isinstance(answer, dict):
+        if status >= 500:         # our own front page while the server restarts: wait, not a VPN
+            raise MediaError("server_unavailable", f"StreamMoment is not answering right now (HTTP {status}): try again in a minute", retryable=True)
+        if 400 <= status < 500:
+            raise MediaError("not_open")
+        raise MediaError("not_ours", f"streammoment.tv answered with something else (HTTP {status}): a VPN or a network page may be in the way")
     if status != 200:
         raise _error(status, answer)
     return answer
 
 
 def _bytes(path: str, timeout: float = SEGMENT_TIMEOUT_S) -> bytes:
-    """One segment through our server; one token refresh on 401."""
-    for force in (False, True):
+    """One segment through our server."""
+    request = urllib.request.Request(_url(path), headers=_headers())
+    try:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
+            expected = response.headers.get("Content-Length")
+            data = response.read()
+        if expected is not None and len(data) != int(expected):
+            raise MediaError("segment_short", "a segment came cut short", retryable=True)
+        return data
+    except urllib.error.HTTPError as e:
         try:
-            token = account.access_token(force=force)
-        except account.NotSignedIn as e:
-            raise MediaError("not_signed_in") from e
-        request = urllib.request.Request(account.server() + path, headers={"Authorization": f"Bearer {token}", "User-Agent": "smtv"})
-        try:
-            with urllib.request.urlopen(request, timeout=timeout) as response:
-                expected = response.headers.get("Content-Length")
-                data = response.read()
-            if expected is not None and len(data) != int(expected):
-                raise MediaError("segment_short", "a segment came cut short", retryable=True)
-            return data
-        except urllib.error.HTTPError as e:
-            if e.code == 401 and not force:
-                continue
-            try:
-                answer = json.loads(e.read().decode("utf-8") or "{}")
-            except ValueError:
-                answer = {}
-            raise _error(e.code, answer if isinstance(answer, dict) else {}) from e
-        except http.client.HTTPException as e:       # IncompleteRead: the segment broke off midway; tried again
-            raise MediaError("segment_short", f"a segment came cut short: {type(e).__name__}", retryable=True) from e
-        except (urllib.error.URLError, TimeoutError, OSError, ssl.SSLError) as e:
-            raise MediaError("unreachable", f"streammoment.tv did not answer: {str(getattr(e, 'reason', e))[:160]}", retryable=True) from e
-    raise MediaError("not_signed_in")
+            answer = json.loads(e.read().decode("utf-8") or "{}")
+        except ValueError:
+            answer = {}
+        raise _error(e.code, answer if isinstance(answer, dict) else {}) from e
+    except http.client.HTTPException as e:       # IncompleteRead: the segment broke off midway; tried again
+        raise MediaError("segment_short", f"a segment came cut short: {type(e).__name__}", retryable=True) from e
+    except (urllib.error.URLError, TimeoutError, OSError, ssl.SSLError) as e:
+        raise _unreachable(e) from e
 
 
 def info(url: str) -> dict:

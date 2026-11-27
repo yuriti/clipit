@@ -21,7 +21,6 @@ import base64
 import hashlib
 import http.server
 import json
-import os
 import secrets
 import socket
 import ssl
@@ -35,10 +34,10 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Callable
 
-from . import paths
+from . import endpoint, paths
+from .endpoint import SERVER, allowed as _allowed
 from .settings import delete_secret, get_secret, set_secret
 
-SERVER = "https://streammoment.tv"
 SECRET_NAME = "streammoment.session"
 TIMEOUT_S = 15.0
 CHECK_TIMEOUT_S = 6.0
@@ -70,11 +69,6 @@ class Unreachable(AccountError):
         super().__init__("unreachable", f"streammoment.tv cannot be reached: {detail}", VPN_HINT["en"])
 
 
-def _allowed(url: str) -> bool:
-    parsed = urllib.parse.urlparse(url)
-    return parsed.scheme == "https" or (parsed.scheme == "http" and parsed.hostname in ("127.0.0.1", "localhost"))
-
-
 def set_server(url: str | None) -> str:
     """`smtv account server <url>`: our server for this computer (a local test stand); None goes back to streammoment.tv.
     Kept in the settings (`tools.smtv.account_server`), so SMTV.app started from the Dock follows it too."""
@@ -95,23 +89,12 @@ def set_server(url: str | None) -> str:
 
 
 def server() -> str:
-    """Our site. SMTV_ACCOUNT_URL (the person's own environment) or `smtv account server` (the settings) point to a local
-    test stand: https, or http on this computer only."""
-    url = os.environ.get("SMTV_ACCOUNT_URL", "").strip().rstrip("/")
-    if not url:
-        try:
-            from .settings import Settings
-            url = str((Settings.load().tools.get("smtv") or {}).get("account_server") or "").strip().rstrip("/")
-        except Exception:  # noqa: BLE001 — unreadable settings: our own site
-            url = ""
-    if not url:
-        return SERVER
-    if _allowed(url):
-        return url
-    raise AccountError("bad_server", "the StreamMoment address must be https://…, or http:// on this computer")
+    """Our site (see `endpoint.server`)."""
+    try:
+        return endpoint.server()
+    except endpoint.BadServer as e:
+        raise AccountError("bad_server", str(e)) from e
 
-
-# --- HTTP ---------------------------------------------------------------------------------------------------
 
 def _request(method: str, path: str, body: dict | None = None, headers: dict | None = None, timeout: float = TIMEOUT_S) -> tuple[int, dict]:
     """(status, JSON answer). Never raises for an HTTP status; raises Unreachable when nothing answered."""

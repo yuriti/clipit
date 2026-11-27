@@ -35,6 +35,9 @@ smtv doctor
 The SMTV window shows the entries newer than the installed version before an update: one `### <version>` per release,
 one `- ` line per change, plain text.
 
+### 0.2.0
+- Links (YouTube, Twitch) download without signing in; what the server learns: PRIVACY.md.
+
 ### 0.1.1
 - Windows ZIP: a double click on SMTV.exe opens SMTV, also with Smart App Control on; no start script any more.
 - Fixes in building the Windows installer and checking the Intel Mac app; Python 3.11 or newer.

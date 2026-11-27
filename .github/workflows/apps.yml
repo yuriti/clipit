@@ -8,6 +8,9 @@ name: apps
 on:
   workflow_dispatch:
   workflow_call:
+    secrets:
+      SMTV_APP_KEY:
+        required: true         # the key our server checks when a link is downloaded; the apps are built with it
 
 permissions:
   contents: read
@@ -26,7 +29,12 @@ jobs:
         run: |
           arch -x86_64 /usr/bin/true 2>/dev/null || softwareupdate --install-rosetta --agree-to-license
           arch -x86_64 /usr/bin/true
+      - name: The app key, from the secret, into a generated git-ignored module (it is in the apps, never in the repository)
+        env:
+          SMTV_APP_KEY: ${{ secrets.SMTV_APP_KEY }}
+        run: uv run --no-project python scripts/write_appkey.py
       - run: uv build --all-packages --wheel --out-dir dist
+      - run: uv run --no-project python scripts/write_appkey.py --verify dist
       - run: uv run --no-project python install/app/build.py mac --wheels dist --release
       # the app exactly as people get it: from the mounted .dmg; both of its Pythons
       - name: Both Pythons of SMTV.app, from the .dmg
@@ -51,7 +59,12 @@ jobs:
       - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
         with:
           python-version: "3.12"
+      - name: The app key, from the secret, into a generated git-ignored module (it is in the apps, never in the repository)
+        env:
+          SMTV_APP_KEY: ${{ secrets.SMTV_APP_KEY }}
+        run: uv run --no-project python scripts/write_appkey.py
       - run: uv build --all-packages --wheel --out-dir dist
+      - run: uv run --no-project python scripts/write_appkey.py --verify dist
       - run: uv run --no-project python install/app/build.py win-x64 --wheels dist --release
       - name: The ZIP, unpacked as a person would
         shell: pwsh

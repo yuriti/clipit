@@ -2,14 +2,14 @@
 from __future__ import annotations
 
 import http.server
-import itertools
+import hashlib
 import json
 import threading
 import time
 
 import pytest
 
-from smtv_core import account, media
+from smtv_core import appkey, device, media
 
 LINK = "https://www.twitch.tv/videos/2934906889"
 SEGMENTS = [{"name": f"{i}.mp4", "start": i * 10.0, "duration": 10.0} for i in range(40)]
@@ -25,7 +25,7 @@ class Fake:
         self.fail: dict[str, list[int]] = {}      # segment name -> statuses to answer before the bytes
         self.forget_once = False         # the server forgot the ticket (SMTV slept): 404 media_ticket_expired once
         self.open_error: tuple[int, dict] | None = None
-        self.auth: list[str] = []
+        self.headers: list[dict] = []
         self.seen: list[str] = []
         self.in_flight = 0
         self.max_in_flight = 0
@@ -45,7 +45,7 @@ class Fake:
                 self.wfile.write(data)
 
             def do_POST(self):  # noqa: N802
-                fake.auth.append(self.headers.get("Authorization", ""))
+                fake.headers.append({k.lower(): v for k, v in self.headers.items()})
                 self.rfile.read(int(self.headers.get("Content-Length") or 0))
                 if fake.open_error:
                     return self.send(*fake.open_error)
@@ -55,10 +55,12 @@ class Fake:
                                 "source": {"platform": "twitch", "title": "Стрим", "duration_s": 400, "url": LINK}})
 
             def do_DELETE(self):  # noqa: N802
+                fake.headers.append({k.lower(): v for k, v in self.headers.items()})
                 fake.closed.append(self.path.rsplit("/", 1)[-1])
                 self.send(200, {"closed": True})
 
             def do_GET(self):  # noqa: N802
+                fake.headers.append({k.lower(): v for k, v in self.headers.items()})
                 parts = self.path.split("/")[4:]        # /api/smtv/media/<ticket>[/<track>[/<file>]]
                 ticket = parts[0]
                 fake.seen.append("/".join(parts))
@@ -78,7 +80,7 @@ class Fake:
                     statuses = fake.fail.get(name)
                     if statuses:
                         status = statuses.pop(0)
-                        return self.send(status, {"error": "media_upstream_unavailable" if status != 403 else "media_segment_gone"})
+                        return self.send(status, {"error": {403: "media_segment_gone", 401: "app_key"}.get(status, "media_upstream_unavailable")})
                     time.sleep(0.02 if name.startswith("1") else 0.001)     # out of order on purpose
                     self.send(200, f"[{name}]".encode(), "video/mp4")
                 finally:
@@ -95,8 +97,8 @@ def fake(monkeypatch, tmp_path):
     monkeypatch.setenv("SMTV_HOME", str(tmp_path / "home"))
     f = Fake()
     monkeypatch.setenv("SMTV_ACCOUNT_URL", f.url)
-    tokens = (f"token{i}" for i in itertools.count())
-    monkeypatch.setattr(account, "access_token", lambda force=False: next(tokens))
+    monkeypatch.setenv("SMTV_APP_KEY", "test-app-key")
+    monkeypatch.setattr(device, "machine_id", lambda: "MACHINE-1")
     yield f
     f.server.shutdown()
 
@@ -118,7 +120,11 @@ def test_waits_its_turn_then_fetches_all_audio_in_order(fake, tmp_path):
     assert progress[-1] == (41, 41)
     assert 1 < fake.max_in_flight <= media.FRAGMENTS_AT_ONCE
     assert fake.closed == ["t1"], "the slot is given back"
-    assert all(a.startswith("Bearer token") for a in fake.auth)
+    assert fake.headers and all("authorization" not in h and h["x-smtv-app-key"] == "test-app-key" for h in fake.headers)
+    want_device = hashlib.sha256(b"smtv-device-v1:MACHINE-1").hexdigest()
+    assert all(h["x-smtv-device"] == want_device and h["x-smtv-version"] == __import__("smtv_core").__version__
+               and h["x-smtv-os"] == device.os_tag() for h in fake.headers)
+    assert "MACHINE-1" not in json.dumps(fake.headers)
 
 
 def test_a_piece_takes_only_its_segments_and_says_where_it_starts(fake, tmp_path):
@@ -160,25 +166,98 @@ def test_refusals_are_plain_words(fake, monkeypatch):
         media.Ticket(LINK, sleep=no_sleep)
     assert not e.value.retryable
     fake.open_error = (404, {"message": "Route POST:/api/smtv/media/open not found", "error": "Not Found"})
-    with pytest.raises(media.MediaError, match="coming soon.*Download links myself"):
+    with pytest.raises(media.MediaError, match="not available in this copy.*Download links myself"):
         media.Ticket(LINK, sleep=no_sleep)
-    with pytest.raises(media.MediaError, match="YouTube links do not open"):
-        media.Ticket("https://www.youtube.com/watch?v=jNQXAC9IVRw")
-    with pytest.raises(media.MediaError, match="Twitch only"):
+    with pytest.raises(media.MediaError, match="Twitch and YouTube only"):
         media.Ticket("https://kick.com/video/1")
     assert len(fake.tickets) == 0
-    monkeypatch.setattr(account, "access_token", lambda force=False: (_ for _ in ()).throw(account.NotSignedIn()))
     fake.open_error = None
-    with pytest.raises(media.MediaError, match="coming soon.*choose the recording file.*Download links myself") as e:
+    assert media.Ticket("https://www.youtube.com/watch?v=jNQXAC9IVRw", sleep=no_sleep).id == "t1"      # YouTube goes to the server
+
+
+def test_no_key_turns_links_off_with_a_clear_message_and_asks_nothing(fake, monkeypatch, tmp_path):
+    monkeypatch.delenv("SMTV_APP_KEY")
+    monkeypatch.chdir(tmp_path)                                   # no .env here
+    monkeypatch.setattr(appkey, "_built_in", lambda: "")
+    with pytest.raises(media.MediaError, match="not available in this copy.*choose the recording file.*Download links myself") as e:
         media.Ticket(LINK, sleep=no_sleep)
-    assert e.value.code == "not_signed_in" and media.SIGN_IN in str(e.value)
+    assert e.value.code == "no_app_key" and media.SIGN_IN in str(e.value) and not e.value.retryable
+    assert fake.headers == [] and fake.tickets == [], "nothing is sent without a key"
 
 
-def test_a_server_without_links_says_the_same_way_out_as_no_account():
-    """Sign-in is not open on the site yet (0.1.0): the window explains it like a missing account, never a dead end."""
-    err = media.MediaError("not_open")
-    assert str(err) == str(media.MediaError("not_signed_in")) and media.SIGN_IN in str(err)
-    assert "sign in (" not in str(err).lower()
+def test_the_key_comes_from_the_environment_then_dotenv_then_the_built_module(monkeypatch, tmp_path):
+    monkeypatch.delenv("SMTV_APP_KEY", raising=False)
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(appkey, "_built_in", lambda: "built")
+    assert appkey.get() == "built"
+    (tmp_path / ".env").write_text('OTHER=1\nSMTV_APP_KEY="from-dotenv"\n', encoding="utf-8")
+    assert appkey.get() == "from-dotenv"
+    monkeypatch.setenv("SMTV_APP_KEY", "from-env")
+    assert appkey.get() == "from-env"
+
+
+def test_401_app_key_says_to_update_or_use_a_file(fake):
+    fake.open_error = (401, {"error": "app_key"})
+    with pytest.raises(media.MediaError, match="too old or not genuine.*choose the recording file") as e:
+        media.Ticket(LINK, sleep=no_sleep)
+    assert e.value.code == "app_key" and not e.value.retryable
+
+
+def test_429_limit_says_when_to_come_back_and_is_not_retried(fake):
+    fake.open_error = (429, {"error": "limit", "limit": 5, "retry_after": 5400})
+    with pytest.raises(media.MediaError, match="limit.*in 90 minutes") as e:
+        media.Ticket(LINK, sleep=no_sleep)
+    assert e.value.code == "limit" and e.value.retry_after == 5400 and not e.value.retryable
+    assert len(fake.headers) == 1, "asked once"
+    assert str(media._error(429, {"error": "limit", "retry_after": 30})).count("in a minute") == 1
+    assert "later" in str(media._error(429, {"error": "limit"}))
+
+
+def test_503_is_still_retryable(fake):
+    assert media._error(503, {"error": "media_upstream_unavailable"}).retryable
+
+
+def test_a_segment_401_is_the_same_clear_message(fake, tmp_path):
+    fake.waits = 0
+    fake.fail["3.mp4"] = [401] * 9
+    with media.Ticket(LINK, sleep=no_sleep) as t:
+        with pytest.raises(media.MediaError) as e:
+            t.fetch("video", tmp_path / "p.mp4", 0, 45)
+    assert e.value.code == "app_key"
+
+
+def test_the_device_is_a_hash_and_the_raw_id_is_never_used(monkeypatch):
+    monkeypatch.setattr(device, "machine_id", lambda: "ABC-123")
+    assert device.device_id() == hashlib.sha256(b"smtv-device-v1:ABC-123").hexdigest()
+    assert "ABC-123" not in "".join(device.headers("k").values())
+
+
+def test_when_the_machine_id_cannot_be_read_a_random_one_is_made_once_and_kept(monkeypatch, tmp_path):
+    monkeypatch.setenv("SMTV_HOME", str(tmp_path))
+    monkeypatch.setattr("smtv_core.settings._keyring", lambda: None)
+    monkeypatch.setattr(device, "machine_id", lambda: "")
+    first = device.device_id()
+    assert len(first) == 64 and int(first, 16) >= 0
+    assert device.device_id() == first, "the same one next time"
+    from smtv_core.settings import Settings
+    assert Settings.load().tools["smtv"]["device_id"] == first
+    (tmp_path / "x").write_text("")      # a settings file that was hand-damaged: a new valid id
+    with Settings.edit() as s:
+        s.tools["smtv"]["device_id"] = "not-hex"
+    assert device.device_id() != "not-hex"
+
+
+def test_os_tag_shapes(monkeypatch):
+    monkeypatch.setattr(device.sys, "platform", "darwin")
+    monkeypatch.setattr(device.platform, "mac_ver", lambda: ("15.1", ("", "", ""), ""))
+    monkeypatch.setattr(device.platform, "machine", lambda: "arm64")
+    assert device.os_tag() == "macos-15.1-arm64"
+    monkeypatch.setattr(device.sys, "platform", "linux")
+    monkeypatch.setattr(device.platform, "machine", lambda: "x86_64")
+    assert device.os_tag() == "linux-x64"
+    monkeypatch.setattr(device.sys, "platform", "win32")
+    monkeypatch.setattr(device.sys, "getwindowsversion", lambda: type("V", (), {"build": 26100})(), raising=False)
+    assert device.os_tag() == "windows-11-x64"
 
 
 def test_an_expired_ticket_is_opened_again_once_for_all_segments_in_flight(fake, tmp_path, monkeypatch):
@@ -237,7 +316,7 @@ def test_incomplete_read_is_retryable_in_bytes(monkeypatch):
         def __exit__(self, *a):
             return False
 
-    monkeypatch.setattr(account, "access_token", lambda force=False: "tok")
+    monkeypatch.setenv("SMTV_APP_KEY", "k")
     monkeypatch.setattr(urllib.request, "urlopen", lambda *a, **kw: Broken())
     with pytest.raises(media.MediaError) as e:
         media._bytes("/api/smtv/media/t1/audio/0.mp4")

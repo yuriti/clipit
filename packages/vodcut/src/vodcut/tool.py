@@ -24,8 +24,8 @@ def _yt_dlp_recipe() -> Recipe | None:
 
 
 def checks(settings: Settings) -> list[Check]:
-    """Links: through the StreamMoment account (stage 23), or yt-dlp here when «Download on this computer» is on (then it
-    must be there and fresh). A file of one's own needs neither, so a missing account is a warning, not a failure. And the
+    """Links: through the StreamMoment server with the app key (stage 23), or yt-dlp here when «Download on this computer» is on (then it
+    must be there and fresh). A file of one's own needs neither, so a missing key is a warning, not a failure. And the
     speech model the stream's language takes (stage 24)."""
     try:
         speech = check_speech(settings)
@@ -45,13 +45,11 @@ def _links_check(settings: Settings) -> Check:
             return Check(name, WARN, f"yt-dlp {found} is {age} days old: links may no longer open",
                          local_download.install_hint(), id="vodcut-yt-dlp", recipe=_yt_dlp_recipe())
         return Check(name, OK, f"yt-dlp {found or 'found'}", id="vodcut-yt-dlp")
-    from smtv_core import account
-    who = account.signed_in()
+    from smtv_core import appkey
     name = "vodcut: links (through StreamMoment)"
-    if who:
-        return Check(name, OK, f"signed in as {who.get('name') or who.get('provider') or 'an account'}", id="vodcut-links")
-    # sign-in to StreamMoment is not open yet (0.1.0): the way that works now, not «sign in»
-    return Check(name, WARN, "links through a StreamMoment account are coming soon; a video file works now. For links, turn "
+    if appkey.get():
+        return Check(name, OK, "links work without signing in", id="vodcut-links")
+    return Check(name, WARN, "links are not available in this copy of Clip It! (no app key); a video file works. For links, turn "
                  "on «Download links myself» in Settings → VodCut and install yt-dlp", local_download.install_hint(), id="vodcut-links")
 
 
@@ -216,7 +214,7 @@ def add_commands(parser: argparse.ArgumentParser) -> None:
     parser.description = "Clips and a recap from stream recordings: a Twitch or YouTube link, or a video file."
     sub = parser.add_subparsers(dest="vodcut_command", metavar="<action>")
     run = sub.add_parser("run", help="find the clips in a recording and render them: smtv vodcut run <link or file>")
-    run.add_argument("source", help="a Twitch link (through your StreamMoment account) or a path to a video file")
+    run.add_argument("source", help="a Twitch or YouTube link or a path to a video file")
     run.add_argument("--language", default="auto", help="language of the speech: auto (default), ru, en, de, es, …")
     run.add_argument("--channel", help="streamer's name, if the link does not tell it")
     run.add_argument("--max-clips", type=int, help="at most this many clips (default: every strong and good moment, up to 30)")
