@@ -310,6 +310,16 @@ request. [Как устроены переводы](docs/translations.md).
 
 [![Состояние перевода](https://hosted.weblate.org/widget/smtv/multi-auto.svg)](https://hosted.weblate.org/engage/smtv/)
 
+## Политика подписи кода
+
+Бесплатную подпись кода предоставляет [SignPath.io](https://signpath.io), сертификат выдаёт [SignPath Foundation](https://signpath.org).
+
+- Коммиты и ревью: участники проекта — [Members](https://github.com/yuriti/clipit/graphs/contributors).
+- Утверждающие: владельцы — [Owners](https://github.com/yuriti).
+- Подписывается только `ClipIt.exe`, собранный из исходников этого репозитория через GitHub Actions. Python, ffmpeg и
+  остальные сторонние файлы в приложении лежат так, как их выпустили авторы.
+- Какие сведения получает сервер, когда вы вставляете ссылку: [конфиденциальность](PRIVACY.md).
+
 ## StreamMoment
 
 Clip It! делает команда [StreamMoment](https://streammoment.tv). Записи по ссылкам (YouTube, Twitch)

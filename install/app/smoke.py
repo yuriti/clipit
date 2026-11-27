@@ -11,8 +11,9 @@ Runs the app's own Python with a clean environment and an empty SMTV folder, and
 - `smtv doctor` runs: nothing but the AI connection and the speech model is missing on a fresh computer, and the
   speech model is offered for download, not bundled;
 - `smtv serve` answers /api/hello with its version and keeps the page closed without the launch key;
-- on Windows, ClipIt.exe opened with nothing after it (a double click) starts `ClipIt.exe -m smtv app` (checked without
-  opening the window: SMTV_LAUNCH_CHECK), and the page's server runs in ClipIt.exe itself;
+- on Windows, ClipIt.exe (the launcher built from install/app/launcher_win.c) opened with nothing after it (a double
+  click) starts `app\\pythonw.exe -m smtv app` (checked without opening the window: SMTV_LAUNCH_CHECK), and the page's
+  server runs through it;
 - on Windows, .NET loads (pythonnet); the folder's top holds only ClipIt.exe with its .config (which lets .NET load files
   Explorer marked as downloaded: a ZIP opened with "Extract All"), the DLLs, the ._pth, a how-to text and app/.
 Exits 1 with the failed checks listed. Prints nothing secret: the folder is a fresh temporary one.
@@ -93,7 +94,7 @@ def app_python(app: Path, arch: str = "arm64") -> tuple[list[str], dict[str, str
         return [*(["/usr/bin/arch", "-x86_64"] if arch == "x86_64" else ["/usr/bin/arch", "-arm64"]),
                 str(contents / "MacOS" / f"smtv-python-{arch}")], \
             {"PYTHONHOME": str(contents / "Resources" / f"python-{arch}"), "PYTHONNOUSERSITE": "1"}
-    return [str(app / "ClipIt.exe")], {"PYTHONNOUSERSITE": "1"}   # pythonw under SMTV's name; prints into a pipe
+    return [str(app / "ClipIt.exe")], {"PYTHONNOUSERSITE": "1"}   # the launcher hands arguments to pythonw.exe and waits; prints into a pipe
 
 
 def mac_bundle(app: Path) -> list[str]:
@@ -181,6 +182,7 @@ def win_size(app: Path, limit_mb: int = WIN_LIMIT_MB) -> list[str]:
     return []
 
 
+LAUNCHER_MARK = "SMTV_LAUNCH_CHECK".encode("utf-16-le")     # a string only launcher_win.c has, as Windows text
 WIN_TOP = {"ClipIt.exe", "ClipIt.exe.config", "app"}     # and the DLLs, the ._pth and the how-to text (build.make_win_folder)
 
 
@@ -194,6 +196,14 @@ def win_layout(app: Path) -> list[str]:
             or sum(n.endswith(".txt") for n in names) != 1:
         failed.append(f"the top of {app} is not ClipIt.exe, its .config, the DLLs, one ._pth, one text and app: "
                       f"{sorted(names)} (build the app again with build.py)")
+    exe, python = app / "ClipIt.exe", app / "app" / "pythonw.exe"
+    if exe.is_file():
+        body = exe.read_bytes()
+        if not python.is_file():
+            failed.append(f"{python} is missing: ClipIt.exe starts it")
+        elif body == python.read_bytes() or LAUNCHER_MARK not in body:
+            failed.append(f"{exe} is not the launcher built from install/app/launcher_win.c (a copy of pythonw.exe?): "
+                          "build the app again with build.py")
     config = app / "ClipIt.exe.config"
     if config.is_file() and 'loadFromRemoteSources enabled="true"' not in config.read_text(encoding="utf-8", errors="replace"):
         failed.append(f"{config} does not allow loadFromRemoteSources: build the app again with build.py")
@@ -201,23 +211,33 @@ def win_layout(app: Path) -> list[str]:
 
 
 def double_click(smtv_exe: Path, env: dict[str, str], tmp: Path) -> list[str]:
-    """ClipIt.exe with nothing after it, as Explorer starts it: it must ask for SMTV's window and end at once."""
-    check = tmp / "double-click.json"
+    """ClipIt.exe with nothing after it, as Explorer starts it: it must ask for app\\pythonw.exe -m smtv app and end at
+    once (launcher_win.c writes the command into SMTV_LAUNCH_CHECK instead of opening the window)."""
+    check = tmp / "double-click.txt"
     try:
         r = subprocess.run([str(smtv_exe)], env={**env, "SMTV_LAUNCH_CHECK": str(check)}, capture_output=True,
                            timeout=60, cwd=tmp, stdin=subprocess.DEVNULL)
     except subprocess.TimeoutExpired:
-        return ["a double click on ClipIt.exe did not end within 60 s (the start in sitecustomize.py is missing?)"]
+        return ["a double click on ClipIt.exe did not end within 60 s"]
     except OSError as e:
         return [f"ClipIt.exe did not start: {e}"]
     if not check.is_file():
-        return [f"a double click on ClipIt.exe starts nothing (exit {r.returncode}): Lib/site-packages/sitecustomize.py "
-                "is missing or does not recognise ClipIt.exe"]
-    started = json.loads(check.read_text(encoding="utf-8"))
-    if [Path(started[0]).name.lower(), *started[1:]] != [smtv_exe.name.lower(), "-m", "smtv", "app"]:
-        return [f"a double click on ClipIt.exe would start {started}, not ClipIt.exe -m smtv app"]
-    print(f"double click on ClipIt.exe: starts {' '.join(started[1:])}")
+        return [f"a double click on ClipIt.exe starts nothing (exit {r.returncode}): is it launcher_win.c's program?"]
+    started = check.read_text(encoding="utf-8").strip()
+    want = f'"{smtv_exe.parent / "app" / "pythonw.exe"}" -m smtv app'
+    if started.lower() != want.lower():
+        return [f"a double click on ClipIt.exe would start {started}, not {want}"]
+    print(f"double click on ClipIt.exe: starts {started}")
     return []
+
+
+def stop(server: subprocess.Popen) -> None:
+    """End the page's server. On Windows ClipIt.exe waits for pythonw.exe, which is the one that has to end: the whole
+    tree, or the port stays taken."""
+    if os.name == "nt":
+        subprocess.run(["taskkill", "/T", "/F", "/PID", str(server.pid)], capture_output=True)
+    else:
+        server.terminate()
 
 
 def smoke(app: Path, kinds: tuple[str, ...], arch: str = "arm64") -> list[str]:
@@ -313,7 +333,7 @@ def smoke(app: Path, kinds: tuple[str, ...], arch: str = "arm64") -> list[str]:
             if status != 403:
                 failed.append(f"the page without the launch key answered {status}, expected 403")
         finally:
-            server.terminate()
+            stop(server)
             try:
                 out, _ = server.communicate(timeout=20)
             except subprocess.TimeoutExpired:

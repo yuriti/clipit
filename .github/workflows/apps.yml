@@ -65,6 +65,11 @@ jobs:
         run: uv run --no-project python scripts/write_appkey.py
       - run: uv build --all-packages --wheel --out-dir dist
       - run: uv run --no-project python scripts/write_appkey.py --verify dist
+      - name: ClipIt.exe is built from install/app/launcher_win.c with MinGW-w64, which the runner has
+        shell: pwsh
+        run: |
+          gcc --version
+          windres --version
       - run: uv run --no-project python install/app/build.py win-x64 --wheels dist --release
       - name: The ZIP, unpacked as a person would
         shell: pwsh
@@ -73,13 +78,29 @@ jobs:
           Expand-Archive $zip.FullName -DestinationPath "$env:RUNNER_TEMP\zip"
           uv run --no-project python install/app/smoke.py "$env:RUNNER_TEMP\zip\ClipIt" --kind zip
           if ($LASTEXITCODE -ne 0) { throw "the ZIP failed its check" }
-      # Smart App Control lets a signed program run whatever its reputation: the program and Python's own libraries must
-      # be python.org's, signed by the Python Software Foundation. The other unsigned files are listed to watch.
-      - name: The program is python.org's, signed by the Python Software Foundation
+      # ClipIt.exe is our own launcher (install/app/launcher_win.c), not a copy of Python's program: its version info is
+      # the app's, and it is not python.org's pythonw.exe (the signing step, when there is one, signs only this file).
+      - name: ClipIt.exe in the ZIP is the launcher built here, with the icon and version info
         shell: pwsh
         run: |
           $app = Join-Path $env:RUNNER_TEMP 'zip\ClipIt'
-          foreach ($name in 'ClipIt.exe', 'python312.dll', 'python3.dll') {
+          $v = (Select-String -Path packages/smtv/pyproject.toml -Pattern '^version = "([^"]+)"').Matches[0].Groups[1].Value
+          $info = (Get-Item -LiteralPath (Join-Path $app 'ClipIt.exe')).VersionInfo
+          if ($info.ProductName -ne 'Clip It!' -or $info.CompanyName -ne 'yuriti' -or $info.FileVersion -ne $v) {
+            throw "ClipIt.exe version info is $($info.ProductName) / $($info.CompanyName) / $($info.FileVersion), expected Clip It! / yuriti / $v"
+          }
+          $a = (Get-FileHash -LiteralPath (Join-Path $app 'ClipIt.exe')).Hash
+          $b = (Get-FileHash -LiteralPath (Join-Path $app 'app\pythonw.exe')).Hash
+          if ($a -eq $b) { throw "ClipIt.exe is a copy of pythonw.exe, not the launcher" }
+          "ClipIt.exe: $($info.ProductName), $($info.CompanyName), $($info.FileVersion), $((Get-Item -LiteralPath (Join-Path $app 'ClipIt.exe')).Length) bytes"
+      # Smart App Control lets a signed program run whatever its reputation: Python's own program and libraries must be
+      # python.org's, signed by the Python Software Foundation. ClipIt.exe is ours and unsigned until it is signed
+      # (SignPath). The other unsigned files are listed to watch.
+      - name: Python's program and libraries are python.org's, signed by the Python Software Foundation
+        shell: pwsh
+        run: |
+          $app = Join-Path $env:RUNNER_TEMP 'zip\ClipIt'
+          foreach ($name in 'app\pythonw.exe', 'python312.dll', 'python3.dll') {
             $s = Get-AuthenticodeSignature -LiteralPath (Join-Path $app $name)
             $who = if ($s.SignerCertificate) { $s.SignerCertificate.Subject } else { 'nobody' }
             if ($s.Status -ne 'Valid' -or $who -notlike '*O=Python Software Foundation*') {

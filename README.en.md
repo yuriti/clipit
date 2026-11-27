@@ -309,6 +309,16 @@ request. [How translations work](docs/translations.md).
 
 [![Translation status](https://hosted.weblate.org/widget/smtv/multi-auto.svg)](https://hosted.weblate.org/engage/smtv/)
 
+## Code signing policy
+
+Free code signing provided by [SignPath.io](https://signpath.io), certificate by [SignPath Foundation](https://signpath.org).
+
+- Committers and reviewers: [Members](https://github.com/yuriti/clipit/graphs/contributors).
+- Approvers: [Owners](https://github.com/yuriti).
+- Only `ClipIt.exe`, built from this repository by GitHub Actions, is signed. Python, ffmpeg and the other bundled
+  third-party files are shipped as their authors publish them.
+- Privacy: [PRIVACY.md](PRIVACY.en.md).
+
 ## StreamMoment
 
 Clip It! is made by the [StreamMoment](https://streammoment.tv) team. Links to recordings (YouTube, Twitch) are
