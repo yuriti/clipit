@@ -86,7 +86,9 @@ int WINAPI WinMain(HINSTANCE inst, HINSTANCE prev, LPSTR cmd, int show) {
     if (SUCCEEDED(StringCchPrintfW(with_top, sizeof with_top / sizeof *with_top, len ? L"%ls;%ls" : L"%ls", top, path)))
         SetEnvironmentVariableW(L"PATH", with_top);
 
-    STARTUPINFOW si = { sizeof si };
+    STARTUPINFOW si;
+    ZeroMemory(&si, sizeof si);
+    si.cb = sizeof si;
     PROCESS_INFORMATION pi;
     if (!CreateProcessW(python, line, NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi)) {
         fail(L"Clip It! cannot start. Windows or an antivirus did not let app\\pythonw.exe run.\n\n"
