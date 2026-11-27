@@ -16,7 +16,7 @@ markers = ["doctor: keeps the stage 24 blocking of new requests by failed checks
 # code), pip-audit (known vulnerabilities from the PyPI advisory database, free), pre-commit (runs the quick checks
 # before every commit), zizmor (finds injection and token mistakes in the GitHub workflows). gitleaks is a separate program (brew install gitleaks); CI installs it.
 [dependency-groups]
-dev = ["pytest>=8", "ruff>=0.15", "mypy>=1.18", "vulture>=2.14", "pip-audit>=2.9", "pre-commit>=4", "packaging>=24", "zizmor>=1.0", "pyyaml>=6"]
+dev = ["pytest>=8", "ruff>=0.15", "mypy>=1.18", "vulture>=2.14", "pip-audit>=2.9", "pre-commit>=4", "packaging>=26.4", "zizmor>=1.33.1", "pyyaml>=6"]
 
 [tool.ruff]
 line-length = 130
