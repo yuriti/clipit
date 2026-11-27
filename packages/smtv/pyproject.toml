@@ -1,6 +1,6 @@
 [project]
 name = "smtv"
-version = "0.1.1"
+version = "0.2.0"
 description = "One command to install and run StreamMoment tools: stream clippers you pick and combine"
 readme = "README.md"
 license = "MIT"
@@ -12,12 +12,12 @@ authors = [{ name = "StreamMoment" }]
 # uses pyobjc, on Windows pythonnet. On Linux it needs GTK or Qt bindings (`pywebview[gtk]` or `pywebview[qt]`); without
 # them the page opens in the browser.
 # pyobjc-framework-UserNotifications (macOS): notifications under SMTV's own name and icon, not Script Editor's.
-dependencies = ["smtv-core==0.1.1", "pywebview>=5", "pyobjc-framework-UserNotifications>=10; sys_platform == 'darwin'"]
+dependencies = ["smtv-core==0.2.0", "pywebview>=5", "pyobjc-framework-UserNotifications>=10; sys_platform == 'darwin'"]
 
 # Tools are added by name: uv tool install "smtv[vodcut]". New tools get a line here when they exist.
 [project.optional-dependencies]
-vodcut = ["vodcut==0.1.1"]
-all = ["vodcut==0.1.1"]
+vodcut = ["vodcut==0.2.0"]
+all = ["vodcut==0.2.0"]
 
 [project.scripts]
 smtv = "smtv.cli:main"

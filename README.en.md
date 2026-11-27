@@ -281,8 +281,8 @@ Respect the rights of the streamer whose stream you clip.
 <summary><b>Where do my clips go? Does anything get uploaded?</b></summary>
 
 Clips stay on your computer. A video file of your own never leaves it. With **Download links myself** on, a link is
-downloaded straight to your computer by yt-dlp. Once the StreamMoment account opens, a link can also go through it:
-its server passes the recording to Clip It! in pieces and stores nothing. The text of the stream goes only to the AI you
+downloaded straight to your computer by yt-dlp. By default a link goes through StreamMoment's server (no sign-in; see [Privacy](PRIVACY.en.md)):
+it passes the recording to Clip It! in pieces and stores nothing. The text of the stream goes only to the AI you
 chose. Keys to AI services stay on your computer and never appear in logs or problem reports.
 </details>
 
@@ -311,12 +311,13 @@ request. [How translations work](docs/translations.md).
 
 ## StreamMoment
 
-Clip It! is made by the [StreamMoment](https://streammoment.tv) team. A StreamMoment account is coming soon: it will give
-Clip It! an AI and fetch links to recordings without any setup. Clip It! works fully without it.
+Clip It! is made by the [StreamMoment](https://streammoment.tv) team. Links to recordings (YouTube, Twitch) are
+fetched through StreamMoment's server with no sign-in and no setup; what the server learns is in [Privacy](PRIVACY.en.md).
+Files from your computer are never sent anywhere.
 
 - [Report a problem](https://github.com/yuriti/clipit/issues/new?template=bug.yml) · [Suggest an idea](https://github.com/yuriti/clipit/issues/new?template=feature.yml)
 - [For advanced users](docs/advanced.md): Docker, every AI service, speech models, keys, commands
-- [Changes](CHANGELOG.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
+- [Changes](CHANGELOG.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Privacy](PRIVACY.en.md)
 - Like Clip It!? [Support it on Boosty](https://boosty.to/smtv) and give the repository a ⭐ — it helps others find it.
 
 License: [MIT](LICENSE).

@@ -11,6 +11,9 @@ License: MIT
 The SMTV window shows the entries newer than the installed version before an update: one `### <version>` per release,
 one `- ` line per change, plain text.
 
+### 0.2.0
+- Links download without signing in: every request to the server carries the app key and a hash of the computer's id (`appkey`, `device`); see PRIVACY.md.
+
 ### 0.1.1
 - The captions check waits for a slow first start of ffmpeg; Python 3.11 or newer.
 

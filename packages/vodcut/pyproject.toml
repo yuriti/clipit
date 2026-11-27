@@ -1,6 +1,6 @@
 [project]
 name = "vodcut"
-version = "0.1.1"
+version = "0.2.0"
 description = "Open-source VOD clipper for long streams: clips and a recap from multi-hour Twitch and YouTube recordings"
 readme = "README.md"
 license = "MIT"
@@ -10,7 +10,7 @@ authors = [{ name = "StreamMoment" }]
 # smtv comes along so that `smtv vodcut ...` works even when only vodcut was installed. Whisper (smtv-core[whisper])
 # comes along too: a stream in a language other than Russian and Parakeet's 25 has no other model on this computer.
 # No yt-dlp (stage 23): links go through the StreamMoment account. `vodcut[local]` adds it for «Download on this computer».
-dependencies = ["smtv-core[whisper]==0.1.1", "smtv==0.1.1"]
+dependencies = ["smtv-core[whisper]==0.2.0", "smtv==0.1.1"]
 
 [project.optional-dependencies]
 local = ["yt-dlp>=2025.1"]

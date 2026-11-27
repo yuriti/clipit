@@ -18,6 +18,8 @@ permissions:
 jobs:
   apps:
     uses: ./.github/workflows/apps.yml
+    secrets:
+      SMTV_APP_KEY: ${{ secrets.SMTV_APP_KEY }}
 
   pypi:
     needs: apps                # nothing is published until every app was built and passed its check
@@ -43,7 +45,15 @@ jobs:
             if [ "$got" != "$want" ]; then echo "packages/$p is $got, the tag says $want"; exit 1; fi
           done
       # The checks already ran on main (workflow «checks»); a release is cut only from a green main.
+      # The key goes into every build a person gets: these wheels (GitHub release, PyPI) are what the in-app updates install,
+      # and an update without it would turn links off. A wheel or sdist without the key fails the build.
+      - name: The app key, from the secret, into a generated git-ignored module
+        env:
+          SMTV_APP_KEY: ${{ secrets.SMTV_APP_KEY }}
+        run: python3 scripts/write_appkey.py
       - run: uv build --all-packages --out-dir dist
+      - name: Every smtv-core wheel and sdist carries the key
+        run: python3 scripts/write_appkey.py --verify dist
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: apps-*

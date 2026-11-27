@@ -1,6 +1,6 @@
 [project]
 name = "smtv-core"
-version = "0.1.1"
+version = "0.2.0"
 description = "Shared core of StreamMoment tools: settings, model access, system checks; later speech recognition and 9:16 rendering"
 readme = "README.md"
 license = "MIT"
@@ -34,3 +34,9 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/smtv_core"]
+# The generated, git-ignored module that holds the app key in a build of the apps (scripts/write_appkey.py); without this
+# line hatchling would leave a git-ignored file out of the wheel.
+artifacts = ["src/smtv_core/_appkey.py"]
+
+[tool.hatch.build.targets.sdist]
+artifacts = ["src/smtv_core/_appkey.py"]

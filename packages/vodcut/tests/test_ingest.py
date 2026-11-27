@@ -66,17 +66,19 @@ def test_a_refused_link_says_what_to_do(tmp_path, monkeypatch):
     local_on(monkeypatch, False)
 
     def refuses(url, on_wait=None):
-        raise media.MediaError("not_signed_in")
+        raise media.MediaError("no_app_key")
 
     monkeypatch.setattr(media, "Ticket", refuses)
-    with pytest.raises(ingest.IngestError, match="coming soon.*choose the recording file.*Download links myself.*streammoment_sign_in"):
+    with pytest.raises(ingest.IngestError, match="not available in this copy.*choose the recording file.*Download links myself.*streammoment_sign_in"):
         ingest.from_link("https://www.twitch.tv/videos/2934906889", tmp_path)
 
 
 def test_youtube_is_not_downloaded_here_without_the_switch(tmp_path, monkeypatch):
     local_on(monkeypatch, False)
     monkeypatch.setitem(sys.modules, "yt_dlp", None)        # even when yt-dlp is installed it is not used
-    with pytest.raises(ingest.IngestError, match="YouTube links do not open through StreamMoment yet.*Download links myself"):
+    monkeypatch.delenv("SMTV_APP_KEY", raising=False)
+    monkeypatch.chdir(tmp_path)
+    with pytest.raises(ingest.IngestError, match="not available in this copy.*Download links myself"):
         ingest.from_link("https://www.youtube.com/watch?v=x", tmp_path)
 
 
@@ -161,15 +163,15 @@ def test_the_estimate_of_a_link_asks_streammoment_without_queue_or_download(monk
 
 def test_doctor_checks_links_not_yt_dlp(monkeypatch, tmp_path):
     monkeypatch.setenv("SMTV_HOME", str(tmp_path))
-    from smtv_core import account
+    from smtv_core import appkey
     from smtv_core.checks import FAIL, OK, WARN
     from smtv_core.settings import Settings
     from vodcut import tool
     s = Settings.load()
-    monkeypatch.setattr(account, "signed_in", lambda: None)
+    monkeypatch.setattr(appkey, "get", lambda: "")
     row = tool.checks(s)[0]
     assert row.status == WARN and "StreamMoment" in row.name and "video file works" in row.detail
-    monkeypatch.setattr(account, "signed_in", lambda: {"name": "Аня"})
+    monkeypatch.setattr(appkey, "get", lambda: "key")
     assert tool.checks(s)[0].status == OK
     options.set_option(s, "local_download", True)
     monkeypatch.setattr(local_download, "available", lambda: False)

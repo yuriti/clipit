@@ -37,3 +37,5 @@ node_modules/
 *.safetensors
 *.gguf
 *.bin
+# the app key, written by a build from the GitHub Actions secret SMTV_APP_KEY (scripts/write_appkey.py)
+packages/smtv-core/src/smtv_core/_appkey.py

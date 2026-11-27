@@ -21,11 +21,14 @@ def links(s):
     return next(r for r in tool.checks(s) if r.id.startswith("vodcut-"))
 
 
-def test_without_an_account_links_warn_and_point_to_the_way_that_works_now():
-    """Sign-in is not open yet (0.1.0): no «Sign in» button that leads nowhere; the fix names the switch and yt-dlp."""
+def test_without_a_key_links_warn_and_point_to_the_way_that_works_now(monkeypatch, tmp_path):
+    """No app key in this copy: no button that leads nowhere; the fix names the switch and yt-dlp."""
+    monkeypatch.delenv("SMTV_APP_KEY", raising=False)
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr("smtv_core.appkey._built_in", lambda: "")
     row = links(Settings.load())
     assert row.status == WARN and row.actions == () and row.recipe is None
-    assert "coming soon" in row.detail and "video file works" in row.detail and "Download links myself" in row.detail
+    assert "not available in this copy" in row.detail and "video file works" in row.detail and "Download links myself" in row.detail
     assert row.fix == local_download.install_hint()                          # one command, ready to copy
 
 

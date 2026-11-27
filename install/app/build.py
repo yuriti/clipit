@@ -248,6 +248,8 @@ def wheels(out: Path, given: Path | None) -> list[Path]:
         out.mkdir(parents=True, exist_ok=True)
         for old in out.glob("*.whl"):
             old.unlink()
+        if not (REPO / "packages/smtv-core/src/smtv_core/_appkey.py").exists():
+            print("WARNING: no app key in this build (run scripts/write_appkey.py with SMTV_APP_KEY set): links will be off in the app")
         run([uv(), "build", "--all-packages", "--wheel", "--out-dir", out], cwd=REPO)
         given = out
     found = []

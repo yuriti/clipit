@@ -13,6 +13,9 @@ uv tool install "smtv[vodcut]"
 The SMTV window shows the entries newer than the installed version before an update: one `### <version>` per release,
 one `- ` line per change, plain text.
 
+### 0.2.0
+- Links (YouTube, Twitch) download without signing in.
+
 ### 0.1.1
 - Released together with SMTV 0.1.1; Python 3.11 or newer.
 

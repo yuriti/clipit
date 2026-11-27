@@ -312,12 +312,13 @@ request. [Как устроены переводы](docs/translations.md).
 
 ## StreamMoment
 
-Clip It! делает команда [StreamMoment](https://streammoment.tv). Скоро появится аккаунт StreamMoment: он даст Clip It!
-нейросеть и будет скачивать записи по ссылкам без всякой настройки. Clip It! полностью работает и без него.
+Clip It! делает команда [StreamMoment](https://streammoment.tv). Записи по ссылкам (YouTube, Twitch)
+Clip It! скачивает через сервер StreamMoment без входа в аккаунт и без настройки; какие сведения при этом получает
+сервер — в [конфиденциальности](PRIVACY.md). Файлы с вашего компьютера никуда не отправляются.
 
 - [Сообщить о проблеме](https://github.com/yuriti/clipit/issues/new?template=bug.yml) · [Предложить идею](https://github.com/yuriti/clipit/issues/new?template=feature.yml)
 - [Для опытных пользователей](docs/advanced.md): Docker, все сервисы нейросетей, модели распознавания речи, ключи, команды
-- [Изменения](CHANGELOG.md) · [Как поучаствовать](CONTRIBUTING.md) · [Безопасность](SECURITY.md)
+- [Изменения](CHANGELOG.md) · [Как поучаствовать](CONTRIBUTING.md) · [Безопасность](SECURITY.md) · [Конфиденциальность](PRIVACY.md)
 - Нравится Clip It!? [Поддержите на Boosty](https://boosty.to/smtv) и поставьте репозиторию ⭐ — так его найдут другие.
 
 Лицензия: [MIT](LICENSE).
