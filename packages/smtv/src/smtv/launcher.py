@@ -63,10 +63,11 @@ def this_system() -> System:
     platform = sys.platform
     python = sys.executable
     if platform == "win32":
-        # the Windows app's ClipIt.exe (pythonw under its name; SMTV.exe before 0.1.1), else the environment's pythonw
-        windowless = next((p for p in (Path(sys.executable).with_name(n) for n in ("ClipIt.exe", "SMTV.exe", "pythonw.exe"))
-                           if p.exists()),
-                          Path(sys.executable))
+        # the Windows app's ClipIt.exe (the launcher at the top, above app\pythonw.exe; a copy of pythonw before it,
+        # SMTV.exe before 0.1.1), else the environment's pythonw
+        here = Path(sys.executable)
+        windowless = next((p for p in (here.parent.parent / "ClipIt.exe", here.with_name("ClipIt.exe"),
+                                       here.with_name("SMTV.exe"), here.with_name("pythonw.exe")) if p.exists()), here)
         python = str(windowless)
     env = {}
     if platform != "win32":

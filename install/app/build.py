@@ -37,6 +37,7 @@ import shutil
 import subprocess
 import sys
 import tarfile
+import tempfile
 import urllib.request
 import zipfile
 from dataclasses import dataclass
@@ -57,7 +58,7 @@ PBS = "https://github.com/astral-sh/python-build-standalone/releases/download/20
 # with Windows files from python.org (later 3.12 releases are source-only security fixes).
 NUGET = "https://api.nuget.org/v3-flatcontainer/"
 RIEDL = "https://ffmpeg.martin-riedl.de/download/macos/"
-WIN_FOLDER = "ClipIt"     # the Windows app's folder (the ZIP's top); its program ClipIt.exe, Python's pythonw.exe
+WIN_FOLDER = "ClipIt"     # the Windows app's folder (the ZIP's top); its program ClipIt.exe (launcher_win.c) starts app/pythonw.exe
 APP_FOLDER = "app"        # paths.APP_FOLDER: the Windows app's own files, below ClipIt.exe
 WIN_PTH = f"python{PY.replace('.', '')}._pth"     # beside python312.dll: Python's paths, relative to the top folder
 WIN_PTH_LINES = f"{APP_FOLDER}\n{APP_FOLDER}\\DLLs\n{APP_FOLDER}\\Lib\n{APP_FOLDER}\\Lib\\site-packages\nimport site\n"
@@ -393,6 +394,60 @@ def compile_launcher(dest: Path) -> Path:
     return dest
 
 
+WIN_LAUNCHER_RC = """\
+1 ICON "smtv.ico"
+1 VERSIONINFO
+FILEVERSION {commas}
+PRODUCTVERSION {commas}
+FILEOS 0x4
+FILETYPE 0x1
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904B0"
+    BEGIN
+      VALUE "CompanyName", "yuriti"
+      VALUE "FileDescription", "Clip It!"
+      VALUE "FileVersion", "{version}"
+      VALUE "InternalName", "ClipIt"
+      VALUE "OriginalFilename", "ClipIt.exe"
+      VALUE "ProductName", "Clip It!"
+      VALUE "ProductVersion", "{version}"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x0409, 0x04B0
+  END
+END
+"""
+
+
+def win_launcher_rc(v: str) -> str:
+    """The resource file of ClipIt.exe: the Clip It! icon and the version info (the app's version, four numbers)."""
+    nums = [int(n) for n in re.match(r"\d+(?:\.\d+)*", v).group().split(".")[:4]]
+    return WIN_LAUNCHER_RC.format(commas=",".join(map(str, nums + [0] * (4 - len(nums)))), version=v)
+
+
+def compile_win_launcher(dest: Path, v: str) -> Path:
+    """ClipIt.exe from launcher_win.c with the icon and version info, by MinGW-w64's gcc and windres (on GitHub's
+    windows-latest as they are; SMTV_MINGW_PREFIX=x86_64-w64-mingw32- picks a cross compiler on another system)."""
+    prefix = os.environ.get("SMTV_MINGW_PREFIX", "")
+    gcc, windres = f"{prefix}gcc", f"{prefix}windres"
+    for tool in (gcc, windres):
+        if not shutil.which(tool):
+            raise SystemExit(f"{tool} is missing: ClipIt.exe is built with MinGW-w64 (on Windows it is on the runner; "
+                             "elsewhere install it and set SMTV_MINGW_PREFIX, e.g. x86_64-w64-mingw32-)")
+    with tempfile.TemporaryDirectory(prefix="clipit-launcher-") as tmp:
+        work = Path(tmp)
+        (work / "smtv.ico").write_bytes(launcher.win_ico())
+        (work / "launcher.rc").write_text(win_launcher_rc(v), encoding="ascii")
+        run([windres, "--input", "launcher.rc", "--output", "launcher.res.o"], cwd=work)
+        run([gcc, "-Wall", "-Wextra", "-Werror", "-O2", "-s", "-static", "-mwindows",
+             "-o", dest, HERE / "launcher_win.c", work / "launcher.res.o"])
+    return dest
+
+
 def share_identical(primary: Path, other: Path) -> int:
     """Every file of `other` that is byte for byte the same file in `primary` (Python code, fonts, the window's page)
     becomes a relative link to it: the .dmg carries it once. Returns the bytes saved."""
@@ -477,21 +532,19 @@ def how_to_name() -> str:
 
 
 def make_win_folder(python: Path, out: Path) -> Path:
-    """SMTV/, laid out for a person who opens the folder: on top only ClipIt.exe (Python's windowless program under
-    SMTV's name; a double click on it opens the window: double_click.py), its .config (NET_CONFIG), the DLLs Windows
-    loads before any Python runs, the ._pth that tells Python where the rest is, and a how-to text. Everything else is
-    in app/ (paths.app_folder()), with the icon. Python's own python.exe and pythonw.exe are left out: ClipIt.exe is
-    pythonw.exe, and with output sent to a file or a pipe it prints like python.exe.
-    No script to start it: Smart App Control blocks a downloaded .cmd, and any program of our own."""
+    """ClipIt/, laid out for a person who opens the folder: on top only ClipIt.exe (our own small launcher,
+    launcher_win.c, which starts app/pythonw.exe; a double click on it opens the window), its .config (NET_CONFIG), the
+    DLLs and the ._pth that Python loads (the launcher puts this folder on the PATH of what it starts), and a how-to
+    text. Everything else is in app/ (paths.app_folder()), with the icon and Python's own pythonw.exe, as python.org
+    publishes it. python.exe is left out. No script to start it: Smart App Control blocks a downloaded .cmd."""
     folder = out / WIN_FOLDER
     if folder.exists():
         shutil.rmtree(folder)
     folder.mkdir(parents=True)
     app = folder / APP_FOLDER
     python.replace(app)
-    shutil.copy2(app / "pythonw.exe", folder / "ClipIt.exe")
-    for exe in ("python.exe", "pythonw.exe"):
-        (app / exe).unlink()
+    compile_win_launcher(folder / "ClipIt.exe", version())
+    (app / "python.exe").unlink()
     for dll in sorted(app.glob("*.dll")):          # python312.dll, python3.dll, vcruntime140*.dll: next to ClipIt.exe
         dll.replace(folder / dll.name)
     (folder / WIN_PTH).write_text(WIN_PTH_LINES, encoding="ascii", newline="\r\n")

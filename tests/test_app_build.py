@@ -200,6 +200,16 @@ def test_the_dmg_readme_explains_the_warning_honestly_in_both_languages():
 
 # --- Windows ---------------------------------------------------------------------------------------------------------
 
+REAL_COMPILE = build.compile_win_launcher
+LAUNCHER = b"MZ launcher " + "SMTV_LAUNCH_CHECK".encode("utf-16-le")
+
+
+@pytest.fixture(autouse=True)
+def fake_win_launcher(monkeypatch):
+    """MinGW is not on every computer: the folder tests get a stand-in for what compile_win_launcher makes."""
+    monkeypatch.setattr(build, "compile_win_launcher", lambda dest, v: dest.write_bytes(LAUNCHER) or dest)
+
+
 def win_python(tmp_path):
     """python-build-standalone's Windows folder, in small."""
     py = tmp_path / "python"
@@ -234,6 +244,7 @@ def test_python_org_s_nuget_package_unpacks_into_the_same_layout(tmp_path):
         build.unpack_python(evil, tmp_path / "python2")
     apps = (REPO / ".github" / "workflows" / "apps.yml").read_text(encoding="utf-8")
     assert "Get-AuthenticodeSignature" in apps and "O=Python Software Foundation" in apps   # checked on Windows, per build
+    assert "'app\\pythonw.exe'" in apps and "launcher built here" in apps and "ProductName -ne 'Clip It!'" in apps
 
 
 def test_the_windows_folder_shows_one_program_a_how_to_and_app_with_the_rest(tmp_path):
@@ -245,11 +256,12 @@ def test_the_windows_folder_shows_one_program_a_how_to_and_app_with_the_rest(tmp
         "python312.dll", "python3.dll", "vcruntime140.dll", "vcruntime140_1.dll"])
     app = folder / "app"
     assert sorted(f.name for f in app.iterdir()) == sorted([
-        "DLLs", "LICENSE.txt", "Lib", build.KIND_MARKER, "smtv.ico"])
-    # Smart App Control: ClipIt.exe is pythonw.exe byte for byte, and no program or script of our own is added; Python's
-    # python.exe and pythonw.exe are gone (they would not even start in app\ without the DLLs beside them)
-    assert (folder / "ClipIt.exe").read_bytes() == b"MZ windowless"
-    assert sorted(f.name for f in folder.rglob("*") if f.suffix.lower() in (".exe", ".cmd", ".bat")) == ["ClipIt.exe"]
+        "DLLs", "LICENSE.txt", "Lib", build.KIND_MARKER, "pythonw.exe", "smtv.ico"])
+    # ClipIt.exe is our launcher (launcher_win.c), not a copy of Python's program; pythonw.exe stays in app\ exactly as
+    # python.org publishes it, python.exe is gone, and no script is added
+    assert (folder / "ClipIt.exe").read_bytes() == LAUNCHER and (app / "pythonw.exe").read_bytes() == b"MZ windowless"
+    assert sorted(f.name for f in folder.rglob("*") if f.suffix.lower() in (".exe", ".cmd", ".bat")) == \
+        ["ClipIt.exe", "pythonw.exe"]
     # Python finds everything in app\ through the ._pth beside python312.dll (ASCII, as Python reads it)
     assert (folder / "python312._pth").read_bytes() == \
         b"app\r\napp\\DLLs\r\napp\\Lib\r\napp\\Lib\\site-packages\r\nimport site\r\n"
@@ -284,6 +296,35 @@ def test_smoke_names_what_does_not_belong_at_the_top(tmp_path):
     (folder / "ClipIt.exe.config").write_text("<configuration/>", encoding="utf-8")
     failed = smoke.win_layout(folder)
     assert len(failed) == 2 and "python.exe" in failed[0] and "loadFromRemoteSources" in failed[1]
+
+
+def test_smoke_tells_a_copy_of_pythonw_from_the_launcher(tmp_path):
+    folder = build.make_win_folder(win_python(tmp_path), tmp_path)
+    assert smoke.win_layout(folder) == []
+    (folder / "ClipIt.exe").write_bytes((folder / "app" / "pythonw.exe").read_bytes())    # the build before the launcher
+    assert "not the launcher" in smoke.win_layout(folder)[0]
+    (folder / "ClipIt.exe").write_bytes(LAUNCHER)
+    (folder / "app" / "pythonw.exe").unlink()
+    assert "pythonw.exe is missing" in smoke.win_layout(folder)[0]
+
+
+def test_the_launcher_has_the_clip_it_icon_and_the_apps_version_in_its_resources():
+    rc = build.win_launcher_rc("0.2.0")
+    assert "FILEVERSION 0,2,0,0" in rc and 'VALUE "FileVersion", "0.2.0"' in rc and '1 ICON "smtv.ico"' in rc
+    assert 'VALUE "ProductName", "Clip It!"' in rc and 'VALUE "CompanyName", "yuriti"' in rc
+    assert "FILEVERSION 1,2,3,0" in build.win_launcher_rc("1.2.3rc1")
+
+
+def test_the_launcher_source_starts_pythonw_in_app_and_says_what_is_wrong_in_a_box():
+    c = (APP / "launcher_win.c").read_text(encoding="utf-8")
+    assert r'L"\\app\\pythonw.exe"' in c and "-m smtv app" in c and "MessageBoxW" in c and "SMTV_LAUNCH_CHECK" in c
+    assert sorted(set(re.findall(r"[^\x00-\x7f]", c))) == []        # English and ASCII, as the other service files
+
+
+def test_compile_win_launcher_says_what_is_missing(tmp_path, monkeypatch):
+    monkeypatch.setattr(build.shutil, "which", lambda tool: None)
+    with pytest.raises(SystemExit, match="MinGW-w64"):
+        REAL_COMPILE(tmp_path / "ClipIt.exe", "0.2.0")
 
 
 def test_paths_app_folder_is_the_prefix_everywhere_but_the_windows_app(tmp_path):
@@ -492,70 +533,6 @@ def test_the_build_scripts_print_any_character_on_a_console_without_it(tmp_path)
     assert r.returncode == 0 and "«".encode() in r.stdout, r.stderr
 
 
-@pytest.mark.parametrize("exe, argv, starts", [
-    (r"C:\SMTV\ClipIt.exe", [r"C:\SMTV\ClipIt.exe"], True),                 # a double click, from Explorer
-    (r"C:\SMTV\smtv.EXE", ["smtv"], True),                                  # an SMTV.exe from before 0.1.1
-    (r"C:\ClipIt\clipit.exe", ["clipit"], True),
-    (r"C:\ClipIt\Clip It!.exe", ["Clip It!"], False),                       # only the two names the app was given
-    (r"C:\SMTV\ClipIt.exe", [r"C:\SMTV\ClipIt.exe", "-m", "smtv", "app"], False),   # the installer's icon, every job
-    (r"C:\SMTV\ClipIt.exe", [r"C:\SMTV\ClipIt.exe", "-c", "print(1)"], False),
-    (r"C:\SMTV\pythonw.exe", [r"C:\SMTV\pythonw.exe"], False),
-    (r"C:\SMTV\python.exe", [r"C:\SMTV\python.exe"], False),           # an interactive Python stays one
-])
-def test_only_clipit_exe_or_smtv_exe_with_nothing_after_it_opens_the_window(exe, argv, starts):
-    exe, argv = exe.replace("\\", "/"), [a.replace("\\", "/") for a in argv]
-    assert double_click.command(exe, argv) == ([exe, "-m", "smtv", "app"] if starts else None)
-
-
-def test_the_double_click_starts_the_window_apart_and_ends_or_never_stops_python(monkeypatch):
-    started, ended = [], []
-    monkeypatch.setattr(double_click.sys, "executable", "/a/ClipIt.exe")
-    monkeypatch.setattr(double_click.sys, "orig_argv", ["/a/ClipIt.exe"], raising=False)
-    monkeypatch.delenv("SMTV_LAUNCH_CHECK", raising=False)
-    double_click.main(start=lambda argv, **k: started.append(argv), end=ended.append)
-    assert started == [["/a/ClipIt.exe", "-m", "smtv", "app"]] and ended == [0]
-
-    def broken(argv, **k):
-        raise OSError("blocked")
-    ended.clear()
-    double_click.main(start=broken, end=ended.append)          # Python goes on as before, no traceback
-    assert ended == []
-
-
-def test_a_real_python_named_smtv_opens_the_window_only_without_arguments(tmp_path):
-    site = tmp_path / "site"
-    site.mkdir()
-    (site / "sitecustomize.py").write_text((APP / "double_click.py").read_text(encoding="utf-8"), encoding="utf-8")
-    name = "ClipIt.exe" if os.name == "nt" else "smtv"
-    exe = tmp_path / name
-    try:
-        exe.symlink_to(sys.executable)
-    except OSError:
-        pytest.skip("no symbolic links here")
-    check = tmp_path / "started.json"
-    env = {**os.environ, "PYTHONPATH": str(site), "SMTV_LAUNCH_CHECK": str(check)}
-    r = subprocess.run([str(exe)], env=env, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
-    assert r.returncode == 0 and json.loads(check.read_text(encoding="utf-8"))[1:] == ["-m", "smtv", "app"], r.stderr
-    check.unlink()
-    r = subprocess.run([str(exe), "-c", "print('as asked')"], env=env, capture_output=True, text=True, timeout=60)
-    assert r.stdout.strip() == "as asked" and not check.exists()
-
-
-def test_smoke_checks_the_double_click_without_opening_a_window(tmp_path):
-    exe = tmp_path / "ClipIt.exe"
-    try:
-        exe.symlink_to(sys.executable)
-    except OSError:
-        pytest.skip("no symbolic links here")
-    env = {**os.environ}
-    env.pop("PYTHONPATH", None)
-    assert "starts nothing" in smoke.double_click(exe, env, tmp_path)[0]       # the folder without sitecustomize.py
-    site = tmp_path / "site"
-    site.mkdir()
-    (site / "sitecustomize.py").write_text((APP / "double_click.py").read_text(encoding="utf-8"), encoding="utf-8")
-    assert smoke.double_click(exe, {**env, "PYTHONPATH": str(site)}, tmp_path) == []
-
-
 def test_the_build_sources_are_ascii_named_and_have_their_callers():
     for f in APP.iterdir():
         assert re.fullmatch(r"[a-z0-9._-]+", f.name), f.name
@@ -565,7 +542,7 @@ def test_the_build_sources_are_ascii_named_and_have_their_callers():
     sac = (REPO / ".github" / "workflows" / "smart-app-control.yml").read_text(encoding="utf-8")
     assert "install/app/sac_check.py" in sac
     built = (APP / "build.py").read_text(encoding="utf-8")
-    for name in ("dmg-readme.txt", "double_click.py", "launcher.c", "how-to-start.txt"):
+    for name in ("dmg-readme.txt", "double_click.py", "launcher.c", "launcher_win.c", "how-to-start.txt"):
         assert name in built
 
 
