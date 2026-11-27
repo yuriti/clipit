@@ -1,5 +1,7 @@
-"""Stage 15: ffmpeg, ffprobe and yt-dlp never hang a job (smtv_core.proc)."""
+"""Stage 15: ffmpeg and yt-dlp never hang a job; a file's length and size come from ffmpeg itself (smtv_core.proc)."""
 import os
+import shutil
+import subprocess
 import sys
 import time
 
@@ -64,3 +66,37 @@ def test_an_unreadable_frame_size_is_an_error_not_a_crash_on_split(tmp_path, mon
 def test_output_that_is_not_utf8_does_not_break_a_finished_program():
     done = proc.run([sys.executable, "-c", "import sys; sys.stderr.buffer.write(b'\\xff\\xfe bad'); sys.exit(1)"], 30)
     assert done.returncode == 1 and "bad" in done.stderr
+
+
+# --- the length and picture size, from ffmpeg itself (no ffprobe) ------------------------------------------------------
+
+VIDEO_LOG = """Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'stream.mp4':
+  Metadata:
+    major_brand     : isom
+  Duration: 01:02:03.45, start: 0.000000, bitrate: 5124 kb/s
+  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709, progressive), 1920x1080 [SAR 1:1 DAR 16:9], 4956 kb/s, 60 fps, 60 tbr, 15360 tbn (default)
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 160 kb/s (default)
+At least one output file must be specified
+"""
+
+
+def test_the_length_and_size_are_read_from_what_ffmpeg_prints():
+    found = proc.read_probe(VIDEO_LOG)
+    assert found.duration_s == pytest.approx(3723.45) and found.size == (1920, 1080)
+    # a codec tag (0x31637661) is not a size; an audio-only file has none; an unknown length is None
+    audio = proc.read_probe("  Duration: 00:00:07.00, start: 0.0\n  Stream #0:0: Audio: mp3, 44100 Hz, stereo\n")
+    assert audio.duration_s == 7.0 and audio.size is None
+    live = proc.read_probe("  Duration: N/A, start: 0.0\n  Stream #0:0: Video: h264 (Main), yuv420p, 1080x1920, 30 fps\n")
+    assert live.duration_s is None and live.size == (1080, 1920)
+    image = proc.read_probe("  Duration: 00:00:00.04, start: 0.0\n  Stream #0:0: Video: mjpeg (Baseline), yuvj420p(pc), 640x360, 25 fps\n")
+    assert image.size == (640, 360)
+    assert proc.read_probe("x.mp4: Invalid data found when processing input\n") == proc.Probe(None, None, "x.mp4: Invalid data found when processing input\n")
+
+
+@pytest.mark.skipif(not shutil.which("ffmpeg"), reason="no ffmpeg here")
+def test_a_real_ffmpeg_reads_the_length_and_size_of_a_file_it_made(tmp_path):
+    out = tmp_path / "v.mp4"
+    subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-f", "lavfi", "-i", "color=c=red:s=320x240:d=2",
+                    "-f", "lavfi", "-i", "anullsrc", "-shortest", "-c:v", "libx264", str(out)], check=True, timeout=120)
+    found = proc.probe(str(out), 30)
+    assert found.size == (320, 240) and found.duration_s == pytest.approx(2.0, abs=0.2)

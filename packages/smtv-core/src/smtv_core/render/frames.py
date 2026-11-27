@@ -44,10 +44,7 @@ def shrink(paths: list[Path], out_dir: Path, width: int) -> list[Path]:
 
 
 def size(path: Path) -> tuple[int, int]:
-    done = proc.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "csv=p=0", str(path)],
-                    PROBE_TIMEOUT_S, what="ffprobe")
-    out = done.stdout.strip()
-    if done.returncode != 0 or "," not in out:
-        raise RuntimeError(f"could not read the size of {Path(path).name}: {done.stderr.strip()[-300:]}")
-    w, h = out.split(",")[:2]
-    return int(w), int(h)
+    found = proc.probe(str(path), PROBE_TIMEOUT_S)
+    if not found.size:
+        raise RuntimeError(f"could not read the size of {Path(path).name}: {found.log.strip()[-300:]}")
+    return found.size

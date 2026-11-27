@@ -39,7 +39,7 @@ def test_a_lock_held_too_long_is_said_and_passed_or_refused_when_strict(tmp_path
         started = time.monotonic()
         with filelock.ProcessLock(lambda: path, "settings", timeout=0.3):
             assert 0.25 < time.monotonic() - started < 5
-        assert "settings is locked by another SMTV process for too long" in capsys.readouterr().err
+        assert "settings is locked by another Clip It! process for too long" in capsys.readouterr().err
         with pytest.raises(filelock.LockTimeout):
             with filelock.ProcessLock(lambda: path, "keys", timeout=0.3, strict=True):
                 pass

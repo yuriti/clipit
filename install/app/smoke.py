@@ -7,11 +7,14 @@
 Runs the app's own Python with a clean environment and an empty SMTV folder, and checks that:
 - the heavy libraries load (speech, sound, the window's bridge) and the kind of install is the app's (dmg, exe, zip);
 - the ffmpeg inside the app is the one SMTV picks, and it burns captions (libass) with SMTV's caption font;
+- the Windows app's Whisper engine (left out of it: smtv_core.parts) downloads from PyPI, matches its hashes and loads;
 - `smtv doctor` runs: nothing but the AI connection and the speech model is missing on a fresh computer, and the
   speech model is offered for download, not bundled;
 - `smtv serve` answers /api/hello with its version and keeps the page closed without the launch key;
-- on Windows, SMTV.exe opened with nothing after it (a double click) starts `SMTV.exe -m smtv app` (checked without
-  opening the window: SMTV_LAUNCH_CHECK), and the page's server runs in SMTV.exe itself.
+- on Windows, ClipIt.exe opened with nothing after it (a double click) starts `ClipIt.exe -m smtv app` (checked without
+  opening the window: SMTV_LAUNCH_CHECK), and the page's server runs in ClipIt.exe itself;
+- on Windows, .NET loads (pythonnet); the folder's top holds only ClipIt.exe with its .config (which lets .NET load files
+  Explorer marked as downloaded: a ZIP opened with "Extract All"), the DLLs, the ._pth, a how-to text and app/.
 Exits 1 with the failed checks listed. Prints nothing secret: the folder is a fresh temporary one.
 """
 from __future__ import annotations
@@ -30,9 +33,14 @@ from pathlib import Path
 
 PROBE = r"""
 import json, sys
-import onnxruntime, av, numpy, ctranslate2, faster_whisper, onnx_asr, webview, fontTools, jsonschema, huggingface_hub
+import onnxruntime, numpy, onnx_asr, webview, fontTools, jsonschema, huggingface_hub
+from smtv_core import parts
+if not parts.manifest(parts.WHISPER):          # inside the app (the Mac); the Windows app downloads it (PART below)
+    import av, ctranslate2, faster_whisper
+if sys.platform == "win32":
+    import clr  # noqa: F401 — pythonnet: .NET, the bridge to the window; fails on files marked as downloaded
 from smtv import updates
-from smtv_core import checks
+from smtv_core import checks, paths
 from smtv_core.render.fonts import FONTS_DIR
 if not list(FONTS_DIR.glob("*.woff")):
     raise SystemExit(f"no caption font in {FONTS_DIR}")
@@ -43,8 +51,19 @@ took = time.monotonic() - started
 again = checks.has_libass(folder) if folder and not captions else None   # a slow first start, or no libass at all
 translated = subprocess.run(["sysctl", "-n", "sysctl.proc_translated"], capture_output=True, text=True).stdout.strip() \
     if sys.platform == "darwin" else ""
-print(json.dumps({"machine": platform.machine(), "rosetta": translated == "1", "prefix": sys.prefix, "version": sys.version.split()[0], "kind": updates.install_kind(),
+print(json.dumps({"machine": platform.machine(), "rosetta": translated == "1", "prefix": sys.prefix, "app": str(paths.app_folder()), "version": sys.version.split()[0], "kind": updates.install_kind(),
                   "ffmpeg": folder, "libass": captions, "libass_s": round(took, 1), "libass_again": again, "fonts": str(FONTS_DIR)}))
+"""
+
+PART = r"""
+import json
+from smtv_core import parts
+from smtv_core.asr import catalog
+spec = parts.manifest(parts.WHISPER)
+where = parts.install(parts.WHISPER)
+assert catalog.package_ready(catalog.WHISPER_M), "faster-whisper is not importable after the download"
+import av, ctranslate2, faster_whisper, tokenizers
+print(json.dumps({"mb": parts.size_mb(spec), "folder": str(where), "versions": [ctranslate2.__version__, av.__version__]}))
 """
 
 ASS = """[Script Info]
@@ -74,7 +93,7 @@ def app_python(app: Path, arch: str = "arm64") -> tuple[list[str], dict[str, str
         return [*(["/usr/bin/arch", "-x86_64"] if arch == "x86_64" else ["/usr/bin/arch", "-arm64"]),
                 str(contents / "MacOS" / f"smtv-python-{arch}")], \
             {"PYTHONHOME": str(contents / "Resources" / f"python-{arch}"), "PYTHONNOUSERSITE": "1"}
-    return [str(app / "python.exe")], {"PYTHONNOUSERSITE": "1"}
+    return [str(app / "ClipIt.exe")], {"PYTHONNOUSERSITE": "1"}   # pythonw under SMTV's name; prints into a pipe
 
 
 def mac_bundle(app: Path) -> list[str]:
@@ -141,23 +160,63 @@ def page_status(port: int) -> int:
         return 0
 
 
+WIN_LIMIT_MB = 320      # the Windows app unpacked: 549 MB in 0.1.0, about 290 since 0.1.1; it must not creep back
+
+
+LEFT_OUT = ("av", "ctranslate2", "faster-whisper", "tokenizers", "hf-xet")   # build.WHISPER_PART + build.NOT_IN_APPS
+
+
+def unexpected_pip_check(out: str) -> list[str]:
+    """pip check's complaints but the packages the build leaves out on purpose (downloaded on first use, or not needed)."""
+    return [line for line in out.strip().splitlines()
+            if line.strip() and not any(f"requires {name}," in line.lower() for name in LEFT_OUT)]
+
+
+def win_size(app: Path, limit_mb: int = WIN_LIMIT_MB) -> list[str]:
+    total = sum(f.stat().st_size for f in app.rglob("*") if f.is_file()) / 1e6
+    print(f"the app unpacked: {total:.0f} MB (the limit {limit_mb} MB)")
+    if total > limit_mb:
+        return [f"the Windows app is {total:.0f} MB unpacked, over its limit of {limit_mb} MB: find what grew in "
+                "build.py's size list, or raise WIN_LIMIT_MB in smoke.py and say why in the pull request"]
+    return []
+
+
+WIN_TOP = {"ClipIt.exe", "ClipIt.exe.config", "app"}     # and the DLLs, the ._pth and the how-to text (build.make_win_folder)
+
+
+def win_layout(app: Path) -> list[str]:
+    """The Windows folder as a person sees it: one program to start, a text that says how, app/ with the rest; the
+    .config that lets .NET load files Explorer marked as downloaded (without it the window does not start)."""
+    failed = []
+    names = {f.name for f in app.iterdir() if not f.name.lower().startswith("unins")}   # the installer's uninstaller
+    other = sorted(n for n in names - WIN_TOP if not n.lower().endswith((".dll", "._pth", ".txt")))
+    if not WIN_TOP <= names or other or sum(n.lower().endswith("._pth") for n in names) != 1 \
+            or sum(n.endswith(".txt") for n in names) != 1:
+        failed.append(f"the top of {app} is not ClipIt.exe, its .config, the DLLs, one ._pth, one text and app: "
+                      f"{sorted(names)} (build the app again with build.py)")
+    config = app / "ClipIt.exe.config"
+    if config.is_file() and 'loadFromRemoteSources enabled="true"' not in config.read_text(encoding="utf-8", errors="replace"):
+        failed.append(f"{config} does not allow loadFromRemoteSources: build the app again with build.py")
+    return failed
+
+
 def double_click(smtv_exe: Path, env: dict[str, str], tmp: Path) -> list[str]:
-    """SMTV.exe with nothing after it, as Explorer starts it: it must ask for SMTV's window and end at once."""
+    """ClipIt.exe with nothing after it, as Explorer starts it: it must ask for SMTV's window and end at once."""
     check = tmp / "double-click.json"
     try:
         r = subprocess.run([str(smtv_exe)], env={**env, "SMTV_LAUNCH_CHECK": str(check)}, capture_output=True,
                            timeout=60, cwd=tmp, stdin=subprocess.DEVNULL)
     except subprocess.TimeoutExpired:
-        return ["a double click on SMTV.exe did not end within 60 s (the start in sitecustomize.py is missing?)"]
+        return ["a double click on ClipIt.exe did not end within 60 s (the start in sitecustomize.py is missing?)"]
     except OSError as e:
-        return [f"SMTV.exe did not start: {e}"]
+        return [f"ClipIt.exe did not start: {e}"]
     if not check.is_file():
-        return [f"a double click on SMTV.exe starts nothing (exit {r.returncode}): Lib/site-packages/sitecustomize.py "
-                "is missing or does not recognise SMTV.exe"]
+        return [f"a double click on ClipIt.exe starts nothing (exit {r.returncode}): Lib/site-packages/sitecustomize.py "
+                "is missing or does not recognise ClipIt.exe"]
     started = json.loads(check.read_text(encoding="utf-8"))
-    if [Path(started[0]).name.lower(), *started[1:]] != ["smtv.exe", "-m", "smtv", "app"]:
-        return [f"a double click on SMTV.exe would start {started}, not SMTV.exe -m smtv app"]
-    print(f"double click on SMTV.exe: starts {' '.join(started[1:])}")
+    if [Path(started[0]).name.lower(), *started[1:]] != [smtv_exe.name.lower(), "-m", "smtv", "app"]:
+        return [f"a double click on ClipIt.exe would start {started}, not ClipIt.exe -m smtv app"]
+    print(f"double click on ClipIt.exe: starts {' '.join(started[1:])}")
     return []
 
 
@@ -183,8 +242,9 @@ def smoke(app: Path, kinds: tuple[str, ...], arch: str = "arm64") -> list[str]:
         if app.suffix == ".app":
             failed += mac_bundle(app)
         deps = py("-m", "pip", "check")
-        if deps.returncode != 0:            # a dependency missing or at a version another one cannot use
-            failed.append(f"pip check: {deps.stdout.strip()[-1500:]}")
+        wrong = unexpected_pip_check(deps.stdout)
+        if deps.returncode != 0 and wrong:   # a dependency missing or at a version another one cannot use
+            failed.append("pip check: " + "\n".join(wrong)[-1500:])
         print(f"Python {info['version']} as {info['machine']}{' under Rosetta' if info['rosetta'] else ''}, "
               f"kind {info['kind']}, ffmpeg {info['ffmpeg']}")
         if app.suffix == ".app":
@@ -194,7 +254,7 @@ def smoke(app: Path, kinds: tuple[str, ...], arch: str = "arm64") -> list[str]:
                 failed.append("the Apple silicon Python runs under Rosetta")
         if info["kind"] not in kinds:
             failed.append(f"kind of install {info['kind']!r}, expected one of {kinds}")
-        if not info["ffmpeg"] or Path(info["ffmpeg"]).resolve() != (Path(info["prefix"]) / "ffmpeg").resolve():
+        if not info["ffmpeg"] or Path(info["ffmpeg"]).resolve() != (Path(info["app"]) / "ffmpeg").resolve():
             failed.append(f"SMTV picked ffmpeg in {info['ffmpeg']}, not the one inside the app")
         if not info["libass"]:
             failed.append(f"the ffmpeg SMTV picked cannot burn captions (no libass): finding it took {info['libass_s']} s, "
@@ -213,6 +273,14 @@ def smoke(app: Path, kinds: tuple[str, ...], arch: str = "arm64") -> list[str]:
             if r.returncode != 0 or not out.is_file() or out.stat().st_size < 1000:
                 failed.append(f"ffmpeg did not burn a caption with libx264: {r.stderr[-800:]}")
 
+        part = py("-c", "from smtv_core import parts; print(bool(parts.manifest(parts.WHISPER)))")
+        if part.stdout.strip() == "True":     # the Windows app: Whisper's engine on first use, from PyPI, checked
+            got = py("-c", PART, timeout=900)
+            if got.returncode != 0:
+                failed.append(f"Whisper's engine did not download or load:\n{got.stderr[-1500:]}")
+            else:
+                print(f"Whisper's engine on first use: {got.stdout.strip().splitlines()[-1]}")
+
         d = py("-m", "smtv", "doctor")
         print(d.stdout)
         if not any(line.split()[:2] == ["ok", "ffmpeg"] for line in d.stdout.splitlines()):
@@ -224,9 +292,11 @@ def smoke(app: Path, kinds: tuple[str, ...], arch: str = "arm64") -> list[str]:
         if "Speech model" not in d.stdout or "not downloaded" not in d.stdout:
             failed.append("smtv doctor does not offer the speech model for download")
 
-        smtv_exe = app / "SMTV.exe" if app.suffix != ".app" else None
+        smtv_exe = app / "ClipIt.exe" if app.suffix != ".app" else None
         if smtv_exe and smtv_exe.is_file():
             failed += double_click(smtv_exe, env, Path(tmp))
+            failed += win_layout(app)
+            failed += win_size(app)
         port = free_port()
         serving = [str(smtv_exe)] if smtv_exe and smtv_exe.is_file() else cmd     # what a double click runs
         server = subprocess.Popen([*serving, "-m", "smtv", "serve", "--no-browser", "--port", str(port)], env=env, cwd=tmp,

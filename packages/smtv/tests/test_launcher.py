@@ -2,7 +2,6 @@
 are recorded instead of run."""
 from __future__ import annotations
 
-import base64
 import os
 import shlex
 import plistlib
@@ -94,44 +93,108 @@ def test_mac_remove_unregisters_and_deletes(tmp_path):
 
 # --- Windows ---------------------------------------------------------------------------------------------------------
 
-def _decoded(argv: list[str]) -> str:
-    assert argv[0] == "powershell.exe" and "-EncodedCommand" in argv
-    return base64.b64decode(argv[argv.index("-EncodedCommand") + 1]).decode("utf-16-le")
+class FakeLinks:
+    """winlink without Windows: shortcuts are files holding what was saved."""
+
+    def __init__(self, root: Path):
+        self.root, self.saved = root, []
+        for name in ("Desktop", "Programs"):
+            (root / name).mkdir(parents=True, exist_ok=True)
+
+    def folders(self):
+        return [str(self.root / "Desktop"), str(self.root / "Programs")]
+
+    def save(self, path, target, arguments, workdir, icon, app_id, description):
+        self.saved.append({"path": path, "target": target, "arguments": arguments, "workdir": workdir, "icon": icon,
+                           "app_id": app_id, "description": description})
+        Path(path).write_text(arguments, encoding="utf-8")
+
+    def arguments(self, path):
+        return Path(path).read_text(encoding="utf-8")
 
 
-def test_windows_makes_lnk_on_desktop_and_start_menu_with_pythonw(tmp_path):
+def win_system(tmp_path):
     s, calls = system(tmp_path, "win32")
-    launcher.install(s)
-    (script,) = [_decoded(c) for c in calls]
-    assert "GetFolderPath('Desktop')" in script and "GetFolderPath('Programs')" in script
-    assert "CreateShortcut((Join-Path $d 'SMTV.lnk'))" in script
-    assert r"$l.TargetPath = 'C:\Users\someone\.local\share\uv\tools\smtv\Scripts\pythonw.exe'" in script
-    assert "$l.Arguments = '-m smtv app'" in script
-    assert "smtv.ico,0'" in script
+    s.win = FakeLinks(tmp_path / "shell")
+    return s, calls
 
 
-def test_windows_quotes_paths_with_spaces_and_apostrophes(tmp_path):
-    s, calls = system(tmp_path, "win32")
-    s.python = r"C:\Users\O'Brien Smith\smtv\Scripts\pythonw.exe"
+def test_windows_makes_clip_it_lnk_on_desktop_and_start_menu_with_pythonw_and_the_taskbar_id(tmp_path):
+    s, calls = win_system(tmp_path)
+    # 0.1.0 made «SMTV» shortcuts: ours go, another program's of that name stays
+    (s.win.root / "Desktop" / "SMTV.lnk").write_text("-m smtv app", encoding="utf-8")
+    (s.win.root / "Programs" / "SMTV.lnk").write_text("--another-program", encoding="utf-8")
     launcher.install(s)
-    assert r"$l.TargetPath = 'C:\Users\O''Brien Smith\smtv\Scripts\pythonw.exe'" in _decoded(calls[0])
+    assert calls == []                                    # no PowerShell: Smart App Control restricts it
+    assert [Path(x["path"]).parent.name for x in s.win.saved] == ["Desktop", "Programs"]
+    for x in s.win.saved:
+        assert Path(x["path"]).name == "Clip It!.lnk" and x["description"] == "Clip It!"
+        assert x["target"] == r"C:\Users\someone\.local\share\uv\tools\smtv\Scripts\pythonw.exe"
+        assert x["arguments"] == "-m smtv app" and x["workdir"] == str(s.home)
+        assert x["icon"] == str(s.data / "launcher" / "smtv.ico") and x["app_id"] == launcher.APP_ID == "ClipIt.ClipIt"
+    assert not (s.win.root / "Desktop" / "SMTV.lnk").exists() and (s.win.root / "Programs" / "SMTV.lnk").exists()
 
 
 def test_windows_failed_lnk_is_reported(tmp_path):
-    s, _ = system(tmp_path, "win32")
-    s.run = lambda argv: 1
-    with pytest.raises(RuntimeError, match="SMTV.lnk"):
+    s, _ = win_system(tmp_path)
+
+    def refuse(*a):
+        raise OSError("[WinError -2147024891] Access is denied")
+    s.win.save = refuse
+    with pytest.raises(RuntimeError, match="Clip It!.lnk.*Access is denied"):
+        launcher.install(s)
+    s.win.folders = lambda: ["", ""]
+    with pytest.raises(RuntimeError, match="no desktop or Start menu folder"):
         launcher.install(s)
 
 
-def test_windows_remove(tmp_path):
-    s, calls = system(tmp_path, "win32")
+def test_windows_remove_takes_the_new_and_the_old_shortcuts_but_not_another_program_s(tmp_path):
+    s, _ = win_system(tmp_path)
     launcher.install(s)
-    assert launcher.installed(s) and (s.data / "launcher" / "smtv.ico").read_bytes()[22:30] == b"\x89PNG\r\n\x1a\n"
-    calls.clear()
+    icon = (s.data / "launcher" / "smtv.ico").read_bytes()
+    assert launcher.installed(s) and icon[:4] == b"\x00\x00\x01\x00" and struct.unpack("<H", icon[4:6])[0] == 6
+    (s.win.root / "Desktop" / "SMTV.lnk").write_text("-m smtv app", encoding="utf-8")          # left by 0.1.0
+    (s.win.root / "Programs" / "Clip It!.lnk").write_text("--another-program", encoding="utf-8")
     launcher.remove(s)
-    assert all("Remove-Item" in _decoded(c) for c in calls)
+    assert not (s.win.root / "Desktop" / "Clip It!.lnk").exists() and not (s.win.root / "Desktop" / "SMTV.lnk").exists()
+    assert (s.win.root / "Programs" / "Clip It!.lnk").exists()
     assert not (s.data / "launcher" / "smtv.ico").exists() and not launcher.installed(s)
+
+    def refuse(path):
+        raise OSError("in use")
+    (s.win.root / "Desktop" / "Clip It!.lnk").write_text("-m smtv app", encoding="utf-8")
+    s.win.arguments = refuse
+    with pytest.raises(RuntimeError, match="could not remove Clip It!.lnk"):
+        launcher.remove(s)
+
+
+def test_the_windows_icon_has_every_size_windows_asks_for():
+    data = launcher.win_ico()
+    count = struct.unpack("<HHH", data[:6])[2]
+    entries = [struct.unpack("<BBBBHHII", data[6 + 16 * i:22 + 16 * i]) for i in range(count)]
+    assert [e[0] or 256 for e in entries] == [16, 24, 32, 48, 64, 256]
+    for (side, _, _, _, _, _, size, offset), want in zip(entries, (16, 24, 32, 48, 64, 256)):
+        png = data[offset:offset + size]
+        assert png[:8] == b"\x89PNG\r\n\x1a\n" and struct.unpack(">II", png[16:24]) == (want, want)
+    assert data[entries[-1][7]:] == (launcher.ICONS / "icon-256.png").read_bytes()
+
+
+def test_the_window_icon_is_the_app_s_own_else_one_made_in_smtv_s_folder(tmp_path):
+    app = tmp_path / "SMTV"
+    app.mkdir()
+    (app / "smtv.ico").write_bytes(b"ico")
+    assert launcher.window_icon(app, tmp_path / "data") == app / "smtv.ico"
+    made = launcher.window_icon(tmp_path / "venv", tmp_path / "data")
+    assert made == tmp_path / "data" / "launcher" / "window.ico" and made.read_bytes() == launcher.win_ico()
+    assert not (tmp_path / "data" / "launcher" / "smtv.ico").exists()     # that one says the shortcut is made
+    (tmp_path / "ro").write_text("a file, not a folder", encoding="utf-8")
+    assert launcher.window_icon(tmp_path / "venv", tmp_path / "ro") is None
+
+
+@pytest.mark.parametrize(("kind", "own"), [("uv", True), ("pip", True), ("zip", False), ("exe", False), ("dmg", False)])
+def test_smtv_makes_its_own_icon_only_for_uv_and_pip(kind, own):
+    # the Windows ZIP is portable: no shortcut, nothing outside its folder
+    assert launcher.own_shortcut(kind) is own
 
 
 # --- Linux -----------------------------------------------------------------------------------------------------------
@@ -193,6 +256,8 @@ def test_this_system_uses_pythonw_on_windows(tmp_path, monkeypatch):
     s = launcher.this_system()
     assert s.python == str(scripts / "pythonw.exe") and "PATH" not in s.env
     assert s.env["SMTV_HOME"] == str((tmp_path / "h").resolve())
+    (scripts / "SMTV.exe").write_text("", encoding="utf-8")      # the desktop app: its own SMTV.exe
+    assert launcher.this_system().python == str(scripts / "SMTV.exe")
 
 
 # --- the process name ------------------------------------------------------------------------------------------------
@@ -266,3 +331,48 @@ def test_the_name_link_never_replaces_a_real_file(tmp_path):
     launcher.install(s)
     assert place.read_text(encoding="utf-8") == "someone's file"
     assert '"/opt/smtv venv/bin/python" -m smtv app' in (s.home / ".local/share/applications/smtv.desktop").read_text(encoding="utf-8")
+
+
+def test_the_windows_zip_hides_only_what_a_person_never_opens(tmp_path):
+    for name in ("SMTV.exe", "SMTV.exe.config", "python312.dll", "vcruntime140.dll", "python312._pth", "how.txt"):
+        (tmp_path / name).write_bytes(b"x")
+    (tmp_path / "app").mkdir()
+    hidden = []
+
+    def hide(path):
+        if path.endswith("vcruntime140.dll"):
+            raise OSError("in use")                      # a file it cannot mark stays as it is
+        hidden.append(Path(path).name)
+    assert launcher.hide_parts(tmp_path, hide) == ["python312._pth", "python312.dll"] == hidden
+
+
+def test_the_mac_app_keeps_its_file_name_and_shows_clip_it(tmp_path):
+    # SMTV.app stays SMTV.app (updates, the Dock's place, an older copy replaced in place); Finder, the Dock and the
+    # menu show «Clip It!»: the localized display name, which Finder takes only when the plain one matches the file
+    s = System("darwin", tmp_path, "/py", {}, tmp_path / "data")
+    info = launcher.mac_info(s)
+    assert launcher._mac_app(s).name == "SMTV.app"
+    assert info["CFBundleName"] == "Clip It!" and info["CFBundleDisplayName"] == "SMTV" and info["LSHasLocalizedDisplayName"]
+    launcher.mac_names(tmp_path / "Resources")
+    for lang in ("en", "ru", "Base"):
+        text = (tmp_path / "Resources" / f"{lang}.lproj" / "InfoPlist.strings").read_text(encoding="utf-8")
+        assert '"CFBundleDisplayName" = "Clip It!";' in text and '"CFBundleName" = "Clip It!";' in text
+
+
+def test_every_icon_is_made_from_the_clip_it_drawings_and_holds_only_its_image():
+    import sys as _sys
+    _sys.path.insert(0, str(launcher.ICONS.parents[5] / "scripts"))
+    try:
+        import make_icons
+    finally:
+        _sys.path.pop(0)
+    assert make_icons.ICONS == launcher.ICONS
+    assert set(make_icons.SMALL + make_icons.FULL) == set(launcher.WIN_ICON_SIZES)
+    for name, size in [(f"icon-{n}.png", n) for n in launcher.WIN_ICON_SIZES] + [(f"icon-mac-{n}.png", n) for n in make_icons.MAC]:
+        data = (launcher.ICONS / name).read_bytes()
+        assert struct.unpack(">II", data[16:24]) == (size, size), name
+        assert make_icons.plain_png(data) == data, name            # no EXIF or other chunks from the drawing tool
+    for svg in ("clip-it.svg", "clip-it-small.svg", "clip-it-mac.svg"):
+        text = (launcher.ICONS / svg).read_text(encoding="utf-8")
+        assert "<path" in text and "<text" not in text and "font-family" not in text, svg   # outlines: no font ships
+    assert not list(launcher.ICONS.glob("*sm*tv*")) and "Bitter" in (launcher.ICONS / "README.md").read_text(encoding="utf-8")

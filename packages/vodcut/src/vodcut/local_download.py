@@ -25,22 +25,45 @@ PIECE_PAD_S = 1.5
 STALE_DAYS = 60      # platforms change every week; a yt-dlp older than this often no longer opens links
 
 
+def portable_site() -> Path | None:
+    """The Windows ZIP installs yt-dlp into its data folder (on the path through smtv_core.paths.apply_portable), not
+    into the Python of its program: Python there reads its paths from a ._pth file, and an update replaces the program."""
+    from smtv_core import paths
+    if paths.portable_top() is None:
+        return None
+    return paths.home() / paths.PORTABLE_SITE
+
+
+def _on_path() -> None:
+    """A yt-dlp installed into the data folder after this process started: on the path now."""
+    folder = portable_site()
+    if folder is not None and folder.is_dir() and str(folder) not in sys.path:
+        import site
+        site.addsitedir(str(folder))
+        importlib.invalidate_caches()
+
+
 def install_argv() -> list[str] | None:
     """The command that installs or updates yt-dlp in SMTV's own environment, without administrator rights: uv's pip into
     this Python (a uv tool environment has no pip of its own), else this Python's pip. None: neither is here."""
     import importlib.util
     from smtv.updates import find_uv
+    folder = portable_site()
+    target = ["--target", str(folder)] if folder is not None else []
     uv = find_uv()
     if uv:
-        return [uv, "pip", "install", "--python", sys.executable, "--upgrade", "yt-dlp"]
+        return [uv, "pip", "install", "--python", sys.executable, "--upgrade", *target, "yt-dlp"]
     if importlib.util.find_spec("pip") is not None:
-        return [sys.executable, "-m", "pip", "install", "--upgrade", "yt-dlp"]
+        return [sys.executable, "-m", "pip", "install", "--upgrade", *target, "yt-dlp"]
     return None
 
 
 def install_hint() -> str:
     """The command that puts yt-dlp into SMTV's own environment."""
     from smtv.tools import running_as_uv_tool
+    folder = portable_site()
+    if folder is not None:
+        return f'"{sys.executable}" -m pip install --upgrade --target "{folder}" yt-dlp'
     if running_as_uv_tool():
         return "uv tool install --reinstall 'smtv[vodcut]' --with yt-dlp"
     return f"{sys.executable} -m pip install yt-dlp"
@@ -49,6 +72,7 @@ def install_hint() -> str:
 def version() -> str | None:
     """yt-dlp's version (a date: 2026.11.02), without importing it."""
     from importlib.metadata import PackageNotFoundError, version as dist_version
+    _on_path()
     try:
         return dist_version("yt-dlp")
     except PackageNotFoundError:
@@ -71,6 +95,7 @@ class LocalDownloadError(Exception):
 
 
 def available() -> bool:
+    _on_path()
     return importlib.util.find_spec("yt_dlp") is not None
 
 

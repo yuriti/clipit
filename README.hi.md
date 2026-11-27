@@ -95,7 +95,7 @@ SMTV बोली को आपके कंप्यूटर पर खुद 
 
 | आपका कंप्यूटर | डाउनलोड | साइज़ |
 |---|---|---|
-| **Windows 10 या 11** (64-बिट) | [**Windows के लिए SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) (इंस्टॉलर) | करीब 130 MB |
+| **Windows 10 या 11** (64-बिट) | [**Windows के लिए SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) (इंस्टॉलर) | करीब 130 MB |
 | **Mac** — Apple silicon (M1 और नए) या Intel, macOS 13+ | [**Mac के लिए SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | करीब 270 MB |
 
 हर Mac के लिए एक ही फ़ाइल: SMTV आपके Mac के प्रोसेसर के लिए बना वर्ज़न खुद चलाता है। Windows पर बिना कुछ इंस्टॉल किए:

@@ -9,7 +9,7 @@
 
 | 你的电脑 | 下载 | 大小 |
 |---|---|---|
-| **Windows 10 或 11**（64 位） | [Windows 版 SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | 约 130 MB |
+| **Windows 10 或 11**（64 位） | [Windows 版 SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) | 约 130 MB |
 | **Mac** — Apple 芯片（M1 及更新）或 Intel，macOS 13+ | [Mac 版 SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | 约 270 MB |
 
 所有版本及其校验和：[发布页面](https://github.com/yuriti/clipit/releases/latest)。

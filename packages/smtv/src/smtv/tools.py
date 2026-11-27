@@ -57,7 +57,7 @@ def doctor_groups(tools: list[Tool], broken: list[Broken], settings: Settings | 
     try:
         own = core.core_checks(settings, verify)
     except Exception as e:  # noqa: BLE001 — the window still shows every other row, and the crash itself as one
-        own = [core.Check("SMTV checks", core.WARN, f"the checks crashed: {type(e).__name__}: {e}"[:300], id="smtv-checks")]
+        own = [core.Check("Clip It! checks", core.WARN, f"the checks crashed: {type(e).__name__}: {e}"[:300], id="smtv-checks")]
     groups: list[tuple[str, list[core.Check]]] = [("smtv", [*own, window_check()])]
     for t in tools:
         try:
@@ -96,11 +96,11 @@ def window_check() -> core.Check:
     """SMTV's own window (pywebview); without it the page opens in the browser, which works too."""
     from . import container
     if container.active():
-        return core.Check("SMTV window", core.OK, "in Docker the page opens in the browser; Chrome or Edge install it as an app with its own window", id="window")
+        return core.Check("Clip It! window", core.OK, "in Docker the page opens in the browser; Chrome or Edge install it as an app with its own window", id="window")
     from .window import available
     why = available()
     if why is None:
-        return core.Check("SMTV window", core.OK, "SMTV opens in its own window", id="window")
+        return core.Check("Clip It! window", core.OK, "Clip It! opens in its own window", id="window")
     fix = ('uv tool install --reinstall "smtv[vodcut]" --with "pywebview[qt]"' if sys.platform.startswith("linux")
            else 'uv tool install --reinstall "smtv[vodcut]"')
-    return core.Check("SMTV window", core.WARN, f"no window here, the page opens in the browser ({why})", fix, id="window")
+    return core.Check("Clip It! window", core.WARN, f"no window here, the page opens in the browser ({why})", fix, id="window")

@@ -187,7 +187,7 @@ def test_loopback_sign_in_with_pkce_saves_the_tokens_in_the_keychain(fake):
         urllib.request.urlopen(f"{sent['redirect_uri']}?code=code-1&state=forged", timeout=5)
     assert login.state == "waiting"
     with urllib.request.urlopen(f"{sent['redirect_uri']}?code=code-1&state={sent['state']}", timeout=5) as r:
-        assert "SMTV" in r.read().decode()
+        assert "Clip It!" in r.read().decode()
     assert wait(lambda: login.state == "done"), login.error
     assert account.signed_in() == {"id": "a1", "name": "Аня", "provider": "google"}
     stored = json.loads(get_secret(account.SECRET_NAME))

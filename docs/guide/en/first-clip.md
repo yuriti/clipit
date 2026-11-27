@@ -5,20 +5,20 @@
 
 # Your first clip
 
-<img src="../../images/new-request.gif" alt="A new request: a video file is picked, SMTV starts and shows every step" width="820">
+<img src="../../images/new-request.gif" alt="A new request: a video file is picked, Clip It! starts and shows every step" width="820">
 
 ## 1. Choose an AI (once)
 
-SMTV turns the stream's speech into text on your computer, and an AI reads that text and picks the moments. The
-first time, SMTV shows the ways to give it an AI: your own key or a free AI on your computer (signing in to a
+Clip It! turns the stream's speech into text on your computer, and an AI reads that text and picks the moments. The
+first time, Clip It! shows the ways to give it an AI: your own key or a free AI on your computer (signing in to a
 StreamMoment account is coming soon). Not sure? Read [which AI to choose](connect-ai.md).
 
-## 2. Give SMTV a stream
+## 2. Give Clip It! a stream
 
 On the home screen («What shall we cut into clips?»):
 
 - **A link** — paste a link to a recording on Twitch (`twitch.tv/videos/…`) or YouTube. For now a link needs
-  **Download links myself** turned on in **Settings → VodCut**: SMTV then downloads the recording on your computer with
+  **Download links myself** turned on in **Settings → VodCut**: Clip It! then downloads the recording on your computer with
   the free program yt-dlp, which **Settings → Computer check** installs with one button (at your own risk: platforms
   change often, YouTube sometimes asks to sign in). Later links will also work through the
   [StreamMoment account](account.md), coming soon.
@@ -36,21 +36,21 @@ The request opens on the right of the list. **Progress** shows the step and the 
 3. **Montage** — each clip is cut, framed 9:16, given captions and a title card.
 4. **Recap** — after the clips, a 20–30 minute video of the whole stream.
 
-You can close the window: SMTV asks whether to go on in the background. **Pause** stops the work; **Continue** picks
+You can close the window: Clip It! asks whether to go on in the background. **Pause** stops the work; **Continue** picks
 up from the same step.
 
 ## 4. Get the clips
 
-Clips appear one by one under the recap. Click a clip to watch it next to its text and see why SMTV picked it.
+Clips appear one by one under the recap. Click a clip to watch it next to its text and see why Clip It! picked it.
 Download it with the download button and post it.
 
 <img src="../../images/viewer.png" alt="A clip playing next to its transcript" width="820">
 
-Where are the files? In SMTV's own folder on your computer; the download button saves a copy where you want.
+Where are the files? In Clip It!'s own folder on your computer; the download button saves a copy where you want.
 
 ## Good to know
 
-- A 6–12 hour stream gives up to 30 clips. A short or quiet stream may give only a few, or none: SMTV keeps only the
+- A 6–12 hour stream gives up to 30 clips. A short or quiet stream may give only a few, or none: Clip It! keeps only the
   moments the AI rated as good.
-- Before the request starts, SMTV shows how long it should take.
+- Before the request starts, Clip It! shows how long it should take.
 - Something stopped? See [something went wrong](troubleshooting.md).

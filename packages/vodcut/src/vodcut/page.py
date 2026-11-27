@@ -88,14 +88,12 @@ def _probe(source: str) -> dict:
     """Duration and title of a recording without downloading it."""
     if not ingest.is_link(source):
         try:
-            done = proc.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=nw=1:nk=1", source],
-                            30, what="ffprobe")
+            duration = proc.probe(source, 30).duration_s
         except proc.TimedOut:
             raise ValueError("this file did not open in 30 seconds: is it on a drive that is not answering?") from None
-        try:
-            return {"duration_s": float(done.stdout.strip()), "title": Path(source).stem, "kind": "file"}
-        except ValueError:
-            raise ValueError("this file has no readable duration: is it a video?") from None
+        if duration is None:
+            raise ValueError("this file has no readable duration: is it a video?")
+        return {"duration_s": duration, "title": Path(source).stem, "kind": "file"}
     if options.local_download():
         return local_download.probe(source)
     from smtv_core import media

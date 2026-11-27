@@ -57,9 +57,10 @@ def _plain(s: str) -> str:
     return re.sub(r"\*\*|`", "", s).strip()[:400]
 
 
-# The desktop apps (install/app/build.py): kind, processor and file name of each installer in `dist`.
-# One .dmg for every Mac (both processors inside: no `arch`), one installer for x64 Windows.
-APPS = (("dmg", None, "SMTV-{v}-mac.dmg"), ("exe", "x64", "SMTV-{v}-windows-x64-setup.exe"))
+# The desktop apps (install/app/build.py): kind, processor and file name of each one in `dist`. One .dmg for every Mac
+# (both processors inside: no `arch`); the Windows ZIP, under "exe" (channel.LISTED_AS: 0.1.0 knows no "zip" kind, and
+# since 0.1.1 there is no Windows installer: 0.1.0's installed copies get the ZIP; the ZIP updates itself from it).
+APPS = (("dmg", None, "SMTV-{v}-mac.dmg"), ("exe", "x64", "SMTV-{v}-windows-x64.zip"))
 
 
 def _file(path: Path, base_url: str, **extra) -> dict:

@@ -272,7 +272,7 @@ def _watch_owner(pid: int, every: float = 5.0, alive=None, end=None) -> None:
     alive = alive or _alive
     while alive(pid):
         time.sleep(every)
-    print(f"SMTV (process {pid}) is gone: this job stops; the new SMTV goes on with it")
+    print(f"Clip It! (process {pid}) is gone: this job stops; the new Clip It! goes on with it")
     (end or _end_self)()
 
 

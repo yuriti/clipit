@@ -10,7 +10,7 @@ kata sandi administrator.
 
 | Komputermu | Unduh | Ukuran |
 |---|---|---|
-| **Windows 10 atau 11** (64-bit) | [SMTV untuk Windows](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | sekitar 130 MB |
+| **Windows 10 atau 11** (64-bit) | [SMTV untuk Windows](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) | sekitar 130 MB |
 | **Mac** — Apple silicon (M1 dan yang lebih baru) atau Intel, macOS 13+ | [SMTV untuk Mac](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | sekitar 270 MB |
 
 Semua versi dan checksum-nya: [halaman rilis](https://github.com/yuriti/clipit/releases/latest).

@@ -3,18 +3,18 @@
 
 > 🌐 This page was translated automatically from the [Russian original](../README.md). Help improve it: [Weblate](https://hosted.weblate.org/engage/smtv/) · [pull request](https://github.com/yuriti/clipit/pulls).
 
-# SMTV guides
+# Clip It! guides
 
 Step by step, for people who have never installed anything from a terminal. Start at the top.
 
-1. [Install SMTV](install.md) — Windows, Mac, Linux, and what to press when the system warns you
+1. [Install Clip It!](install.md) — Windows, Mac, Linux, and what to press when the system warns you
 2. [Your first clip](first-clip.md) — from a link or a file to a finished clip
 3. [Which AI to choose](connect-ai.md) — the three ways, side by side
    - [Where to get a key](get-a-key.md) — services with a free or cheap plan
    - [A free AI on your computer](free-ai-on-your-computer.md) — Ollama or LM Studio with Qwen
    - [The StreamMoment account](account.md) — coming soon: links through our server and a subscription
-4. [SMTV on your phone](phone.md) — scan a QR code
-5. [Speech and languages](speech-and-languages.md) — which languages SMTV understands
+4. [Clip It! on your phone](phone.md) — scan a QR code
+5. [Speech and languages](speech-and-languages.md) — which languages Clip It! understands
 6. [Update and remove](update-and-remove.md)
 7. [Something went wrong](troubleshooting.md) — computer check, **Fix**, **Report a problem**
 

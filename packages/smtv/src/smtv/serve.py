@@ -83,7 +83,7 @@ QUEUE_RETRY_S = 30.0
 UPLOAD_SPARE = 512 * 1024 * 1024   # an upload leaves this much free: the request needs room for its audio and clips
 # A page from an earlier start of SMTV (its token is gone): the page reloads itself on this code (A20)
 STALE_PAGE = "stale_page"
-STALE_TEXT = "SMTV перезапустился: обновите страницу."          # after a start the system refused, or while a job left from before still runs
+STALE_TEXT = "Clip It! перезапустился: обновите страницу."          # after a start the system refused, or while a job left from before still runs
 PAGE_TTL_S = 90.0
 CLEAR_SITE_DATA = '"cache", "storage"'   # on removal: anything an older SMTV left in a browser for this site
 SHELLS = {"mac", "win", "linux"}
@@ -91,8 +91,8 @@ PAGE_ID = re.compile(r"^[A-Za-z0-9_-]{8,64}$")
 PAGE_RUN = "page-run.json"   # what the page started in this job folder, so it can be started again after a stop
 HELLO_APP = "smtv"
 ANY_ADDRESS = "0.0.0.0"   # only in Docker: the published port reaches the server inside the container this way
-DOCKER_OPEN = {"/healthz", "/manifest.webmanifest", "/favicon.ico", "/static/icon.svg"}   # no key: nothing secret in them
-MANIFEST = {"name": "SMTV", "short_name": "SMTV", "id": "/", "start_url": "/", "scope": "/", "display": "standalone",
+DOCKER_OPEN = {"/healthz", "/manifest.webmanifest", "/favicon.ico", "/static/icons/clip-it-small.svg"}   # no key: nothing secret in them
+MANIFEST = {"name": "Clip It!", "short_name": "Clip It!", "id": "/", "start_url": "/", "scope": "/", "display": "standalone",
             "background_color": "#181818", "theme_color": "#181818",
             "icons": [{"src": "/static/icons/icon-256.png", "sizes": "256x256", "type": "image/png"},
                       {"src": "/static/icons/icon-mac-512.png", "sizes": "512x512", "type": "image/png"}]}
@@ -110,7 +110,7 @@ class PortBusy(OSError):
     """The page's port is taken: by SMTV itself (`smtv` is True) or by another program."""
 
     def __init__(self, port: int, smtv: bool):
-        super().__init__(f"port {port} is taken" + (" by SMTV" if smtv else ""))
+        super().__init__(f"port {port} is taken" + (" by Clip It!" if smtv else ""))
         self.port, self.smtv = port, smtv
 
 
@@ -293,7 +293,7 @@ class App:
     def window_show(self) -> dict:
         """A second start of SMTV: bring the running one's window forward."""
         if not self.show_window:
-            raise ApiError(409, "no_window", "this SMTV has no window: it was started with smtv serve")
+            raise ApiError(409, "no_window", "this Clip It! has no window: it was started with smtv serve")
         self.show_window()
         return {"shown": True}
 
@@ -303,9 +303,9 @@ class App:
 
     def quit_now(self) -> dict:
         """«Quit SMTV» from the page: running jobs stop, then the server."""
-        self._not_in_docker("stopping SMTV", "docker compose stop")
+        self._not_in_docker("stopping Clip It!", "docker compose stop")
         if not self.quit:
-            raise ApiError(409, "cannot_quit", "this SMTV was started in a terminal: stop it there with Ctrl+C")
+            raise ApiError(409, "cannot_quit", "this Clip It! was started in a terminal: stop it there with Ctrl+C")
         print("quit: from the page")
         threading.Timer(0.5, self.quit).start()
         return {"quitting": True}
@@ -317,7 +317,7 @@ class App:
 
     def uninstall(self, body: dict) -> dict:
         """Removes SMTV (the icon, the program; the data only with data: true), then this server quits."""
-        self._not_in_docker("removing SMTV", "docker compose down (add -v to delete the data volume too)")
+        self._not_in_docker("removing Clip It!", "docker compose down (add -v to delete the data volume too)")
         if body.get("confirm") != "remove" or not isinstance(body.get("data", False), bool):
             raise ApiError(400, "not_confirmed", 'send {"confirm": "remove", "data": true|false}')
         from . import uninstall
@@ -325,7 +325,7 @@ class App:
         self.runner.stop_all()                    # jobs write into the data folder
         result = uninstall.run(body.get("data", False)).as_dict()
         if self.quit:
-            print("quit: SMTV was removed from the page")
+            print("quit: Clip It! was removed from the page")
             threading.Timer(1.0, self.quit).start()
         return result
 
@@ -577,7 +577,7 @@ class App:
         return {"freed": freed, "left": left[:20], **self.cache()}
 
     def open_home(self) -> dict:
-        self._not_in_docker("Opening SMTV's folder", "the data is in the volume /data")
+        self._not_in_docker("Opening Clip It!'s folder", "the data is in the volume /data")
         if not fixes_mod.open_folder(paths.home()):
             raise ApiError(500, "not_opened", f"the folder did not open: {paths.home()}")
         return {"ok": True}
@@ -1159,7 +1159,7 @@ class App:
     def _launch(self, name: str, folder: Path, args: list[str], by: str = "page") -> dict:
         """Runs the job now, or puts it in the queue when another job of this tool runs or waits."""
         if not JOB_ID.match(folder.name):           # a folder the list cannot show could be neither seen nor stopped
-            raise ApiError(400, "bad_name", f"SMTV cannot name the request folder «{folder.name}»: rename the file and try again")
+            raise ApiError(400, "bad_name", f"Clip It! cannot name the request folder «{folder.name}»: rename the file and try again")
         with self.queue_lock:
             if self.runner.running(name, folder.name):
                 raise ApiError(409, "running", "the request is still running")
@@ -1203,7 +1203,7 @@ class App:
 
     def _no_leftover(self, folder: Path) -> None:
         if self._leftover(folder):
-            raise ApiError(409, "still_running", "Эта заявка ещё работает с прошлого запуска SMTV. Нажмите «Остановить» "
+            raise ApiError(409, "still_running", "Эта заявка ещё работает с прошлого запуска Clip It! Нажмите «Остановить» "
                            "и подождите несколько секунд.")
 
     def _run(self, name: str, folder: Path, args: list[str], by: str) -> None:
@@ -1647,7 +1647,7 @@ def _remove_job_folder(target: Path, tries: int = 5, wait_s: float = 0.4) -> Non
             return
         except OSError as e:
             if i == tries - 1:
-                print(f"deleted: {target.name}: some files stay until the next start of SMTV: {e}")
+                print(f"deleted: {target.name}: some files stay until the next start of Clip It!: {e}")
                 return
             time.sleep(wait_s)
 
@@ -1871,9 +1871,9 @@ class Handler(BaseHTTPRequestHandler):
             if method == "GET" and path in ("/", "/index.html"):
                 self._phone_refused()
                 return True
-            raise ApiError(403, "no_phone_key", "scan the QR code in SMTV on the computer again")
+            raise ApiError(403, "no_phone_key", "scan the QR code in Clip It! on the computer again")
         if phone_access.denied(method, path):
-            raise ApiError(403, "not_from_phone", "Это можно сделать только на компьютере: откройте SMTV там.")
+            raise ApiError(403, "not_from_phone", "Это можно сделать только на компьютере: откройте Clip It! там.")
         return False
 
     def _cookie(self, name: str) -> str | None:
@@ -1988,7 +1988,7 @@ class Handler(BaseHTTPRequestHandler):
             if path in ("/", "/index.html"):
                 return self._index(query)
             if path == "/favicon.ico":
-                return self._static(WEB, "icon.svg", cache=True)
+                return self._static(WEB / "icons", "clip-it-small.svg", cache=True)   # a tab's icon is 16-32 px: «C!»
             if self.app.docker and path == "/healthz":
                 return self._json({"ok": True})
             if self.app.docker and path == "/manifest.webmanifest":
@@ -2394,7 +2394,7 @@ def refused_page(kind: str, lang: str) -> str:
                 '<pre style="background:#222;padding:10px 12px;border-radius:8px">docker compose logs smtv | grep token=</pre>'
                 f'<p>{t("refused_docker_open")}</p>')
     return (f'<!doctype html><html lang="{lang}"><meta charset="utf-8"><meta name="viewport" content="width=device-width, '
-            'initial-scale=1"><title>SMTV</title><body style="font:16px/1.5 system-ui,sans-serif;margin:0;padding:32px 20px;'
+            'initial-scale=1"><title>Clip It!</title><body style="font:16px/1.5 system-ui,sans-serif;margin:0;padding:32px 20px;'
             f'background:#181818;color:#eee">{body}</body></html>')
 
 
@@ -2430,7 +2430,7 @@ def _serve(tools, broken, port, open_browser, lock) -> int:
         try:
             docker_setup(app, port)
         except (ValueError, OSError) as e:
-            print(f"SMTV in Docker cannot start: {e}")
+            print(f"Clip It! in Docker cannot start: {e}")
             return 2
         open_browser = False
         # `docker stop` sends SIGTERM: stop the jobs as Ctrl+C would (they go on from the same step next time)
@@ -2439,7 +2439,7 @@ def _serve(tools, broken, port, open_browser, lock) -> int:
         server = make_server(app, port, host=ANY_ADDRESS) if app.docker else make_server(app, port)
         lock.update(port=app.port)
     except PortBusy as e:
-        print(busy_message(e) if not e.smtv else f"Port {port} is taken by another SMTV with another data folder: "
+        print(busy_message(e) if not e.smtv else f"Port {port} is taken by another Clip It! with another data folder: "
               f"close it, or run smtv serve --port {port + 1}.")
         return 2
     url = launch_url(server.server_address[1])
@@ -2453,8 +2453,8 @@ def _serve(tools, broken, port, open_browser, lock) -> int:
         if app.docker.extra:
             print(f"Warning: SMTV_HOSTS ({', '.join(sorted(app.docker.extra))}) opens the page over plain HTTP: the access key "
                   "travels unencrypted on that network. Use these names only at home, never on public Wi-Fi.")
-        print(f"SMTV in Docker {__version__}. Open the page with its key (the browser remembers it):\n{links}\n"
-              f"Chrome or Edge then offer «Install SMTV» in the address bar: its own window and icon. "
+        print(f"Clip It! in Docker {__version__}. Open the page with its key (the browser remembers it):\n{links}\n"
+              f"Chrome or Edge then offer «Install Clip It!» in the address bar: its own window and icon. "
               f"To cut off every browser: delete {container.key_file()} and restart the container.")
     else:
         # the address with its key only to a person's terminal, never to a log a problem report may carry
@@ -2478,6 +2478,6 @@ def _serve(tools, broken, port, open_browser, lock) -> int:
 
 def busy_message(e: PortBusy) -> str:
     if e.smtv:
-        return f"SMTV is already running: {page_url(e.port)}"
-    return (f"Port {e.port} on 127.0.0.1 is taken by another program, and SMTV needs it. Close that program and start SMTV "
+        return f"Clip It! is already running: {page_url(e.port)}"
+    return (f"Port {e.port} on 127.0.0.1 is taken by another program, and Clip It! needs it. Close that program and start Clip It! "
             f"again, or run `smtv serve --port {e.port + 1}` (the installed app and its saved pages stay on port {DEFAULT_PORT}).")

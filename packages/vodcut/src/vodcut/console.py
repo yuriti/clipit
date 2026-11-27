@@ -114,7 +114,7 @@ def line(event: dict, job: Path) -> str | None:
     if kind == "cancelled":
         return "Taken out of the queue." if d.get("stage") == "queue" else "Cancelled."
     if kind == "queued":
-        return f"Queued in SMTV: place {d.get('position', '?')}" + (f", after {d['after']}" if d.get("after") else "") + "."
+        return f"Queued in Clip It!: place {d.get('position', '?')}" + (f", after {d['after']}" if d.get("after") else "") + "."
     return None
 
 

@@ -102,10 +102,10 @@ def wait_hello(port: int, expect: dict, timeout: float, sleep=time.sleep, proc=N
         if matches(last, expect):
             return last
         if proc is not None and proc.poll() is not None and not hello(port):
-            log(f"SMTV ended at its start with exit code {proc.returncode}")
+            log(f"Clip It! ended at its start with exit code {proc.returncode}")
             return None
         sleep(1.0)
-    log(f"SMTV did not come up as expected {expect}: last answer {last}")
+    log(f"Clip It! did not come up as expected {expect}: last answer {last}")
     return None
 
 
@@ -151,7 +151,7 @@ def launch(argv: list[str], popen=subprocess.Popen):
     try:
         p = popen(argv, **kwargs)
     except OSError as e:
-        log(f"could not start SMTV: {e}")
+        log(f"could not start Clip It!: {e}")
         return None
     return None if os.path.basename(argv[0]) == "open" else p
 
@@ -175,13 +175,13 @@ def alert(text: str) -> None:
     log(text)
     try:
         if sys.platform == "darwin":
-            subprocess.run(["osascript", "-e", "on run argv", "-e", 'display alert "SMTV" message (item 1 of argv) as critical',
+            subprocess.run(["osascript", "-e", "on run argv", "-e", 'display alert "Clip It!" message (item 1 of argv) as critical',
                             "-e", "end run", text], capture_output=True, timeout=600)
         elif sys.platform == "win32":
             import ctypes
-            ctypes.windll.user32.MessageBoxW(None, text, "SMTV", 0x10)  # type: ignore[attr-defined]
+            ctypes.windll.user32.MessageBoxW(None, text, "Clip It!", 0x10)  # type: ignore[attr-defined]
         else:
-            subprocess.run(["notify-send", "SMTV", text], capture_output=True, timeout=30)
+            subprocess.run(["notify-send", "Clip It!", text], capture_output=True, timeout=30)
     except (OSError, subprocess.TimeoutExpired):
         pass
 
@@ -201,7 +201,7 @@ def update(plan: dict, runner=subprocess.run, popen=subprocess.Popen, sleep=time
     say("waiting")
     if not wait_gone(int(plan["wait_pid"]), QUIT_WAIT_S, sleep):
         # Nothing is installed over a running SMTV. It still quits, later: start it again then, unchanged.
-        say("failed", finished=time.time(), why="SMTV did not quit")
+        say("failed", finished=time.time(), why="Clip It! did not quit")
         if wait_gone(int(plan["wait_pid"]), LATE_QUIT_S, sleep) and not hello(port):
             launch(plan["relaunch"], popen)
         return "failed"
@@ -229,14 +229,14 @@ def update(plan: dict, runner=subprocess.run, popen=subprocess.Popen, sleep=time
         say("rolled_back", finished=time.time(), **({} if back else {"why": "the update did not install; the previous version stayed"}))
         return "rolled_back"
     say("failed", finished=time.time())
-    alert(f"SMTV could not be updated and the previous version did not start either. What happened: {plan['log']}")
+    alert(f"Clip It! could not be updated and the previous version did not start either. What happened: {plan['log']}")
     return "failed"
 
 
 def main(argv: list[str]) -> int:
     with open(argv[0], encoding="utf-8") as f:
         plan = json.load(f)
-    log(f"--- SMTV updater: {plan['action']} {plan['previous']} -> {plan['expect']}")
+    log(f"--- Clip It! updater: {plan['action']} {plan['previous']} -> {plan['expect']}")
     try:
         state = update(plan)
     except Exception as e:  # noqa: BLE001 — whatever happened, SMTV must come back and the person must know
@@ -248,7 +248,7 @@ def main(argv: list[str]) -> int:
             pass
         if not hello(int(plan["port"])):
             launch(plan["relaunch"])
-        alert(f"SMTV could not be updated. What happened: {plan['log']}")
+        alert(f"Clip It! could not be updated. What happened: {plan['log']}")
         return 1
     return 0 if state == "done" else 1
 

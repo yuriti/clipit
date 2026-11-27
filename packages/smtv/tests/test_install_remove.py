@@ -51,7 +51,7 @@ def mark():
 def test_the_first_run_from_a_terminal_makes_the_icon_once(made):
     calls, out = made
     cli.first_run_shortcut("serve")
-    assert calls == ["install"] and mark() == "made" and "Made the SMTV icon" in out.out
+    assert calls == ["install"] and mark() == "made" and "Made the Clip It! icon" in out.out
     cli.first_run_shortcut("doctor")
     assert calls == ["install"]
 
@@ -98,6 +98,26 @@ def test_a_failed_icon_never_stops_the_command(made, monkeypatch):
     monkeypatch.setattr(launcher, "install", lambda s: (_ for _ in ()).throw(OSError("read-only")))
     cli.first_run_shortcut("serve")
     assert mark() == "failed" and "try: smtv shortcut" in made[1].out
+
+
+def test_the_windows_zip_never_makes_a_shortcut(made, monkeypatch):
+    calls, _ = made
+    monkeypatch.setattr(cli, "at_terminal", lambda: False)
+    monkeypatch.setattr("smtv.updates.install_kind", lambda: "zip")
+    for command in ("app", "vodcut", "serve"):
+        cli.first_run_shortcut(command)
+    monkeypatch.setattr(cli, "at_terminal", lambda: True)
+    cli.first_run_shortcut("doctor")
+    assert calls == [] and mark() is None
+
+
+@pytest.mark.parametrize(("kind", "platform"), [("exe", "win32"), ("dmg", "darwin"), ("zip", "darwin")])
+def test_the_installed_desktop_apps_bring_their_own_icon(made, monkeypatch, kind, platform):
+    monkeypatch.setattr("smtv.launcher.sys.platform", platform)
+    monkeypatch.setattr("smtv.updates.install_kind", lambda: kind)
+    cli.first_run_shortcut("app")
+    cli.first_run_shortcut("serve")
+    assert made[0] == [] and mark() is None
 
 
 # --- removing SMTV -----------------------------------------------------------------------------------------------------
@@ -185,7 +205,7 @@ def test_remove_data_waits_for_another_smtv(tmp_path, no_launcher, monkeypatch):
         (home / "run").mkdir(exist_ok=True)
         assert other.stdout.readline().strip() == "ok"
         p = uninstall.run(True, spawn=lambda a: None)
-        assert (home / "data" / "vodcut" / "job" / "clip01.mp4").exists() and any("SMTV is running" in n for n in p.notes)
+        assert (home / "data" / "vodcut" / "job" / "clip01.mp4").exists() and any("Clip It! is running" in n for n in p.notes)
     finally:
         other.kill()
 

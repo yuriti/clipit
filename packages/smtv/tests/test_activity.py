@@ -82,8 +82,8 @@ def test_tracker_reads_running_jobs_from_their_journals(tmp_path):
 
 
 def test_notifications_only_for_done_and_failed():
-    assert activity.finished_text("done", "Стрим", 6, "ru") == ("SMTV: готово", "Стрим — клипов: 6")
-    assert activity.finished_text("failed", "Stream", 0, "en")[0] == "SMTV: failed"
+    assert activity.finished_text("done", "Стрим", 6, "ru") == ("Clip It!: готово", "Стрим — клипов: 6")
+    assert activity.finished_text("failed", "Stream", 0, "en")[0] == "Clip It!: failed"
     assert activity.finished_text("cancelled", "x", 0, "ru") is None      # the person stopped it themselves
 
 
@@ -155,7 +155,7 @@ def test_watcher_notifies_when_jobs_end_and_counts_them_on_the_badge():
                  ("vodcut", "b"): {"status": "failed", "title": "Стрим Б", "clips": 0}}
     stops = [w.tick() for _ in range(4)]
     assert badge == [2, 1, 0]                                    # set only when the count changes
-    assert told == [("SMTV: готово", "Стрим А — клипов: 4"), ("SMTV: ошибка", "Стрим Б — подробности на странице")]
+    assert told == [("Clip It!: готово", "Стрим А — клипов: 4"), ("Clip It!: ошибка", "Стрим Б — подробности на странице")]
     assert stops == [False] * 4                                  # SMTV's window: never stops by itself
 
 
@@ -261,10 +261,10 @@ def test_notifications_speak_the_language_chosen_on_the_page(server):
     fake.acts = [act([job("a")]), act([])]
     fake.infos = {("vodcut", "a"): {"status": "done", "title": "Стрим", "clips": 2}}
     w.tick(), w.tick()
-    assert told == [("SMTV: готово", "Стрим — клипов: 2")]
+    assert told == [("Clip It!: готово", "Стрим — клипов: 2")]
 
 
 def test_mac_notifications_fall_back_without_permission():
     from smtv import window
     window._notifications["granted"] = False
-    assert window.mac_notify("SMTV: done", "x") is False             # then osascript sends it
+    assert window.mac_notify("Clip It!: done", "x") is False             # then osascript sends it

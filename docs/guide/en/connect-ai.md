@@ -5,7 +5,7 @@
 
 # Which AI to choose
 
-SMTV turns speech into text by itself, on your computer. To choose the best moments, it asks an AI (a language
+Clip It! turns speech into text by itself, on your computer. To choose the best moments, it asks an AI (a language
 model, like the one behind ChatGPT). Pick **one** of three ways in **Settings → AI**. You can change it any time.
 
 <img src="../../images/ai.png" alt="Settings → AI: three ways to connect an AI" width="820">
@@ -23,14 +23,14 @@ the free way. Neither? A key from a service with a free or cheap plan is the qui
 ([where to get one](get-a-key.md)).
 
 **Links to Twitch and YouTube** work with any of these ways: turn on **Download links myself** in **Settings →
-VodCut**, and SMTV downloads them on your computer with yt-dlp (the computer check installs it). A video file needs
+VodCut**, and Clip It! downloads them on your computer with yt-dlp (the computer check installs it). A video file needs
 nothing.
 
 **What is a key?** A long password for an AI service (an «API key»). The service's site gives it to you after you sign
-up. SMTV keeps it only on your computer and sends it only to that service.
+up. Clip It! keeps it only on your computer and sends it only to that service.
 
 **Where does my stream go?** The video stays on your computer. Only the text of the stream goes to the AI you chose. With
 a free AI on your computer, nothing leaves it.
 
-**Other ways.** Under **Other ways** SMTV can also use a ChatGPT (Codex) or Claude (Claude Code) subscription. We do
+**Other ways.** Under **Other ways** Clip It! can also use a ChatGPT (Codex) or Claude (Claude Code) subscription. We do
 not recommend it: the rules of these services may forbid other programs from using a subscription.

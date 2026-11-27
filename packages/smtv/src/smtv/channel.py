@@ -46,7 +46,12 @@ TIMEOUT_S = 15.0
 MAX_MANIFEST = 1_000_000
 MAX_FILE = 2_000_000_000
 KINDS = ("uv", "pip", "docker", "dmg", "exe")
-METHOD = {"uv": "packages", "pip": "packages", "docker": "command", "dmg": "installer", "exe": "installer"}
+METHOD = {"uv": "packages", "pip": "packages", "docker": "command", "dmg": "installer", "exe": "installer",
+          "zip": "archive"}
+# The Windows ZIP's file is listed under "exe": 0.1.0 refuses a list with a kind it does not know, so a "zip" kind would
+# hide every update from it. Since 0.1.1 there is no installer: 0.1.0's installed copies get the ZIP, opened in
+# Explorer, and the notes of the version say what to do; the ZIP updates itself in place from the same file.
+LISTED_AS = {"zip": "exe"}
 FILE_HOSTS = ("github.com", "objects.githubusercontent.com", "release-assets.githubusercontent.com")
 LOCAL_HOSTS = ("127.0.0.1", "localhost", "::1")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
@@ -140,7 +145,7 @@ def verify(raw: bytes, signature: bytes, key: str = PUBLIC_KEY) -> None:
     except (binascii.Error, ValueError):
         raise ChannelError("bad_signature", "the signature of latest.json is not base64") from None
     if not ed25519.verify(public, raw, sig):
-        raise ChannelError("bad_signature", "latest.json is not signed by SMTV's maintainers")
+        raise ChannelError("bad_signature", "latest.json is not signed by Clip It!'s maintainers")
 
 
 def _file_ok(url: str, manifest_host: str | None) -> bool:
@@ -229,10 +234,12 @@ def load(allowed: tuple[str, ...], floor: str | None = None, url: str | None = N
 def files_for(manifest: dict, kind: str, packages: list[str] | None = None, arch: str | None = None) -> list[dict]:
     """The files this kind of install takes from the manifest: for uv and pip, one wheel of each of `packages`; for the
     desktop apps, the one installer of this processor (`arch`, else this computer's)."""
-    if kind not in KINDS or METHOD[kind] == "command":
+    if kind not in METHOD or METHOD[kind] == "command":
         raise ChannelError("not_for_this_install", f"{kind}: nothing to download")
-    files = (manifest.get("kinds") or {}).get(kind, {}).get("files") or []
-    if METHOD[kind] == "installer":
+    files = (manifest.get("kinds") or {}).get(LISTED_AS.get(kind, kind), {}).get("files") or []
+    if kind == "zip":
+        files = [f for f in files if f["name"].endswith(".zip")]
+    if METHOD[kind] in ("installer", "archive"):
         if any(f.get("arch") for f in files):     # an installer per processor, where there is one per processor
             mine = arch or machine()
             fits = [f for f in files if f.get("arch") in (mine, None)]

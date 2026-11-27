@@ -603,7 +603,7 @@ def collect(tools: list[Tool], broken: list, *, job: tuple[str, Path] | None = N
     logs = paths.home() / "logs"
     try:
         for log in sorted(logs.glob("*.log")):
-            add(f"logs/{log.name}", f"the end of SMTV's log {log.name} (last {LOG_LINES} lines)", _tail(log, LOG_LINES))
+            add(f"logs/{log.name}", f"the end of Clip It!'s log {log.name} (last {LOG_LINES} lines)", _tail(log, LOG_LINES))
     except OSError:
         pass
     for p in newest:

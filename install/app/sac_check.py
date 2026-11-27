@@ -4,9 +4,10 @@
     python install/app/sac_check.py run --work DIR --repo .              # under the policy: what runs, what is blocked
 
 `run` tries, each on its own: a fresh unsigned program (it must be blocked, or the policy is not on and nothing else
-means anything); the release's installer, installed silently; the ZIP's SMTV.exe and its full check (smoke.py); the app
-installed before the policy; the one-line install/install.ps1 of this branch, then `python -m smtv doctor`, the heavy
-libraries with the window's bridge (pythonnet), `smtv serve` and the window. For each: blocked or not, by which file,
+means anything); the release's ZIP, its files marked as downloaded as Explorer does, its ClipIt.exe and its full
+check (smoke.py); the one-line install/install.ps1
+of this branch, then `python -m smtv doctor`, the heavy libraries with the window's bridge (pythonnet), `smtv serve`
+and the window. For each: blocked or not, by which file,
 with the CodeIntegrity events Windows wrote meanwhile. Writes report.md (also the job summary) and report.json.
 Runs on python.org's Python, which is signed: PowerShell under such a policy runs unsigned scripts in a restricted mode.
 """
@@ -30,7 +31,7 @@ BLOCKED_IDS = {3033, 3077}          # enforced: below the signing level / agains
 AUDIT_IDS = {3034, 3076}            # the same in audit mode (would have been blocked)
 ERROR_POLICY_BLOCKED = 4551         # «An Application Control policy has blocked this file»
 NS = {"e": "http://schemas.microsoft.com/win/2004/08/events/event"}
-KEY_FILES = ("SMTV.exe", "python.exe", "pythonw.exe", "python3.dll", "python312.dll", "ffmpeg.exe", "ffprobe.exe",
+KEY_FILES = ("ClipIt.exe", "SMTV.exe", "python.exe", "pythonw.exe", "python3.dll", "python312.dll", "ffmpeg.exe", "ffprobe.exe",
              "unins000.exe", "Python.Runtime.dll", "ClrLoader.dll", "WebView2Loader.dll", "onnxruntime.dll")
 
 PROBE = r"""
@@ -193,6 +194,33 @@ def uv_python(env: dict) -> tuple[str, str] | None:
     return (str(scripts / "python.exe"), str(scripts / "pythonw.exe")) if (scripts / "python.exe").is_file() else None
 
 
+ZONE_INTERNET = "[ZoneTransfer]\r\nZoneId=3\r\n"
+
+
+def mark_downloaded(folder: Path) -> int:
+    """Puts the download mark on every file, as Explorer's "Extract All" does with a ZIP from the internet (.NET then
+    refuses pythonnet's files unless the app's .config allows them). Returns how many files were marked."""
+    n = 0
+    for f in folder.rglob("*"):
+        if f.is_file():
+            with open(f"{f}:Zone.Identifier", "w", encoding="ascii", newline="") as mark:
+                mark.write(ZONE_INTERNET)
+            n += 1
+    return n
+
+
+LAUNCHERS = ("ClipIt.exe", "SMTV.exe")       # the program of 0.1.1 on, and of the releases before
+
+
+def launcher_in(folder: Path) -> Path:
+    return next((folder / n for n in LAUNCHERS if (folder / n).is_file()), folder / LAUNCHERS[0])
+
+
+def zip_app(work: Path) -> Path:
+    """The ZIP's one top folder, whatever the release called it (ClipIt, SMTV before 0.1.1)."""
+    return next((d for d in sorted((work / "zip").glob("*")) if d.is_dir()), work / "zip" / "ClipIt")
+
+
 def run_all(work: Path, repo: Path) -> list[dict]:
     cases = []
     control = work / "control.exe"
@@ -200,26 +228,17 @@ def run_all(work: Path, repo: Path) -> list[dict]:
                           ok=lambda r: False))
     cases[-1]["ok"] = cases[-1]["blocked"]
 
-    setup = work / "SMTV-windows-setup.exe"
-    target = work / "installed-under-policy"
-    cases.append(run_case("a", "the installer installs silently", [str(setup), "/VERYSILENT", "/SUPPRESSMSGBOXES",
-                          "/NORESTART", f"/DIR={target}", f"/LOG={work / 'setup.log'}"], 600,
-                          ok=lambda r: r.returncode == 0 and (target / "SMTV.exe").is_file()))
-
-    app = work / "zip" / "SMTV"
+    app = zip_app(work)
+    print(f"marked {mark_downloaded(app)} files of the ZIP as downloaded, as Explorer does", flush=True)
     cases.append(run_case("b0", "the ZIP's ffmpeg on its own (Gyan's build, not signed: does reputation let it run?)",
                           [str(app / "ffmpeg" / "ffmpeg.exe"), "-hide_banner", "-version"], 120,
                           ok=lambda r: r.returncode == 0 and "ffmpeg version" in r.stdout))
     marker = work / "zip-ran.txt"
-    cases.append(run_case("b1", "the ZIP's SMTV.exe starts", [str(app / "SMTV.exe"), "-c",
+    cases.append(run_case("b1", "the ZIP's ClipIt.exe starts", [str(launcher_in(app)), "-c",
                           f"open(r'{marker}', 'w').write('ok')"], 120, ok=lambda r: marker.is_file()))
     smoke = str(repo / "install" / "app" / "smoke.py")
     cases.append(run_case("b2", "the ZIP's full check (smoke.py: libraries, ffmpeg, doctor, serve)",
                           [sys.executable, smoke, str(app), "--kind", "zip"], 900))
-    before = work / "installed"
-    if (before / "python.exe").is_file():
-        cases.append(run_case("b3", "the app installed before the policy, its full check",
-                              [sys.executable, smoke, str(before), "--kind", "exe"], 900))
 
     env = windows_env(SMTV_NO_START="1", SMTV_LANG="en")
     cases.append(run_case("c0", "PowerShell's language mode under the policy",

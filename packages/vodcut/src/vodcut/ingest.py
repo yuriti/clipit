@@ -19,7 +19,7 @@ from smtv_core import media, proc
 
 from . import local_download, options
 
-PROBE_TIMEOUT_S = 60          # ffprobe reads only the header; a file on a hung network drive must not hold the job
+PROBE_TIMEOUT_S = 60          # ffmpeg -i reads only the header; a file on a hung network drive must not hold the job
 LEFTOVERS = (".part", ".ytdl", ".temp", ".tmp")   # half-written downloads: never taken for the whole file
 # Parts of a link that do not change the recording: where to start, the playlist around it, who shared it.
 NOT_THE_RECORDING = {"t", "start", "list", "index", "si", "feature", "pp", "ab_channel", "time_continue", "utm_source",
@@ -112,13 +112,8 @@ class Unreadable(IngestError):
 
 def _probe_duration(path: Path) -> float | None:
     try:
-        done = proc.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=nw=1:nk=1", str(path)],
-                        PROBE_TIMEOUT_S, what="ffprobe")
+        return proc.probe(str(path), PROBE_TIMEOUT_S).duration_s
     except proc.TimedOut:
-        return None
-    try:
-        return float(done.stdout.strip())
-    except ValueError:
         return None
 
 

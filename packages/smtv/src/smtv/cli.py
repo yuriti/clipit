@@ -54,8 +54,8 @@ def cmd_speech_download(args, _tools, _broken):
     if catalog.is_installed(model):
         print(f"{model.title} is on this computer already: {catalog.folder(model)}")
         return 0
-    if not catalog.package_ready(model):
-        print(f"{model.title} needs the {model.package} package: reinstall SMTV with vodcut")
+    if not catalog.package_available(model):
+        print(f"{model.title} needs the {model.package} package: reinstall Clip It! with vodcut")
         return 1
     print(f"Downloading {model.title} (about {model.size_mb} MB) into {catalog.folder(model)}")
     last = [-1]
@@ -71,6 +71,10 @@ def cmd_speech_download(args, _tools, _broken):
         load_watched(catalog.ONNX[model.id], progress)
     else:
         from smtv_core.asr import whisper
+        extra = catalog.package_mb(model)
+        if extra:
+            print(f"First Whisper's engine, which the app downloads on first use (about {extra} MB)")
+            catalog.ensure_package(model, progress)
         whisper.download(progress=progress)
     if not catalog.is_installed(model):
         print("The download ended, but the model is not complete: try again")
@@ -94,7 +98,7 @@ def cmd_add(args, tools, _broken):
         return 0
     kind = updates.install_kind()
     if kind not in ("uv", "pip"):
-        print("This SMTV was not installed with uv or pip (from source, Docker or without uv on this computer): "
+        print("This Clip It! was not installed with uv or pip (from source, Docker or without uv on this computer): "
               "add the tool where it was installed.")
         return 2
     current = {n: v for n in (*updates.CORE, *now) if (v := updates.version_of(n))}
@@ -107,7 +111,7 @@ def cmd_add(args, tools, _broken):
     if kind == "uv" and not updates.find_uv():
         print("smtv was installed with uv, but uv is not on PATH. Run this yourself:\n  " + "\n  ".join(" ".join(s) for s in plan.steps))
         return 2
-    print("Close the SMTV window first if it is open: on Windows its files cannot be replaced while it runs.")
+    print("Close the Clip It! window first if it is open: on Windows its files cannot be replaced while it runs.")
     for step in plan.steps:
         print("Running: " + " ".join(step))
         code = subprocess.call(step)
@@ -166,7 +170,7 @@ def cmd_model_key(args, _tools, _broken):
         return 2
     where = set_secret(p.key_name(), value)
     print("Key saved in the system keychain." if where == "keychain" else
-          "Key saved encrypted in the SMTV folder. Install smtv-core[keyring] to keep keys in the system keychain instead.")
+          "Key saved encrypted in the Clip It! folder. Install smtv-core[keyring] to keep keys in the system keychain instead.")
     return 0
 
 
@@ -179,7 +183,7 @@ def cmd_account_server(args, _tools, _broken):
             print(f"smtv: {e}", file=sys.stderr)
             return 2
         print(f"StreamMoment server: {now}")
-        print("Restart SMTV for the window to use it. Signing in again is needed: tokens of another server do not work here.")
+        print("Restart Clip It! for the window to use it. Signing in again is needed: tokens of another server do not work here.")
         return 0
     print(account.server())
     return 0
@@ -196,7 +200,7 @@ def cmd_model_show(_args, _tools, _broken):
         if p.default_model:
             line += f"  default model: {p.default_model}"
         print(line)
-    print(f"keys in:  the {'system keychain' if secrets_backend() == 'keychain' else 'encrypted file in the SMTV folder'}")
+    print(f"keys in:  the {'system keychain' if secrets_backend() == 'keychain' else 'encrypted file in the Clip It! folder'}")
     return 0
 
 
@@ -227,29 +231,29 @@ def at_terminal() -> bool:
 
 
 def first_run_shortcut(command: str | None) -> None:
-    """The SMTV icon on the first run of smtv from a terminal, so nobody needs to know about `smtv shortcut`. Only for a
-    person at a terminal (not jobs started by the page, not scripts or tests), once: after `smtv shortcut --remove` it
-    is never made again by itself. SMTV_NO_SHORTCUT=1 turns it off."""
-    if command in (None, "shortcut", "uninstall", "app") or os.environ.get("SMTV_NO_SHORTCUT"):
+    """The SMTV icon on the first run of any smtv command by a person at a terminal (not jobs started by the page, not
+    scripts or tests), so nobody needs to know about `smtv shortcut`. Once: after `smtv shortcut --remove`, or a deleted
+    shortcut, it is never made again by itself. SMTV_NO_SHORTCUT=1 turns it off. Never for the desktop apps."""
+    if command in (None, "shortcut", "uninstall") or os.environ.get("SMTV_NO_SHORTCUT"):
         return
-    from .updates import APP_KINDS, install_kind
-    if install_kind() in APP_KINDS:      # the desktop app has its own icon
+    from . import launcher
+    from .updates import install_kind
+    if not launcher.own_shortcut(install_kind()):    # the desktop apps: their own icon, or none at all (the ZIP)
         return
-    if not at_terminal():
+    if command == "app" or not at_terminal():
         return
     if sys.platform.startswith("linux") and not (os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY")):
         return   # a server without a desktop: nothing to click
     try:
         if (Settings.load().tools.get("smtv") or {}).get(SHORTCUT_MARK):
             return
-        from . import launcher
         system = launcher.this_system()
         if not launcher.installed(system):
             launcher.install(system)
-            print("Made the SMTV icon: from now on start SMTV by double-clicking it (remove it: smtv shortcut --remove).")
+            print("Made the Clip It! icon: from now on start Clip It! by double-clicking it (remove it: smtv shortcut --remove).")
         _mark_shortcut("made")
     except Exception as e:  # noqa: BLE001 — the icon is a convenience; the command itself must still run
-        print(f"Could not make the SMTV icon ({type(e).__name__}: {e}); try: smtv shortcut")
+        print(f"Could not make the Clip It! icon ({type(e).__name__}: {e}); try: smtv shortcut")
         try:
             _mark_shortcut("failed")
         except OSError:
@@ -258,9 +262,9 @@ def first_run_shortcut(command: str | None) -> None:
 
 def cmd_shortcut(args, _tools, _broken):
     from . import launcher
-    from .updates import APP_KINDS, install_kind
-    if install_kind() in APP_KINDS:
-        print("This SMTV is the desktop app: its icon is in Applications (macOS) or the Start menu (Windows) already.")
+    from .updates import install_kind
+    if not launcher.own_shortcut(install_kind()):
+        print("This Clip It! is the desktop app: its icon is in Applications (macOS) or the Start menu (Windows) already.")
         return 0
     system = launcher.this_system()
     try:
@@ -274,10 +278,10 @@ def cmd_shortcut(args, _tools, _broken):
         for m in made:
             print(f"  {m}")
         return 0
-    print("SMTV can now start without a terminal:")
+    print("Clip It! can now start without a terminal:")
     for m in made:
         print(f"  {m}")
-    print("Double-click SMTV to open it in its own window.")
+    print("Double-click Clip It! to open it in its own window.")
     return 0
 
 
@@ -285,22 +289,22 @@ def cmd_uninstall(args, _tools, _broken):
     from . import instance, serve, uninstall
     # any SMTV on this data folder: a window on any port (`--port 9000`), or a job in another terminal
     if serve.probe(serve.DEFAULT_PORT) or instance.holder(wait=0.5):
-        print("SMTV is running. Close its window first (or Settings → Quit), or remove it from its window: "
-              "Settings → System → Remove SMTV.")
+        print("Clip It! is running. Close its window first (or Settings → Quit), or remove it from its window: "
+              "Settings → System → Remove Clip It!")
         return 2
     p = uninstall.plan()
     gb = p.data_bytes / 1e9
     if p.program == "app":
-        print("This removes SMTV's data from this computer; the program itself you remove the system's way: "
+        print("This removes Clip It!'s data from this computer; the program itself you remove the system's way: "
               + uninstall.APP_REMOVE.get(sys.platform, "delete its folder") + ".")
     else:
-        print("This removes SMTV from this computer: the icon"
+        print("This removes Clip It! from this computer: the icon"
               + (" and the program (uv tool uninstall smtv)." if p.program == "uv" else "."))
     print(f"Clips, jobs, settings and keys in {p.data_folder} ({gb:.1f} GB): "
           + ("removed too (--data)." if args.data else "kept (add --data to remove them too)."))
     if not args.yes:
         try:
-            answer = input("Type yes to remove SMTV: ").strip().lower()
+            answer = input("Type yes to remove Clip It!: ").strip().lower()
         except EOFError:
             answer = ""
         if answer != "yes":
@@ -402,21 +406,21 @@ def build_parser(tools) -> argparse.ArgumentParser:
     srv.add_argument("--port", type=int, default=8642, help="port on 127.0.0.1 (default 8642, the installed app's port)")
     srv.add_argument("--no-browser", action="store_true", help="do not open the browser")
     srv.set_defaults(func=cmd_serve)
-    app = sub.add_parser("app", help="SMTV in its own window, like any program (what the SMTV icon runs)")
-    app.add_argument("--browser", action="store_true", help="open the page in the browser instead of SMTV's window")
+    app = sub.add_parser("app", help="Clip It! in its own window, like any program (what the Clip It! icon runs)")
+    app.add_argument("--browser", action="store_true", help="open the page in the browser instead of Clip It!'s window")
     app.add_argument("--port", type=int, default=8642, help="port on 127.0.0.1 (default 8642; another one only for tests)")
     app.set_defaults(func=cmd_app)
-    sc = sub.add_parser("shortcut", help="the SMTV icon (Applications, desktop, Start menu, applications menu)")
+    sc = sub.add_parser("shortcut", help="the Clip It! icon (Applications, desktop, Start menu, applications menu)")
     sc.add_argument("--remove", action="store_true", help="delete the icon")
     sc.set_defaults(func=cmd_shortcut)
-    un = sub.add_parser("uninstall", help="remove SMTV from this computer (clips and settings only with --data)")
+    un = sub.add_parser("uninstall", help="remove Clip It! from this computer (clips and settings only with --data)")
     un.add_argument("--data", action="store_true", help="also remove clips, jobs, settings and keys")
     un.add_argument("--yes", action="store_true", help="do not ask")
     un.set_defaults(func=cmd_uninstall)
     rp = sub.add_parser("report", help="report a problem: an archive with logs (no keys) and a new GitHub issue; nothing is sent")
     rp.add_argument("job", nargs="?", help="the request: <tool>/<id>, its id or its folder (default: the newest failed one)")
     rp.add_argument("--names", action="store_true", help="keep links to streams and file names (hidden by default)")
-    rp.add_argument("--out", help="folder for the archive (default: Downloads, or SMTV's own reports folder)")
+    rp.add_argument("--out", help="folder for the archive (default: Downloads, or Clip It!'s own reports folder)")
     rp.add_argument("--show", action="store_true", help="print every file of the report in full before saving")
     rp.add_argument("--yes", action="store_true", help="do not ask before saving")
     rp.add_argument("--no-open", action="store_true", help="do not open the browser and the folder")
@@ -431,11 +435,14 @@ def build_parser(tools) -> argparse.ArgumentParser:
 def _line_buffered() -> None:
     """Progress lines show up at once even when the output goes to a file or a pipe (a long run under nohup or a task).
     And a character the output's code page lacks becomes «?» instead of a crash: on Windows, `smtv doctor > file.txt` or
-    a pipe writes in cp1252 or cp1251, which have no «→» (a console window itself takes any character)."""
+    a pipe writes in cp1252 or cp1251, which have no «→» (a console window itself takes any character). The encoding a
+    job is started with (PYTHONIOENCODING, jobs.py) is set here too: the Windows ZIP's Python ignores PYTHON* variables
+    (its ._pth file puts it in isolated mode), and its job logs would come out in the system's code page."""
+    wanted = os.environ.get("PYTHONIOENCODING", "").split(":")[0].strip()
     for stream in (sys.stdout, sys.stderr):
         reconfigure = getattr(stream, "reconfigure", None)
         if reconfigure:
-            reconfigure(line_buffering=True, errors="replace")
+            reconfigure(line_buffering=True, errors="replace", **({"encoding": wanted} if wanted else {}))
 
 
 def main(argv=None) -> int:

@@ -97,7 +97,7 @@ mumkin.
 
 | Kompyuteringiz | Yuklab olish | Hajmi |
 |---|---|---|
-| **Windows 10 yoki 11** (64-bit) | [**Windows uchun SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) (oʻrnatuvchi) | taxminan 130 MB |
+| **Windows 10 yoki 11** (64-bit) | [**Windows uchun SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) (oʻrnatuvchi) | taxminan 130 MB |
 | **Mac** — Apple silicon (M1 va yangiroq) yoki Intel, macOS 13+ | [**Mac uchun SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | taxminan 270 MB |
 
 Har qanday Mac uchun bitta fayl: SMTV Mac’ingiz protsessori uchun yaratilgan versiyani oʻzi ishga tushiradi. Windows’da hech narsa oʻrnatmasdan:

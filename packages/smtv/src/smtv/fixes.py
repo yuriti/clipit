@@ -109,11 +109,11 @@ def _script(recipe: Recipe, folder: Path) -> Path:
         path = folder / f"{recipe.id}.cmd"
         note = consent(recipe)
         path.write_text("@echo off\r\nchcp 65001 >nul\r\n" + (f"echo {note}\r\n" if note else "") +
-                        "echo SMTV: " + recipe.line().replace("%", "%%") + "\r\n" +
+                        "echo Clip It!: " + recipe.line().replace("%", "%%") + "\r\n" +
                         subprocess.list2cmdline(recipe.argv) + "\r\npause\r\n", encoding="utf-8")
     else:
         path = folder / (f"{recipe.id}.command" if sys.platform == "darwin" else f"{recipe.id}.sh")
-        path.write_text("#!/bin/bash\nprintf '%s\\n\\n' " + shlex.quote("SMTV: " + recipe.line()) + "\n" + shlex.join(recipe.argv) +
+        path.write_text("#!/bin/bash\nprintf '%s\\n\\n' " + shlex.quote("Clip It!: " + recipe.line()) + "\n" + shlex.join(recipe.argv) +
                         "\nprintf '\\n'\nread -r -p 'Press Enter to close this window. ' _\n", encoding="utf-8")
         path.chmod(stat.S_IRWXU)
     return path

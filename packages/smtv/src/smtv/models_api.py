@@ -188,7 +188,8 @@ def _cloud_status(model, settings: Settings) -> dict:
 def speech_state(settings: Settings, downloads: Downloads, busy: Callable[[], bool] = lambda: False) -> dict:
     models = []
     for m in speech.MODELS.values():
-        row = {**m.as_dict(), "installed": speech.is_installed(m), "package": speech.package_ready(m),
+        row = {**m.as_dict(), "installed": speech.is_installed(m), "package": speech.package_available(m),
+               "package_mb": speech.package_mb(m),
                "on_disk_mb": speech.on_disk_mb(m), "download": downloads.state(f"speech:{m.id}")}
         if m.where == "cloud":
             row.update(_cloud_status(m, settings))
@@ -210,8 +211,8 @@ def speech_download(model_id: str, downloads: Downloads, busy: bool = False) -> 
     model = speech.MODELS.get(model_id)
     if model is None or model.where != "local":
         raise Refused(404, "no_model", f"no speech model {model_id} to download")
-    if not speech.package_ready(model):
-        raise Refused(400, "no_package", "this model needs the faster-whisper package: reinstall SMTV with vodcut")
+    if not speech.package_available(model):
+        raise Refused(400, "no_package", "this model needs the faster-whisper package: reinstall Clip It! with vodcut")
     if speech.is_installed(model):
         raise Refused(409, "installed", "it is on this computer already")
     if busy:      # a request may be downloading the same model into the same folder right now
@@ -223,6 +224,7 @@ def speech_download(model_id: str, downloads: Downloads, busy: bool = False) -> 
             load_watched(speech.ONNX[model.id], lambda done, total: progress(done, total))
         else:
             from smtv_core.asr import whisper
+            speech.ensure_package(model, lambda done, total: progress(done, total))   # the app's Whisper engine first
             whisper.download(progress=lambda done, total: progress(done, total))
 
     return downloads.start(f"speech:{model.id}", work, unit="mb")

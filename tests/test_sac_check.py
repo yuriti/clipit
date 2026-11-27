@@ -26,7 +26,7 @@ EVENTS = """<Events>
 <Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'><System><EventID>3033</EventID>
 <TimeCreated SystemTime='2026-11-26T20:00:02.000Z'/></System><EventData>
 <Data Name='FileName'>\\Device\\HarddiskVolume3\\a\\zip\\SMTV\\python312.dll</Data>
-<Data Name='ProcessName'>\\Device\\HarddiskVolume3\\a\\zip\\SMTV\\SMTV.exe</Data></EventData></Event>
+<Data Name='ProcessName'>\\Device\\HarddiskVolume3\\a\\zip\\SMTV\\ClipIt.exe</Data></EventData></Event>
 <Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'><System><EventID>3077</EventID>
 <TimeCreated SystemTime='2026-11-26T20:00:03.000Z'/></System><EventData>
 <Data Name='File Name'>\\Device\\HarddiskVolume3\\Users\\x\\AppData\\Local\\Temp\\is-AB12.tmp\\SMTV-windows-setup.tmp</Data>
@@ -37,7 +37,7 @@ EVENTS = """<Events>
 def test_the_events_name_the_blocked_file_whatever_their_id_calls_it():
     events = sac_check.parse_events(EVENTS)
     assert [e["id"] for e in events] == [3077, 3089, 3033, 3077]
-    assert events[0]["policy"] == "SMTV check: SmartAppControl.xml" and events[2]["process"].endswith("SMTV.exe")
+    assert events[0]["policy"] == "SMTV check: SmartAppControl.xml" and events[2]["process"].endswith("ClipIt.exe")
     blocked = sac_check.blocked_files(events)          # once each, the informational 3089 left out
     assert [Path(f.replace("\\", "/")).name for f in blocked] == ["SMTV-windows-setup.tmp", "python312.dll"]
     assert sac_check.parse_events("") == []
@@ -51,7 +51,7 @@ def test_a_program_windows_refuses_to_start_counts_as_blocked(monkeypatch):
         raise e
     monkeypatch.setattr(sac_check.subprocess, "run", refuse)
     monkeypatch.setattr(sac_check, "events_since", lambda t: [])
-    case = sac_check.run_case("b1", "the ZIP's SMTV.exe starts", ["SMTV.exe"], 5)
+    case = sac_check.run_case("b1", "the ZIP's ClipIt.exe starts", ["ClipIt.exe"], 5)
     assert case["blocked"] and not case["ok"] and "4551" in case["output"]
     assert sac_check.verdict(case) == "BLOCKED"
 
@@ -80,7 +80,7 @@ def test_the_control_decides_whether_anything_else_means_something(monkeypatch, 
 def test_the_signatures_are_counted_by_signer_and_the_unsigned_by_package():
     root = "C:\\a\\zip\\SMTV"
     ms = "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
-    rows = [{"root": root, "path": root + "\\SMTV.exe", "status": "NotSigned", "signer": ""},
+    rows = [{"root": root, "path": root + "\\ClipIt.exe", "status": "NotSigned", "signer": ""},
             {"root": root, "path": root + "\\python312.dll", "status": "NotSigned", "signer": ""},
             {"root": root, "path": root + "\\Lib\\site-packages\\numpy\\_core\\x.pyd", "status": "NotSigned", "signer": ""},
             {"root": root, "path": root + "\\Lib\\site-packages\\onnxruntime\\capi\\onnxruntime.dll", "status": "Valid",
@@ -90,7 +90,7 @@ def test_the_signatures_are_counted_by_signer_and_the_unsigned_by_package():
             r["root"], r["path"] = r["root"].replace("\\", "/"), r["path"].replace("\\", "/")
     text = sac_check.summarize_signatures(rows)
     assert "| NotSigned | - | 3 |" in text and "| Valid | Microsoft Corporation | 1 |" in text
-    assert re.search(r"\| SMTV\.exe \| NotSigned \| - \|", text)
+    assert re.search(r"\| ClipIt\.exe \| NotSigned \| - \|", text)
     assert "numpy 1" in text and "(top folder) 2" in text
     assert sac_check.common_name(ms) == "Microsoft Corporation"
 
@@ -103,7 +103,8 @@ def test_the_workflow_runs_by_hand_enforces_the_policy_and_checks_all_three_ways
     assert "install/app/sac_check.py signatures" in WORKFLOW and "install/app/sac_check.py run" in WORKFLOW
     # the release's file names are those release.yml puts on every release
     release = (REPO / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
-    for name in ("SMTV-windows-setup.exe", "SMTV-windows.zip"):
+    assert "setup.exe" not in WORKFLOW                      # no installer since 0.1.1
+    for name in ("SMTV-windows.zip",):
         assert f"--pattern '{name}'" in WORKFLOW and f"dist/latest/{name}" in release
     # an input reaches the shell only through the environment (no template injection)
     for line in WORKFLOW.splitlines():
@@ -136,3 +137,22 @@ def test_only_programs_and_libraries_are_asked_for_a_signature():
     # run 45894528238: -Include with -LiteralPath filtered nothing: 11634 other files came back as UnknownError
     assert "-Include" not in sac_check.SIGNATURES_PS
     assert "$_.Extension -in '.exe', '.dll', '.pyd'" in sac_check.SIGNATURES_PS
+
+
+def test_the_zip_is_marked_as_downloaded_before_it_runs(monkeypatch, tmp_path):
+    # Explorer's Extract All marks every file; .NET then refused pythonnet's files and the window did not start
+    assert "ZoneId=3" in sac_check.ZONE_INTERNET
+    if sys.platform == "win32":
+        (tmp_path / "a").mkdir()
+        (tmp_path / "a" / "x.dll").write_bytes(b"MZ")
+        (tmp_path / "y.txt").write_text("y", encoding="utf-8")
+        assert sac_check.mark_downloaded(tmp_path) == 2
+        with open(f"{tmp_path / 'a' / 'x.dll'}:Zone.Identifier", encoding="ascii") as mark:
+            assert "ZoneId=3" in mark.read()
+    order = []
+    monkeypatch.setattr(sac_check, "mark_downloaded", lambda folder: order.append(("mark", folder.name)) or 0)
+    monkeypatch.setattr(sac_check, "run_case", lambda name, *a, **k: order.append(name) or
+                        {"name": name, "blocked": False, "ok": True})
+    monkeypatch.setattr(sac_check, "uv_python", lambda env: None)
+    sac_check.run_all(tmp_path, REPO)
+    assert order.index(("mark", "ClipIt")) < order.index("b0") < order.index("b1") < order.index("b2")

@@ -81,8 +81,8 @@ def file_lock(path: Path, what: str = "the file", timeout: float = 30.0, strict:
             if time.monotonic() > deadline:
                 if strict:
                     f.close()
-                    raise LockTimeout(f"{what} is held by another SMTV process") from e
-                print(f"smtv: {what} is locked by another SMTV process for too long; going on", file=sys.stderr)
+                    raise LockTimeout(f"{what} is held by another Clip It! process") from e
+                print(f"smtv: {what} is locked by another Clip It! process for too long; going on", file=sys.stderr)
                 return f
             time.sleep(0.05)
 

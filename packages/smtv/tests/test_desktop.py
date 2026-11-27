@@ -308,3 +308,40 @@ def test_the_page_tells_the_window_its_focus_and_a_grey_page_in_front_is_marked(
     assert not window.focus_line(False, "blur", {**front, "app": False}).endswith("MISMATCH")   # another app in front: grey is right
     assert window.focus_line(False, "focus", {**front, "responder": "NSWindow"}) == \
         "focus: page=0 at=focus | app=1 key=1 main=1 visible=1 mini=0 responder=NSWindow"
+
+
+def test_on_windows_the_window_is_smtv_s_on_the_taskbar_with_smtv_s_icon(tmp_path, monkeypatch):
+    # SMTV.exe is Python's program byte for byte (Smart App Control), so its icon is Python's: the window's is set here
+    from smtv import launcher
+    monkeypatch.setenv("SMTV_HOME", str(tmp_path / "home"))
+    ids = []
+    icon = window.win_taskbar(tmp_path / "venv", set_id=ids.append)
+    assert ids == [launcher.APP_ID] and icon == tmp_path / "home" / "launcher" / "window.ico"
+
+    def refuse(app_id):
+        raise OSError("no shell32 here")
+    app = tmp_path / "SMTV"
+    app.mkdir()
+    (app / "smtv.ico").write_bytes(launcher.win_ico())
+    assert window.win_taskbar(app, set_id=refuse) == app / "smtv.ico"      # the window still opens
+
+
+def test_the_window_gets_the_icon_only_on_windows(monkeypatch, tmp_path):
+    import sys
+    import types
+    started = {}
+    fake = types.SimpleNamespace(settings={}, create_window=lambda *a, **k: types.SimpleNamespace(
+        events=types.SimpleNamespace(loaded=Hooks(), closing=Hooks())),
+        start=lambda *a, **k: started.update(k))
+    monkeypatch.setitem(sys.modules, "webview", fake)
+    monkeypatch.setattr(window, "win_taskbar", lambda: tmp_path / "smtv.ico")
+    app = types.SimpleNamespace(pick_file=None)
+    monkeypatch.setattr(window.sys, "platform", "win32")
+    assert window.Window(app, "http://x", "en").run() and started["icon"] == str(tmp_path / "smtv.ico")
+    monkeypatch.setattr(window.sys, "platform", "darwin")
+    assert window.Window(app, "http://x", "en").run() and started["icon"] is None
+
+
+class Hooks:
+    def __iadd__(self, handler):
+        return self

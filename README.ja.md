@@ -94,7 +94,7 @@ SMTV は音声の文字起こしをあなたのパソコンで自分で行いま
 
 | あなたのパソコン | ダウンロード | サイズ |
 |---|---|---|
-| **Windows 10 または 11**（64 ビット） | [**Windows 版 SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe)（インストーラー） | 約 130 MB |
+| **Windows 10 または 11**（64 ビット） | [**Windows 版 SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)（インストーラー） | 約 130 MB |
 | **Mac** — Apple シリコン（M1 以降）または Intel、macOS 13+ | [**Mac 版 SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | 約 270 MB |
 
 どの Mac でも同じ 1 つのファイルです。SMTV が Mac のプロセッサ用に作られた版を自動で起動します。Windows で何もインストールしたくないなら：

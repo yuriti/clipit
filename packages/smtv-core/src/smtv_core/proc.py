@@ -1,4 +1,4 @@
-"""Running ffmpeg, ffprobe and yt-dlp with a time limit.
+"""Running ffmpeg and yt-dlp with a time limit, and reading a file's length and picture size through ffmpeg.
 
 A program that hangs (a stalled download, a broken file ffmpeg keeps reading) must not hold the whole job forever: after
 `timeout_s` it is stopped together with everything it started (yt-dlp starts ffmpeg) and `TimedOut` names what hung.
@@ -6,8 +6,10 @@ A program that hangs (a stalled download, a broken file ffmpeg keeps reading) mu
 from __future__ import annotations
 
 import os
+import re
 import signal
 import subprocess
+from dataclasses import dataclass
 
 
 class TimedOut(RuntimeError):
@@ -77,6 +79,33 @@ def run(cmd: list[str], timeout_s: float, *, what: str = "", text: bool = True, 
             pass
         raise
     return subprocess.CompletedProcess(cmd, p.returncode, out, err)
+
+
+DURATION = re.compile(r"^\s*Duration: (\d+):(\d\d):(\d\d(?:\.\d+)?)", re.M)
+PICTURE = re.compile(r"^\s*Stream #\d+:\d+.*?: Video: .*?, (\d{1,5})x(\d{1,5})[\s,\[]", re.M)
+
+
+@dataclass
+class Probe:
+    """What ffmpeg says about a file before reading it: its length (None when it does not know) and the size of its
+    first picture stream (None without one)."""
+    duration_s: float | None
+    size: tuple[int, int] | None
+    log: str                       # ffmpeg's own words, for an error message
+
+
+def read_probe(log: str) -> Probe:
+    d = DURATION.search(log)
+    v = PICTURE.search(log)
+    duration = int(d[1]) * 3600 + int(d[2]) * 60 + float(d[3]) if d else None
+    return Probe(duration, (int(v[1]), int(v[2])) if v else None, log)
+
+
+def probe(path: str, timeout_s: float, *, ffmpeg: str = "ffmpeg") -> Probe:
+    """Length and picture size from `ffmpeg -i`, which prints them and stops (it has no output to write): no ffprobe,
+    a second program as large as ffmpeg, is needed. Raises TimedOut."""
+    done = run([ffmpeg, "-hide_banner", "-nostdin", "-i", path], timeout_s, what="ffmpeg (reading the file)")
+    return read_probe(done.stderr or "")
 
 
 def exit_on_terminate() -> None:

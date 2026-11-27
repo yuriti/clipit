@@ -1,0 +1,39 @@
+Как запустить Clip It!
+
+1. Дважды щёлкните ClipIt.exe. У него значок Python — так и должно быть: Clip It! работает на Python.
+2. Если Windows покажет синее окно «Система Windows защитила ваш компьютер», нажмите «Подробнее»,
+   затем «Выполнить в любом случае».
+
+Раньше программа называлась SMTV.
+
+Всё остаётся в этой папке: настройки, ключи нейросетей, модели распознавания речи. Готовые клипы — в папке
+Clips. Ни ярлыков, ни файлов в других местах Clip It! не создаёт.
+
+- Держите папку ClipIt целиком на одном месте, например в «Документах». Остальное в ней не трогайте:
+  в папке app и в файлах рядом — части программы.
+- В папке лежат ваши ключи нейросетей: не передавайте её другим людям.
+- Не кладите её в папку, которую синхронизирует OneDrive: модели речи занимают около 2,4 ГБ.
+- Не кладите её в «Program Files»: туда нельзя записывать, и Clip It! скажет об этом.
+
+Удалить Clip It!: удалите эту папку целиком. Или в окне Clip It! откройте
+Настройки → Система → «Удалить Clip It! с компьютера…».
+
+
+How to start Clip It!
+
+1. Double-click ClipIt.exe. It has Python's icon, and that is right: Clip It! runs on Python.
+2. If Windows shows a blue window "Windows protected your PC", press "More info", then "Run anyway".
+
+It was called SMTV before.
+
+Everything stays in this folder: settings, AI keys, speech recognition models. Finished clips are in the
+Clips folder. Clip It! makes no shortcuts and no files anywhere else.
+
+- Keep the whole ClipIt folder together in one place, for example in Documents. Leave everything else in it
+  alone: the app folder and the files beside it are parts of the program.
+- The folder holds your AI keys: do not give it to other people.
+- Do not put it in a folder OneDrive syncs: the speech models take about 2.4 GB.
+- Do not put it in Program Files: nothing can be written there, and Clip It! says so.
+
+To remove Clip It!, delete this folder. Or open Settings → System → "Remove Clip It! from this computer…"
+in its window.

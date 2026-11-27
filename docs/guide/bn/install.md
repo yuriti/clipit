@@ -10,7 +10,7 @@
 
 | আপনার কম্পিউটার | ডাউনলোড | সাইজ |
 |---|---|---|
-| **Windows 10 বা 11** (64-বিট) | [Windows-এর জন্য SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | প্রায় 130 MB |
+| **Windows 10 বা 11** (64-বিট) | [Windows-এর জন্য SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) | প্রায় 130 MB |
 | **Mac** — Apple silicon (M1 আর নতুন) বা Intel, macOS 13+ | [Mac-এর জন্য SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | প্রায় 270 MB |
 
 সব ভার্সন আর তাদের চেকসাম: [রিলিজ পেজ](https://github.com/yuriti/clipit/releases/latest)।

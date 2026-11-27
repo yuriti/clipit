@@ -5,8 +5,8 @@
 
 # Where to get a key
 
-A **key** (an «API key») is a long password that lets SMTV use an AI service on your behalf. You get it on the
-service's site after you sign up. SMTV keeps it only on your computer and sends it only to that service; it never
+A **key** (an «API key») is a long password that lets Clip It! use an AI service on your behalf. You get it on the
+service's site after you sign up. Clip It! keeps it only on your computer and sends it only to that service; it never
 shows up in logs or problem reports.
 
 > Prices and free plans change. What is written here was checked on the services' own pages on **23.11.2026** — check
@@ -24,22 +24,22 @@ shows up in logs or problem reports.
 | **OpenAI** | No free credit is promised: a new account pays in advance, from $5 | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) | The models behind ChatGPT. A ChatGPT subscription is not the same as a key: the key is paid separately. Only in supported countries (not in Russia). |
 | **Claude (Anthropic)** | No | [platform.claude.com/settings/keys](https://platform.claude.com/settings/keys) | A Claude subscription is not the same as a key. Only in supported regions (not in Russia). |
 
-SMTV also knows xAI, Together, Fireworks, Qwen, Kimi, GLM, Cerebras and any OpenAI-compatible address — see
+Clip It! also knows xAI, Together, Fireworks, Qwen, Kimi, GLM, Cerebras and any OpenAI-compatible address — see
 [for advanced users](../../advanced.md#ai-services-and-keys).
 
 **A free plan has limits.** A long stream sends many requests; when the limit is reached the service answers «too
-many requests» and SMTV waits or stops. For a 6–12 hour stream a paid plan or the [account](account.md) works better.
+many requests» and Clip It! waits or stops. For a 6–12 hour stream a paid plan or the [account](account.md) works better.
 
 ## Example: a free Gemini key, step by step
 
 1. Open [aistudio.google.com/apikey](https://aistudio.google.com/apikey) and sign in with a Google account.
 2. Accept the terms if asked.
 3. Press **Create API key**. Copy the key (it starts with `AIza…`). Keep it secret, like a password.
-4. In SMTV: **Settings → AI → Your own key → Add a key**.
-5. Choose **Gemini**, paste the key, press **Check**. SMTV says whether the key works.
+4. In Clip It!: **Settings → AI → Your own key → Add a key**.
+5. Choose **Gemini**, paste the key, press **Check**. Clip It! says whether the key works.
 6. Done. Every step of the AI now uses Gemini with a suitable model; **Settings → AI steps** shows which.
 
-Other services work the same way: sign up, find **API keys**, create one, paste it into SMTV, press **Check**.
+Other services work the same way: sign up, find **API keys**, create one, paste it into Clip It!, press **Check**.
 Paid services first ask you to add a card or top up a balance.
 
 ## Your key is safe

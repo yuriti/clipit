@@ -9,7 +9,7 @@
 
 | 내 컴퓨터 | 다운로드 | 크기 |
 |---|---|---|
-| **Windows 10 또는 11**(64비트) | [Windows용 SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | 약 130 MB |
+| **Windows 10 또는 11**(64비트) | [Windows용 SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) | 약 130 MB |
 | **Mac** — Apple 실리콘(M1 이상) 또는 Intel, macOS 13+ | [Mac용 SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | 약 270 MB |
 
 모든 버전과 체크섬: [릴리스 페이지](https://github.com/yuriti/clipit/releases/latest).

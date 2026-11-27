@@ -760,11 +760,12 @@ async function renderSpeech(body) {
     const who = m.preset === "groq" ? "Groq" : "OpenAI";
     const chips = [h("span.chip" + (m.where === "cloud" ? ".warn" : ".info"), m.where === "cloud" ? t("sp_cloud", { who }) : t("sp_local")),
       h("span.chip", t("sp_langs", { n: m.languages })), h("span.chip", t("sp_licence", { l: m.license })),
-      m.where === "local" ? h("span.chip", mb(m.installed ? m.on_disk_mb || m.size_mb : m.size_mb)) : h("span.chip", t("sp_price", { p: fmt.dec(m.price_hour, 2) })),
+      m.where === "local" ? h("span.chip", mb(m.installed ? m.on_disk_mb || m.size_mb : m.size_mb + (m.package_mb || 0))) : h("span.chip", t("sp_price", { p: fmt.dec(m.price_hour, 2) })),
       h("span.chip", m.speed_x ? t("sp_speed", { x: m.speed_x, how: own("sp_how_" + m.id, m.speed_how) }) : t("sp_speed_unknown"))];
     const dl = progressOf(m.download);
     const about = h("div", h("div.plugin-meta", ...chips), m.where === "local" ? h("p.hint", own("sp_runs_" + m.id, m.runs_on)) : null,
-      m.where === "local" && !m.package ? h("p.hint", t("sp_no_package")) : null, dl);
+      m.where === "local" && !m.package ? h("p.hint", t("sp_no_package")) : null,
+      m.package_mb ? h("p.hint", t("sp_part", { size: mb(m.package_mb) })) : null, dl);
     let ctl;
     if (m.where === "cloud") {
       ctl = m.key ? h("span.chip.ok", t("sp_key_ok", { name: m.provider_name })) : h("a.btn.btn-sm", { href: "#/settings/providers" }, t("sp_key_add"));
@@ -777,7 +778,7 @@ async function renderSpeech(body) {
       } }, t("sp_remove"))];
     } else {
       ctl = h("button.btn.btn-sm", { type: "button", disabled: !m.package, onclick: async () => {
-        if (await confirmDialog({ title: t("sp_get_title", { model: m.title }), text: t("sp_get_text", { size: mb(m.size_mb), folder: d.folder }), ok: t("sp_get"), cancel: t("ag_cancel") })) act(m, "download");
+        if (await confirmDialog({ title: t("sp_get_title", { model: m.title }), text: t("sp_get_text", { size: mb(m.size_mb + (m.package_mb || 0)), folder: d.folder }), ok: t("sp_get"), cancel: t("ag_cancel") })) act(m, "download");
       } }, t("sp_get"));
     }
     const row = setRow(m.title, about, ...[ctl].flat());
@@ -1143,11 +1144,13 @@ function renderRemove() {
         const r = await postJSON("/api/uninstall", { confirm: "remove", data: data.checked });
         try { localStorage.clear(); } catch {}
         document.getElementById("view").replaceChildren(h("div.card.empty", h("div.result.ok", t("removed")),
-          r.program === "manual" ? h("p.muted", t("remove_manual", { cmd: r.program_command })) : r.program === "app" ? h("p.muted", t(appRemoveKey())) : null));
+          r.program === "manual" ? h("p.muted", t("remove_manual", { cmd: r.program_command })) : r.program === "app" ? h("p.muted", t(appRemoveKey())) :
+          r.program === "folder" ? h("p.muted", t("remove_folder", { folder: r.data_folder })) : null));
       } catch (e) { toast(e.message, "bad"); go.disabled = false; go.textContent = t("remove_btn_short"); }
     } }, t("remove_btn_short"));
     row.querySelector(".set-text").append(h("label.check-line", data, h("span", t("remove_data", { size, folder: p.data_folder }))),
-      ...(p.program === "manual" ? [h("p.hint", t("remove_manual", { cmd: p.program_command }))] : p.program === "app" ? [h("p.hint", t(appRemoveKey()))] : []));   // append(null) writes «null»
+      ...(p.program === "manual" ? [h("p.hint", t("remove_manual", { cmd: p.program_command }))] : p.program === "app" ? [h("p.hint", t(appRemoveKey()))] :
+        p.program === "folder" ? [h("p.hint", t("remove_folder", { folder: p.data_folder }))] : []));   // append(null) writes «null»
     row.querySelector(".set-ctl").replaceChildren(go);
   })();
   return row;
@@ -1259,7 +1262,7 @@ function showActivity(a) {
   if (n && a.eta_s != null) parts.push(t("act_left", { d: fmt.dur(a.eta_s) }));
   if (a?.queued) parts.push(t("act_queued", { n: a.queued }));
   text(el, parts.join(" · "));
-  const title = n ? t("title_jobs", { n }) : "SMTV";
+  const title = n ? t("title_jobs", { n }) : "Clip It!";
   if (document.title !== title) document.title = title;
 }
 
@@ -1307,13 +1310,13 @@ async function renderAbout(body, rest = []) {
     return href ? h("a.set-row.about-soon", { href }, ...inner, icon('<path d="m9 6 6 6-6 6"/>', "about-go")) : h("div.set-row.about-soon", ...inner); };
   body.replaceChildren(
     setGroup(null,
-      setRow(`SMTV ${a.version}`, t("ab_sub", { license: a.license }), out(a.repo, "GitHub")),
+      setRow(`Clip It! ${a.version}`, t("ab_sub", { license: a.license }), out(a.repo, "GitHub")),
       PHONE ? null : setRow(t("report_btn"), t("report_about"), h("button.btn.btn-sm", { type: "button", onclick: () => reportDialog({}) }, t("report_btn_short")))),
     setGroup(t("ab_changes"), a.changes.length
       ? a.changes.map((c) => h("div.set-row.about-ver", h("b", c.version), list(c.notes)))
       : setRow(t("ab_no_changes"), null)),
     h("div.about-anchor#about-core", setGroup(t("ab_core_title"),
-      setRow(`SMTV Core ${a.core.version}`, t("ab_core_builtin")),
+      setRow(`Clip It! Core ${a.core.version}`, t("ab_core_builtin")),
       h("div.set-row.about-block", h("b", t("ab_core_gives")), list(CORE_GIVES.map((k) => t(k)))),
       h("div.set-row.about-block", h("b", t("ab_core_plugins")),
         a.core.plugins.length ? list(a.core.plugins.map((x) => `${txt(x.title)} ${x.version}`)) : h("p.faint", t("ab_core_none"))))),
@@ -1906,7 +1909,7 @@ function showPlugins(parts) {
   const plugins = state.plugins || [];
   if (!parts[0]) {
     mountView(solo(h("div.page",
-      h("div.plugins-head", h("div", h("p.h-eyebrow", "SMTV"), h("h1.h-big", t("plugins_title")), h("p.muted", { style: "margin:8px 0 0" }, t("plugins_sub"))),
+      h("div.plugins-head", h("div", h("p.h-eyebrow", "Clip It!"), h("h1.h-big", t("plugins_title")), h("p.muted", { style: "margin:8px 0 0" }, t("plugins_sub"))),
         h("button.btn.add-plugin", { type: "button", onclick: addPluginDialog }, icon(ICONS.plus), t("p_add"))),
       (() => { const b = liveBox("update", updateCard, "section"); b.className = "card card-pad upd"; return b; })(),
       h("div.plugins", plugins.map((p) => {
@@ -2035,11 +2038,10 @@ function agentCard(name, a, d) {
 }
 
 // --- updates and plugins from the window (stage 8) -----------------------------------------------------------------
-const PKG_TITLE = { smtv: "SMTV", "smtv-core": "SMTV core", vodcut: "VodCut", livecut: "LiveCut" };
+const PKG_TITLE = { smtv: "Clip It!", "smtv-core": "Clip It! core", vodcut: "VodCut", livecut: "LiveCut" };
 const canChange = (u) => u && (u.kind === "uv" || u.kind === "pip");          // plugins: only uv and pip
-const canUpdate = (u) => canChange(u) || (u && (u.kind === "dmg" || u.kind === "exe"));   // the apps: by their installer
+const canUpdate = (u) => canChange(u) || (u && ["dmg", "exe", "zip"].includes(u.kind));   // the apps: an installer, or the ZIP in place
 const isApp = (u) => u && ["dmg", "exe", "zip"].includes(u.kind);   // the desktop apps: plugins inside, no terminal
-const RELEASES = "https://github.com/yuriti/clipit/releases/latest";
 // a check that failed, in plain words (the server's code before the colon; channel.ChannelError)
 const updError = (e) => { const key = "upd_err_" + String(e).split(":")[0]; return t(key) === key ? t("upd_error", { e }) : t(key); };
 
@@ -2124,14 +2126,13 @@ function changesList(u, only = null) {
 // The card of SMTV's own version: on Plugins and in Settings → System
 function updateCard(u) {
   if (!u) return h("p.faint", "…");
-  if (PHONE) return h("div.upd-head", h("div.upd-text", h("b", `SMTV ${u.packages?.smtv?.current || state.version}`),
+  if (PHONE) return h("div.upd-head", h("div.upd-text", h("b", `Clip It! ${u.packages?.smtv?.current || state.version}`),
     h("p", { class: u.available ? "upd-line new" : "upd-line" }, u.available ? t("upd_available", { v: u.available.version }) + " · " + t("phone_only_pc") : t("phone_only_pc"))));
   const cur = u.packages?.smtv?.current || state.version;
   const btns = [];
   let line;
   if (u.kind === "dev") line = t("upd_dev");
   else if (u.kind === "docker") line = (u.available ? t("upd_available", { v: u.available.version }) + ". " : "") + t("upd_docker");
-  else if (u.kind === "zip") line = h("span", t("upd_zip"), " ", h("a", { href: RELEASES, target: "_blank", rel: "noopener" }, t("upd_zip_link")));
   else if (!canUpdate(u)) line = t("upd_none");
   else if (u.leaving) line = t(u.kind === "dmg" || u.kind === "exe" ? "upd_installer" : "upd_leaving");
   else if (u.pending) {
@@ -2150,7 +2151,7 @@ function updateCard(u) {
   }
   const l = u.last && ["done", "rolled_back", "failed"].includes(u.last.state) ? u.last : null;
   return [
-    h("div.upd-head", h("div.upd-text", h("b", `SMTV ${cur}`), h("p", { class: u.available ? "upd-line new" : "upd-line" }, line)), h("div.upd-btns", ...btns)),
+    h("div.upd-head", h("div.upd-text", h("b", `Clip It! ${cur}`), h("p", { class: u.available ? "upd-line new" : "upd-line" }, line)), h("div.upd-btns", ...btns)),
     !canUpdate(u) && u.kind !== "dev" && !isApp(u) ? cmdLine(installCmd()) : null,
     u.error && !u.checking ? h("div.result.bad", updError(u.error)) : null,
     u.available && !u.leaving ? changesList(u) : null,

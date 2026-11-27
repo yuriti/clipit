@@ -268,7 +268,7 @@ def test_run_again_after_unanswered_parts_takes_the_kept_answers_along(tmp_path)
 
 
 def test_a_file_on_a_drive_that_does_not_answer_is_a_plain_error(tmp_path, monkeypatch):
-    """B6: ffprobe goes through proc.run with a time limit."""
+    """B6: reading the file (ffmpeg -i) goes through proc.run with a time limit."""
     from smtv_core import proc
     video = tmp_path / "v.mp4"
     video.write_bytes(b"x")

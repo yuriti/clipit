@@ -43,7 +43,7 @@ jobs:
           if-no-files-found: error
 
   windows:
-    runs-on: windows-latest    # Inno Setup 6 is preinstalled on GitHub's Windows machines
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -58,28 +58,10 @@ jobs:
         run: |
           $zip = Get-ChildItem build/app/SMTV-*-windows-x64.zip | Select-Object -First 1
           Expand-Archive $zip.FullName -DestinationPath "$env:RUNNER_TEMP\zip"
-          uv run --no-project python install/app/smoke.py "$env:RUNNER_TEMP\zip\SMTV" --kind zip
+          uv run --no-project python install/app/smoke.py "$env:RUNNER_TEMP\zip\ClipIt" --kind zip
           if ($LASTEXITCODE -ne 0) { throw "the ZIP failed its check" }
-      - name: The installer, installed silently for this user, checked, then removed
-        shell: pwsh
-        run: |
-          $setup = Get-ChildItem build/app/SMTV-*-windows-x64-setup.exe | Select-Object -First 1
-          if (-not $setup) { throw "no installer was made" }
-          $p = Start-Process $setup.FullName -ArgumentList '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART' -Wait -PassThru
-          if ($p.ExitCode -ne 0) { throw "the installer ended with $($p.ExitCode)" }
-          $app = Join-Path $env:LOCALAPPDATA 'Programs\SMTV'
-          if (-not (Test-Path (Join-Path $app 'SMTV.exe'))) { throw "SMTV.exe is not in $app" }
-          if (-not (Test-Path (Join-Path ([Environment]::GetFolderPath('Programs')) 'SMTV.lnk'))) { throw "no Start menu icon" }
-          uv run --no-project python install/app/smoke.py $app --kind exe
-          if ($LASTEXITCODE -ne 0) { throw "the installed app failed its check" }
-          $u = Start-Process (Join-Path $app 'unins000.exe') -ArgumentList '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART' -Wait -PassThru
-          if ($u.ExitCode -ne 0) { throw "the uninstaller ended with $($u.ExitCode)" }
-          Start-Sleep -Seconds 5
-          if (Test-Path (Join-Path $app 'SMTV.exe')) { throw "the uninstaller left SMTV.exe" }
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: apps-windows
-          path: |
-            build/app/*-setup.exe
-            build/app/*.zip
+          path: build/app/*.zip
           if-no-files-found: error

@@ -20,7 +20,7 @@ import shutil
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from .. import paths
+from .. import parts, paths
 from .engines import GIGAAM, PARAKEET, PARAKEET_LANGUAGES, complete, downloading_mark, folder_mb, installed as onnx_installed
 
 # The languages Whisper was trained on (its tokenizer's list), ISO 639-1; `haw` and `yue` have no two-letter code.
@@ -152,7 +152,42 @@ def folder(model: SpeechModel, models_dir: Path | None = None) -> Path:
 
 
 def package_ready(model: SpeechModel) -> bool:
-    return not model.package or importlib.util.find_spec(model.package) is not None
+    """The model's package can be imported now (a part the desktop app downloaded is put on the path first)."""
+    if not model.package:
+        return True
+    if model.id == "whisper":
+        parts.activate(parts.WHISPER)
+    return importlib.util.find_spec(model.package) is not None
+
+
+def package_mb(model: SpeechModel) -> int:
+    """MB of the model's package still to download first (the desktop app's Whisper engine, `parts`); 0 when it is
+    here or cannot come that way."""
+    if model.id != "whisper" or package_ready(model):
+        return 0
+    spec = parts.manifest(parts.WHISPER)
+    return parts.size_mb(spec) if spec else 0
+
+
+def package_available(model: SpeechModel) -> bool:
+    """Here, or downloadable on first use."""
+    return package_ready(model) or package_mb(model) > 0
+
+
+NO_PACKAGE = ("Whisper on this computer needs the faster-whisper package: reinstall Clip It! with vodcut, or choose another "
+              "model in «Settings → Speech»")
+
+
+def ensure_package(model: SpeechModel, progress=None) -> None:
+    """Makes the model's package importable: downloads the desktop app's part when it lists one; RuntimeError when the
+    package cannot come at all."""
+    if package_ready(model):
+        return
+    if package_mb(model):
+        parts.install(parts.WHISPER, progress)
+        if package_ready(model):
+            return
+    raise RuntimeError(NO_PACKAGE)
 
 
 def is_installed(model: SpeechModel, models_dir: Path | None = None) -> bool:
@@ -226,9 +261,7 @@ def recognizer(model: SpeechModel, language: str, settings=None, models_dir: Pat
         from .engines import Recognizer
         return Recognizer(ONNX[model.id], models_dir)
     if model.id == "whisper":
-        if not package_ready(model):
-            raise RuntimeError("Whisper on this computer needs the faster-whisper package: "
-                               "reinstall SMTV with vodcut, or choose another model in «Settings → Speech»")
+        ensure_package(model)             # the desktop app downloads Whisper's engine on its first use
         from .whisper import WhisperRecognizer
         return WhisperRecognizer(code(language), models_dir)
     from .cloud import CloudRecognizer

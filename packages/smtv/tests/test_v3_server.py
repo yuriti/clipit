@@ -174,7 +174,7 @@ def test_another_program_does_not_get_the_page_with_the_token(server, path):  # 
     res, page = c.request("GET", path, headers={"Cookie": None, "Accept-Language": "ru-RU,ru;q=0.9"}, raw=True)
     assert res.status == 403 and res.getheader("Set-Cookie") is None
     assert app.token.encode() not in page and app.launch.encode() not in page
-    assert "Откройте SMTV значком".encode() in page
+    assert "Откройте Clip It! значком".encode() in page
     res, page = c.request("GET", path, headers={"Cookie": f"smtv_{c.port}=an-old-token"}, raw=True)
     assert res.status == 403 and app.token.encode() not in page
 

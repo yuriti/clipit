@@ -1,5 +1,4 @@
 """В3: what the code review of 22.11 found in settings, the report, «Fix», the icon and downloads."""
-import base64
 import json
 import os
 import subprocess
@@ -151,16 +150,6 @@ def test_helper_programs_open_no_console_window(monkeypatch):
     monkeypatch.setattr(updater.sys, "platform", "win32")
     updater.run_steps([["uv", "tool"]], runner=lambda argv, **k: seen.append(k) or subprocess.CompletedProcess(argv, 0))
     assert seen[-1]["creationflags"] == updater.NO_WINDOW
-
-
-# --- C19: the Windows shortcut ---------------------------------------------------------------------------------------
-
-def test_removing_the_icon_keeps_another_program_s_smtv_lnk_and_checks_powershell(tmp_path):
-    s = launcher.System("win32", tmp_path, "C:\\py\\pythonw.exe", {}, tmp_path / "data", run=lambda argv: 1)
-    script = base64.b64decode(launcher.powershell(launcher.lnk_script(s, remove=True))[-1]).decode("utf-16-le")
-    assert "-like '*-m smtv*'" in script and "Remove-Item" in script
-    with pytest.raises(RuntimeError, match="PowerShell failed"):
-        launcher._win_remove(s)
 
 
 # --- C25: the session file ----------------------------------------------------------------------------------------------

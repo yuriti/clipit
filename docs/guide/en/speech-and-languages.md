@@ -5,8 +5,8 @@
 
 # Speech and languages
 
-First SMTV turns the stream's speech into text, with the time of every word — that is how the AI understands what
-happened. This runs **on your computer, for free**. SMTV finds the language of the stream by itself.
+First Clip It! turns the stream's speech into text, with the time of every word — that is how the AI understands what
+happened. This runs **on your computer, for free**. Clip It! finds the language of the stream by itself.
 
 | Language | Model | Download (once) | Speed on a 12-core processor |
 |---|---|---|---|
@@ -23,6 +23,6 @@ OpenAI) — faster on a weak computer, but then the sound leaves your computer.
 
 <img src="../../images/speech.png" alt="Settings → Speech to text: the models and the languages they take" width="820">
 
-**The window's language** is separate: SMTV speaks the language of your computer; **Settings → Language and theme**
+**The window's language** is separate: Clip It! speaks the language of your computer; **Settings → Language and theme**
 chooses another. Is your language missing or half translated? [Help translate it](../../translations.md) — no
 programming needed.

@@ -94,31 +94,31 @@ def hand_over(tool, spec, other: dict) -> int:
     page = tool.page
     folder = Path(spec.folder).resolve()
     if folder.parent != Path(page.jobs()).resolve():
-        print(f"SMTV is running (process {other.get('pid')}) and takes jobs only in its own data folder, not {folder}. "
-              "Run the command without --out, or close SMTV and run it again.")
+        print(f"Clip It! is running (process {other.get('pid')}) and takes jobs only in its own data folder, not {folder}. "
+              "Run the command without --out, or close Clip It! and run it again.")
         return 2
     session = _session()
     port = other.get("port") or session.get("port")
     if not port or session.get("port") != port or not session.get("token"):
-        print(f"SMTV is running (process {other.get('pid')}), but it did not say how to reach it. "
-              "Close SMTV and run the command again, or start the job from SMTV's window.")
+        print(f"Clip It! is running (process {other.get('pid')}), but it did not say how to reach it. "
+              "Close Clip It! and run the command again, or start the job from Clip It!'s window.")
         return 2
     code, job = _call(int(port), "POST", "/api/queue", {"tool": tool.name, "job": folder.name, "args": spec.args},
                       token=session["token"])
     if code != 201:
         why = job.get("message") or ("no answer" if code is None else f"HTTP {code}")
-        print(f"SMTV is running, but it did not take the job: {why}")
+        print(f"Clip It! is running, but it did not take the job: {why}")
         return 2
     title = job.get("title") or job["id"]
-    print(f"SMTV is running: the job went to it and shows in its window (Home → {title}).", flush=True)
+    print(f"Clip It! is running: the job went to it and shows in its window (Home → {title}).", flush=True)
     return follow(int(port), tool.name, job, folder, spec.echo, token=session["token"])
 
 
 def _place_text(place: dict | None) -> str:
     if not place:
-        return "It waits in SMTV's queue."
+        return "It waits in Clip It!'s queue."
     after = (place.get("after") or {}).get("title")
-    return (f"It waits in SMTV's queue: place {place['position']} of {place['waiting']}"
+    return (f"It waits in Clip It!'s queue: place {place['position']} of {place['waiting']}"
             + (f", it starts after «{after}»." if after else "."))
 
 
@@ -137,12 +137,12 @@ def follow(port: int, tool: str, job: dict, folder: Path, echo=None, every: floa
                     echo(e)
             code, info = _call(port, "GET", f"/api/jobs/{tool}/{folder.name}", token=token, timeout=5.0)
             if code == 404:
-                print("The request was deleted in SMTV.")
+                print("The request was deleted in Clip It!")
                 return 1
             if code != 200:
                 lost += 1
                 if lost >= LOST_LOOKS:
-                    print("SMTV stopped answering. The job stays as it was: see SMTV's window, or run the command again.")
+                    print("Clip It! stopped answering. The job stays as it was: see Clip It!'s window, or run the command again.")
                     return 1
             else:
                 lost = 0
@@ -157,5 +157,5 @@ def follow(port: int, tool: str, job: dict, folder: Path, echo=None, every: floa
                     return 0 if status in ("done", "cancelled") else 1
             time.sleep(every)
     except KeyboardInterrupt:
-        print("\nThis terminal stops following; the job goes on in SMTV.", file=sys.stdout)
+        print("\nThis terminal stops following; the job goes on in Clip It!", file=sys.stdout)
         return 0

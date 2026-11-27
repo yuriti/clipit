@@ -54,14 +54,13 @@ jobs:
           TAG: ${{ github.event.release.tag_name }}
         run: |
           v="${TAG#v}"
-          for f in "SMTV-$v-mac.dmg" "SMTV-$v-windows-x64-setup.exe" "SMTV-$v-windows-x64.zip"; do
+          for f in "SMTV-$v-mac.dmg" "SMTV-$v-windows-x64.zip"; do
             if [ ! -f "dist/$f" ]; then echo "dist/$f is missing"; ls dist; exit 1; fi
           done
           # the same files under names without the version: README and the guides link to
           # releases/latest/download/<name>, which then always gives the newest one
           mkdir -p dist/latest
           cp "dist/SMTV-$v-mac.dmg" dist/latest/SMTV-mac.dmg
-          cp "dist/SMTV-$v-windows-x64-setup.exe" dist/latest/SMTV-windows-setup.exe
           cp "dist/SMTV-$v-windows-x64.zip" dist/latest/SMTV-windows.zip
           (cd dist && sha256sum SMTV-* > SHA256SUMS.txt && cat SHA256SUMS.txt)
       # Signed before anything is published: without the key the release stops here and nothing goes out.

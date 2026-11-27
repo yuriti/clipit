@@ -6,10 +6,10 @@
 # A free AI on your computer
 
 The AI can run right on your computer, for free: nothing leaves it, and there is nothing to pay. You need a program
-that runs AI models — **Ollama** or **LM Studio** — and a model, for example **Qwen**. SMTV finds the program by itself.
+that runs AI models — **Ollama** or **LM Studio** — and a model, for example **Qwen**. Clip It! finds the program by itself.
 
 **Honestly:** models that fit on a home computer are weaker than the cloud ones, so the clips come out worse, and none
-of the recommended models was tested with SMTV yet. If the result disappoints you, try the [account](account.md) or
+of the recommended models was tested with Clip It! yet. If the result disappoints you, try the [account](account.md) or
 [a key](get-a-key.md).
 
 ## 1. Which model fits your computer
@@ -23,7 +23,7 @@ What matters is the **video memory** of your graphics card (on a Mac with Apple 
 | 10–12 GB | `qwen3-vl:8b` or `gemma3:12b` | 6.1 / 8.1 GB | These also look at frames of the video |
 | 16 GB and more | `qwen3:14b` | 9.3 GB | The best of the four |
 
-Models smaller than 7B («7 billion») are not recommended: they break the answers SMTV needs.
+Models smaller than 7B («7 billion») are not recommended: they break the answers Clip It! needs.
 
 **How to find your video memory:**
 - **Windows:** press Ctrl+Shift+Esc → **Performance** → **GPU** → **Dedicated GPU memory**.
@@ -34,12 +34,12 @@ Models smaller than 7B («7 billion») are not recommended: they break the answe
 
 1. Download Ollama from [ollama.com/download](https://ollama.com/download) and install it like any program. It starts
    by itself and lives near the clock.
-2. In SMTV: **Settings → AI → Free, on this computer → Find on this computer**. SMTV finds Ollama.
-3. Open **Ollama** in the list: SMTV shows the recommended models with their size. Press **Download** next to the one
+2. In Clip It!: **Settings → AI → Free, on this computer → Find on this computer**. Clip It! finds Ollama.
+3. Open **Ollama** in the list: Clip It! shows the recommended models with their size. Press **Download** next to the one
    from the table above and wait (5–10 GB).
-4. Done. SMTV picks that model for its steps by itself.
+4. Done. Clip It! picks that model for its steps by itself.
 
-SMTV sets Ollama's memory for each request so that the whole stream text fits; you do not need to change Ollama's
+Clip It! sets Ollama's memory for each request so that the whole stream text fits; you do not need to change Ollama's
 settings.
 
 ## 2b. LM Studio
@@ -47,11 +47,11 @@ settings.
 1. Download LM Studio from [lmstudio.ai/download](https://lmstudio.ai/download) and install it.
 2. In LM Studio open **Discover**, search for **Qwen3 8B** (or 14B, by the table) and press **Download**.
 3. Open the **Developer** tab and turn on **Start server** (it listens on port 1234). Load the model there.
-4. In SMTV: **Settings → AI → Free, on this computer → Find on this computer**. SMTV finds LM Studio.
+4. In Clip It!: **Settings → AI → Free, on this computer → Find on this computer**. Clip It! finds LM Studio.
 
 ## 3. Make a clip
 
-Give SMTV a [video file](first-clip.md). A link to Twitch or YouTube needs the [account](account.md) even with a free
+Give Clip It! a [video file](first-clip.md). A link to Twitch or YouTube needs the [account](account.md) even with a free
 AI: the account fetches the recording.
 
 The free AI works slower than a cloud one; a long stream can take a few hours. Leave the computer on.

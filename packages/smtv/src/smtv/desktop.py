@@ -59,13 +59,13 @@ def notify_error(text: str) -> None:
         pass
     try:
         if sys.platform == "darwin":
-            script = ['-e', 'on run argv', '-e', 'display alert "SMTV" message (item 1 of argv) as critical', '-e', 'end run']
+            script = ['-e', 'on run argv', '-e', 'display alert "Clip It!" message (item 1 of argv) as critical', '-e', 'end run']
             subprocess.run(["osascript", *script, text], capture_output=True, timeout=300)
         elif sys.platform == "win32":
             import ctypes
-            ctypes.windll.user32.MessageBoxW(None, text, "SMTV", 0x10)  # type: ignore[attr-defined]
+            ctypes.windll.user32.MessageBoxW(None, text, "Clip It!", 0x10)  # type: ignore[attr-defined]
         else:
-            for argv in (["zenity", "--error", "--title=SMTV", f"--text={text}"], ["notify-send", "SMTV", text]):
+            for argv in (["zenity", "--error", "--title=Clip It!", f"--text={text}"], ["notify-send", "Clip It!", text]):
                 try:
                     if subprocess.run(argv, capture_output=True, timeout=300).returncode == 0:
                         break
@@ -82,7 +82,7 @@ def system_notify(title: str, text: str) -> bool:
             script = ['-e', 'on run argv', '-e', 'display notification (item 2 of argv) with title (item 1 of argv)', '-e', 'end run']
             return subprocess.run(["osascript", *script, title, text], capture_output=True, timeout=30).returncode == 0
         if sys.platform.startswith("linux"):
-            return subprocess.run(["notify-send", "-a", "SMTV", title, text], capture_output=True, timeout=30).returncode == 0
+            return subprocess.run(["notify-send", "-a", "Clip It!", title, text], capture_output=True, timeout=30).returncode == 0
         if sys.platform == "win32":
             return subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", WIN_TOAST, title, text],
                                   capture_output=True, timeout=30, creationflags=0x08000000).returncode == 0
@@ -234,9 +234,12 @@ def claim(port: int, lock: instance.Lock, show=None, opener=webbrowser.open, say
 
 def run_app(tools, broken, port: int = serve.DEFAULT_PORT, browser: bool = False, log: bool = True,
             window_factory=None, opener=webbrowser.open) -> int:
+    lang = i18n.system()
+    from . import portable
+    if not portable.start(lang):           # the Windows ZIP in a folder it cannot write into: said, no window
+        return 2
     if log:
         _log_to_file()
-    lang = i18n.system()
     try:
         url = serve.launch_url(port)
     except OSError as e:                   # the data folder cannot be written: said, never a silent exit
@@ -271,6 +274,8 @@ def _run_app(tools, broken, port, browser, window_factory, opener, url, lang, lo
     app.phone.restore()
     thread = threading.Thread(target=server.serve_forever, kwargs={"poll_interval": 0.5}, name="smtv-serve", daemon=True)
     thread.start()
+    from . import portable
+    portable.settle()                       # the Windows ZIP: an update in place is confirmed now that this one runs
 
     win = None if browser else (window_factory or Window)(app, url, lang)
     stopped = threading.Event()

@@ -10,7 +10,7 @@ Administrator paroli kerak emas.
 
 | Kompyuteringiz | Yuklab olish | Hajmi |
 |---|---|---|
-| **Windows 10 yoki 11** (64-bit) | [Windows uchun SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | taxminan 130 MB |
+| **Windows 10 yoki 11** (64-bit) | [Windows uchun SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) | taxminan 130 MB |
 | **Mac** — Apple silicon (M1 va yangiroq) yoki Intel, macOS 13+ | [Mac uchun SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | taxminan 270 MB |
 
 Barcha versiyalar va ularning nazorat yigʻindilari: [reliz sahifasi](https://github.com/yuriti/clipit/releases/latest).

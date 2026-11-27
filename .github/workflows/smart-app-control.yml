@@ -1,7 +1,7 @@
 # By hand (Actions → smart-app-control → Run workflow): does Smart App Control (Windows 11) let SMTV run? GitHub's
 # Windows machine gets Windows' own example policy of Smart App Control (SmartAppControl.xml; else the closest one,
 # SignedReputable.xml: signed or reputable code only), enforced without a restart. Then install/app/sac_check.py tries
-# the release's installer, its ZIP and the one-line install/install.ps1 of this branch, and writes which file was
+# the release's ZIP and the one-line install/install.ps1 of this branch, and writes which file was
 # blocked, with Windows' CodeIntegrity events: the job summary and the artifact sac-report. Nothing is published.
 # A GitHub machine is not a person's computer: the cloud reputation Smart App Control asks may answer differently here.
 name: smart-app-control
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "The release whose installer and ZIP are checked"
+        description: "The release whose ZIP is checked"
         required: true
         default: v0.1.0
 
@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12"   # python.org's build, signed: it runs the checks under the policy
-      - name: Before the policy - the release, an install to look at, a program nobody signed, the signatures
+      - name: Before the policy - the release, a program nobody signed, the signatures
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
@@ -36,17 +36,16 @@ jobs:
         run: |
           $w = Join-Path $env:RUNNER_TEMP 'sac'
           New-Item -ItemType Directory -Force $w | Out-Null
-          gh release download $env:TAG --repo $env:GITHUB_REPOSITORY --pattern 'SMTV-windows-setup.exe' --pattern 'SMTV-windows.zip' --dir $w
+          gh release download $env:TAG --repo $env:GITHUB_REPOSITORY --pattern 'SMTV-windows.zip' --dir $w
           if ($LASTEXITCODE -ne 0) { throw "could not download the release $env:TAG" }
           Expand-Archive (Join-Path $w 'SMTV-windows.zip') -DestinationPath (Join-Path $w 'zip')
-          $p = Start-Process (Join-Path $w 'SMTV-windows-setup.exe') -Wait -PassThru -ArgumentList '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', "/DIR=$w\installed"
-          "installed before the policy: exit $($p.ExitCode)"
           # the control: a program made right now, so no signature and no reputation; the policy must block it
           $cs = Join-Path $w 'control.cs'
           Set-Content $cs "class P { static void Main() { System.Console.WriteLine(""SMTV control $env:GITHUB_RUN_ID""); } }"
           & "$env:windir\Microsoft.NET\Framework64\v4.0.30319\csc.exe" /nologo "/out:$w\control.exe" $cs
           if ($LASTEXITCODE -ne 0) { throw "could not make the control program" }
-          python install/app/sac_check.py signatures --out (Join-Path $w 'signatures.json') (Join-Path $w 'zip\SMTV') (Join-Path $w 'installed')
+          $zipApp = (Get-ChildItem (Join-Path $w 'zip') -Directory | Select-Object -First 1).FullName    # ClipIt (SMTV before 0.1.1)
+          python install/app/sac_check.py signatures --out (Join-Path $w 'signatures.json') $zipApp
       - name: The policy, enforced
         shell: pwsh
         run: |
@@ -77,7 +76,7 @@ jobs:
           # install.ps1 asks this value whether Smart App Control is on (1: on)
           New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\CI\Policy' -Name VerifiedAndReputablePolicyState -Value 1 -PropertyType DWord -Force | Out-Null
           Set-Content (Join-Path $w 'policy-name.txt') "$name (enforced, policy id $id)"
-      - name: Under the policy - the installer, the ZIP, install.ps1
+      - name: Under the policy - the ZIP, install.ps1
         shell: pwsh
         run: python install/app/sac_check.py run --work (Join-Path $env:RUNNER_TEMP 'sac') --repo .
       - name: Every CodeIntegrity event of this run
@@ -94,5 +93,4 @@ jobs:
             ${{ runner.temp }}/sac/signatures.json
             ${{ runner.temp }}/sac/policy.xml
             ${{ runner.temp }}/sac/policies.txt
-            ${{ runner.temp }}/sac/setup.log
           if-no-files-found: warn

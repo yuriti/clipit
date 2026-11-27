@@ -96,7 +96,7 @@ SMTV сөзді мәтінге компьютеріңізде өзі айнал�
 
 | Компьютеріңіз | Жүктеп алу | Көлемі |
 |---|---|---|
-| **Windows 10 немесе 11** (64-биттік) | [**Windows-қа арналған SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) (орнатқыш) | шамамен 130 МБ |
+| **Windows 10 немесе 11** (64-биттік) | [**Windows-қа арналған SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) (орнатқыш) | шамамен 130 МБ |
 | **Mac** — Apple silicon (M1 және жаңарағы) немесе Intel, macOS 13+ | [**Mac-қа арналған SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | шамамен 270 МБ |
 
 Барлық Mac-қа бір файл: SMTV Mac-ыңыздың процессорына арналған нұсқаны өзі іске қосады. Windows-та ештеңе орнатпай:

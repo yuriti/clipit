@@ -96,7 +96,7 @@ def _exe(name: str) -> str:
     return name + ".exe" if sys.platform == "win32" else name
 
 
-APP_FFMPEG = "ffmpeg"   # the desktop apps (install/app/build.py) carry their ffmpeg in this folder beside their Python
+APP_FFMPEG = "ffmpeg"   # the desktop apps (install/app/build.py) carry their ffmpeg in this folder (paths.app_folder())
 
 
 def _ffmpeg_dirs() -> tuple[list[Path], list[Path]]:
@@ -104,7 +104,7 @@ def _ffmpeg_dirs() -> tuple[list[Path], list[Path]]:
     build wins), the ffmpeg inside the desktop app, Homebrew's ffmpeg-full (keg-only: brew leaves it off PATH when plain
     ffmpeg is there) and winget's links (a running SMTV does not see a PATH changed after it started). After: Homebrew's
     own folders (an SMTV started from an icon has a short PATH)."""
-    before, after = [paths.home() / "bin", Path(sys.prefix) / APP_FFMPEG], []
+    before, after = [paths.home() / "bin", paths.app_folder() / APP_FFMPEG], []
     if sys.platform == "darwin":
         before += [Path("/opt/homebrew/opt/ffmpeg-full/bin"), Path("/usr/local/opt/ffmpeg-full/bin")]
         after += [Path("/opt/homebrew/bin"), Path("/usr/local/bin")]
@@ -114,13 +114,13 @@ def _ffmpeg_dirs() -> tuple[list[Path], list[Path]]:
 
 
 def _ffmpeg_candidates() -> list[str]:
-    """Folders that hold both ffmpeg and ffprobe, the preferred first."""
+    """Folders that hold ffmpeg, the preferred first (ffprobe is not needed: proc.probe asks ffmpeg itself)."""
     before, after = _ffmpeg_dirs()
     found = shutil.which("ffmpeg")
-    on_path = [Path(found).parent] if found and shutil.which("ffprobe") else []
+    on_path = [Path(found).parent] if found else []
     out: list[str] = []
     for d in [*before, *on_path, *after]:
-        if (d / _exe("ffmpeg")).is_file() and (d / _exe("ffprobe")).is_file() and str(d) not in out:
+        if (d / _exe("ffmpeg")).is_file() and str(d) not in out:
             out.append(str(d))
     return out
 
@@ -215,7 +215,7 @@ def ffmpeg_install_hint() -> str:
 def check_ffmpeg() -> list[Check]:
     folder, has_ass = find_ffmpeg()
     if not folder:
-        return [Check("ffmpeg", FAIL, "ffmpeg or ffprobe not found", ffmpeg_install_hint(), id="ffmpeg", recipe=ffmpeg_recipe())]
+        return [Check("ffmpeg", FAIL, "ffmpeg not found", ffmpeg_install_hint(), id="ffmpeg", recipe=ffmpeg_recipe())]
     version = (_run([str(Path(folder) / _exe("ffmpeg")), "-hide_banner", "-version"]) or "").splitlines()
     out = [Check("ffmpeg", OK, version[0] if version else "found", id="ffmpeg")]
     if has_ass:
@@ -238,7 +238,7 @@ def check_disk(minimum_gb: float = MIN_FREE_GB, roomy_gb: float = ROOMY_GB) -> C
     free_gb = shutil.disk_usage(probe).free / 1e9
     status = OK if free_gb >= roomy_gb else WARN if free_gb >= minimum_gb else FAIL
     fix = "" if status == OK else (f"A 6-hour stream needs about {roomy_gb:.0f} GB while it is processed (its sound, video pieces, "
-                                    "speech models, clips): free up space, clear SMTV's cache, or set SMTV_HOME to another drive")
+                                    "speech models, clips): free up space, clear Clip It!'s cache, or set SMTV_HOME to another drive")
     return Check("Free space", status, f"{free_gb:.0f} GB free for {target}", fix, id="disk", actions=(OPEN_FOLDER, CLEAR_CACHE))
 
 
@@ -269,7 +269,7 @@ def check_system() -> Check:
         version = platform.mac_ver()[0]
         if version and _version(version) < MIN_MACOS:
             need = ".".join(map(str, MIN_MACOS))
-            return Check("System", FAIL, f"macOS {version}", f"SMTV needs macOS {need} or newer: update macOS in System Settings", id="os")
+            return Check("System", FAIL, f"macOS {version}", f"Clip It! needs macOS {need} or newer: update macOS in System Settings", id="os")
         return Check("System", OK, f"macOS {version or '(version unknown)'}", id="os")
     if sys.platform == "win32":
         try:
@@ -278,7 +278,7 @@ def check_system() -> Check:
             build = 0
         name = f"Windows {platform.release()} (build {build})"
         if build and build < MIN_WINDOWS_BUILD:
-            return Check("System", FAIL, name, "SMTV needs Windows 10 version 1809 or newer: update Windows", id="os")
+            return Check("System", FAIL, name, "Clip It! needs Windows 10 version 1809 or newer: update Windows", id="os")
         return Check("System", OK, name, id="os")
     try:
         name = platform.freedesktop_os_release().get("PRETTY_NAME", "Linux")
@@ -418,8 +418,9 @@ def check_speech(settings: Settings, language: str | None = None) -> Check:
         return Check(name, OK, f"{model.title}, by your key", id="speech")
     if catalog.is_installed(model):
         return Check(name, OK, f"{model.title} is on this computer", id="speech")
-    if not catalog.package_ready(model):
+    if not catalog.package_available(model):
         return Check(name, WARN, f"{model.title} needs the {model.package} package, which is not installed",
-                     "Choose another model in «Settings → Speech», or reinstall SMTV with vodcut", id="speech", actions=(SPEECH,))
-    return Check(name, WARN, f"{model.title} is not downloaded yet: the first request downloads it (about {model.size_mb} MB)",
+                     "Choose another model in «Settings → Speech», or reinstall Clip It! with vodcut", id="speech", actions=(SPEECH,))
+    size = model.size_mb + catalog.package_mb(model)      # the desktop app: Whisper's engine comes with the model
+    return Check(name, WARN, f"{model.title} is not downloaded yet: the first request downloads it (about {size} MB)",
                  f"smtv speech download {model.id}", id="speech", recipe=speech_recipe(model), actions=(SPEECH,))

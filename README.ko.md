@@ -94,7 +94,7 @@ SMTV는 내 컴퓨터에서 음성을 직접 텍스트로 바꿉니다. 가장 �
 
 | 내 컴퓨터 | 다운로드 | 크기 |
 |---|---|---|
-| **Windows 10 또는 11**(64비트) | [**Windows용 SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe)(설치 프로그램) | 약 130 MB |
+| **Windows 10 또는 11**(64비트) | [**Windows용 SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)(설치 프로그램) | 약 130 MB |
 | **Mac** — Apple 실리콘(M1 이상) 또는 Intel, macOS 13+ | [**Mac용 SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | 약 270 MB |
 
 모든 Mac에 파일 하나: SMTV가 Mac 프로세서에 맞게 만든 버전을 알아서 실행합니다. Windows에서 아무것도 설치하고 싶지 않다면:

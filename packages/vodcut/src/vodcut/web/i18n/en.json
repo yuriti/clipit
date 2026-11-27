@@ -61,7 +61,7 @@
   "stop_now": "Stop now",
   "stop_now_title": "Stop right now?",
   "stop_now_text": "The step that is running ({step}) is cut off and done again on «Continue»; everything finished before it stays. «Pause» instead waits for the end of the step and loses nothing.",
-  "pause_note": "SMTV stops when «{step}» is finished, so nothing is lost. A long step (speech to text) can take a while.",
+  "pause_note": "Clip It! stops when «{step}» is finished, so nothing is lost. A long step (speech to text) can take a while.",
   "restart": "Continue",
   "restart_done": "Run again (a new request)",
   "live": "live",

@@ -95,7 +95,7 @@ IA. Escolha um jeito — um basta, e você pode trocar a qualquer momento em **S
 
 | Seu computador | Download | Tamanho |
 |---|---|---|
-| **Windows 10 ou 11** (64 bits) | [**SMTV para Windows**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) (instalador) | cerca de 130 MB |
+| **Windows 10 ou 11** (64 bits) | [**SMTV para Windows**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) (instalador) | cerca de 130 MB |
 | **Mac** — Apple silicon (M1 e mais novos) ou Intel, macOS 13+ | [**SMTV para Mac**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | cerca de 270 MB |
 
 Um só arquivo para qualquer Mac: o SMTV inicia sozinho a versão feita para o processador do seu Mac. Windows sem instalar nada:

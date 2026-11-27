@@ -117,7 +117,7 @@ def _recap(job: Path, settings: Settings) -> int:
     from . import console, options
     from .recap import make
 
-    if not (shutil.which("ffmpeg") and shutil.which("ffprobe")):     # no captions are burned in: any ffmpeg will do
+    if not shutil.which("ffmpeg"):     # no captions are burned in: any ffmpeg will do
         print(f"\nThe recap is not made: ffmpeg is not installed.\nAfter the fix run: smtv vodcut recap {job}")
         return 1
     asker = _asker(settings) if check_model(settings).status == OK else None

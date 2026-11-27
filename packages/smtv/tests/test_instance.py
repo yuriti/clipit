@@ -202,7 +202,7 @@ def test_with_smtv_open_the_terminal_job_goes_to_its_queue_and_is_followed(home,
         code = handoff.run_command(tool, tool.page.command_job(args), args, [tool], [])
         out = capsys.readouterr().out
         assert code == 0 and ran == []                                      # it did not run here
-        assert "SMTV is running: the job went to it" in out and "place 1 of 1" in out and "«a stream»" in out
+        assert "Clip It! is running: the job went to it" in out and "place 1 of 1" in out and "«a stream»" in out
         assert "event stage" in out and "event done" in out                 # its events, printed here as they came
         events = read(root / "from-terminal")
         assert [e["type"] for e in events] == ["queued", "stage", "done"] and events[0]["data"]["by"] == "terminal"
@@ -249,4 +249,4 @@ def test_a_look_at_the_lock_at_the_moment_of_a_start_does_not_turn_smtv_away(hom
 def test_following_a_request_deleted_in_smtv_says_so(home, tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(handoff, "_call", lambda *a, **k: (404, {"error": "no_job"}))
     assert handoff.follow(1, "demo", {"status": "running", "last": 0}, tmp_path, every=0) == 1
-    assert "deleted in SMTV" in capsys.readouterr().out
+    assert "deleted in Clip It!" in capsys.readouterr().out

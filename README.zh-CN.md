@@ -93,7 +93,7 @@ SMTV 会自己在你的电脑上把语音转成文字。挑选最佳时刻时，
 
 | 你的电脑 | 下载 | 大小 |
 |---|---|---|
-| **Windows 10 或 11**（64 位） | [**Windows 版 SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe)（安装程序） | 约 130 MB |
+| **Windows 10 或 11**（64 位） | [**Windows 版 SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip)（安装程序） | 约 130 MB |
 | **Mac** — Apple 芯片（M1 及更新）或 Intel，macOS 13+ | [**Mac 版 SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | 约 270 MB |
 
 所有 Mac 都用同一个文件：SMTV 会自动启动为你的 Mac 处理器制作的版本。在 Windows 上不想安装任何东西：下载

@@ -10,7 +10,7 @@ mật khẩu quản trị viên.
 
 | Máy tính của bạn | Tải về | Dung lượng |
 |---|---|---|
-| **Windows 10 hoặc 11** (64-bit) | [SMTV cho Windows](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | khoảng 130 MB |
+| **Windows 10 hoặc 11** (64-bit) | [SMTV cho Windows](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) | khoảng 130 MB |
 | **Mac** — chip Apple (M1 trở về sau) hoặc Intel, macOS 13+ | [SMTV cho Mac](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | khoảng 270 MB |
 
 Tất cả các phiên bản và mã kiểm tra (checksum) của chúng: [trang phát hành](https://github.com/yuriti/clipit/releases/latest).

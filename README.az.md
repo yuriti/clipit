@@ -94,7 +94,7 @@ kifayətdir və onu istənilən vaxt **Settings → AI** (Ayarlar → Sİ) bölm
 
 | Kompüteriniz | Yükləmə | Ölçü |
 |---|---|---|
-| **Windows 10 və ya 11** (64-bit) | [**Windows üçün SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) (quraşdırıcı) | təxminən 130 MB |
+| **Windows 10 və ya 11** (64-bit) | [**Windows üçün SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) (quraşdırıcı) | təxminən 130 MB |
 | **Mac** — Apple silicon (M1 və daha yeni) və ya Intel, macOS 13+ | [**Mac üçün SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | təxminən 270 MB |
 
 Bütün Mac-lər üçün bir fayl: SMTV Mac-inizin prosessoru üçün hazırlanmış versiyanı özü işə salır. Windows-da heç nə quraşdırmadan:

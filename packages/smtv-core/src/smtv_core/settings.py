@@ -328,7 +328,7 @@ def _set_aside(path: Path, error: Exception) -> None:
     if copy not in BROKEN:
         BROKEN.append(copy)
     print(f"smtv: the settings file could not be read ({type(error).__name__}: {str(error)[:120]}); "
-          f"it is kept as {copy.name} and SMTV starts with empty settings", file=sys.stderr)
+          f"it is kept as {copy.name} and Clip It! starts with empty settings", file=sys.stderr)
 
 
 def broken_notice() -> str | None:

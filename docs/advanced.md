@@ -49,8 +49,12 @@ build; Windows: Gyan's «essentials» build; both GPL, their license and source 
   `uname` would say x86_64) and starts `Contents/MacOS/smtv-python-<arch> -m smtv app` with `PYTHONHOME` set to that
   folder. Apple silicon on macOS 13 takes the Intel one under Rosetta. What fails before the window opens:
   `~/.smtv/logs/launch.log`.
-- Windows: `%LOCALAPPDATA%\Programs\SMTV` (the ZIP: wherever it was unpacked); `SMTV.exe` is Python's `pythonw.exe`
-  under SMTV's name, the Start menu icon runs `SMTV.exe -m smtv app`.
+- Windows: `%LOCALAPPDATA%\Programs\ClipIt` (installed by 0.1.0: `Programs\SMTV`, where updates stay; the ZIP:
+  wherever it was unpacked). On top only `ClipIt.exe` (Python's
+  `pythonw.exe` under the program's name, byte for byte, so Smart App Control lets it run), `ClipIt.exe.config`, the DLLs
+  Windows loads before Python, `python312._pth` (Python's paths: everything else is in `app\`) and a how-to text. There
+  is no `python.exe`: `ClipIt.exe` prints into a file or a pipe like it. A double click on `ClipIt.exe` opens the window
+  (`app\Lib\site-packages\sitecustomize.py`); the Start menu icon runs `ClipIt.exe -m smtv app`.
 
 Your own ffmpeg in SMTV's folder `bin/` still wins over the one inside. Commands work through the app's Python, for
 example on a Mac with Apple silicon (Intel: `x86_64` instead of `arm64`):
@@ -59,7 +63,7 @@ example on a Mac with Apple silicon (Intel: `x86_64` instead of `arm64`):
 PYTHONHOME=/Applications/SMTV.app/Contents/Resources/python-arm64 /Applications/SMTV.app/Contents/MacOS/smtv-python-arm64 -m smtv doctor
 ```
 
-on Windows: `"%LOCALAPPDATA%\Programs\SMTV\python.exe" -m smtv doctor`. Updates: the window downloads the new
+on Windows: `"%LOCALAPPDATA%\Programs\ClipIt\ClipIt.exe" -m smtv doctor | more` (the pipe shows its output). Updates: the window downloads the new
 installer, checks it against the signed list of releases and opens it. Build them yourself: `install/app/build.py`
 (see its first lines).
 

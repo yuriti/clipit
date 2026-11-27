@@ -205,12 +205,12 @@ def send_json(url: str, data: bytes, headers: dict, timeout: float, retries: int
             raise Overloaded(_clean(f"could not reach the service: {getattr(e, 'reason', e)}", key)) from e
         except TimeoutError as e:
             raise Overloaded(f"the service did not answer in {timeout:.0f} s; it may still have done the work, "
-                             "so SMTV does not ask again by itself") from e
+                             "so Clip It! does not ask again by itself") from e
         except (OSError, http.client.HTTPException) as e:
             # the connection dropped after the request was sent (urllib wraps only connecting and sending in URLError):
             # the service may have done the work and charged for it, so no second paid call by itself (decision 3)
             raise Overloaded(_clean(f"the connection broke while waiting for the answer: {e}; it may still have done "
-                                    "the work, so SMTV does not ask again by itself", key)) from e
+                                    "the work, so Clip It! does not ask again by itself", key)) from e
         except ValueError as e:
             raise ProviderError("the service's answer is not JSON: is the server address right?") from e
     raise ProviderError("unreachable")
@@ -488,7 +488,7 @@ def call_streammoment(m: ModelSettings, prompt: str, schema: dict, images: list[
     import uuid
     from .. import account, prompts as prompts_mod
     if not m.agent:
-        raise ProviderError("StreamMoment answers only SMTV's own agents: this call has no agent")
+        raise ProviderError("StreamMoment answers only Clip It!'s own agents: this call has no agent")
     body = {"agent": m.agent, "prompts_version": prompts_mod.version(), "prompt": prompt, "schema": transport_schema(schema),
             "images": [dict(zip(("mime", "data"), _image(path))) for path in images]}
     headers = {"Idempotency-Key": uuid.uuid4().hex}

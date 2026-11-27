@@ -45,7 +45,7 @@ CHECK_TIMEOUT_S = 6.0
 LOGIN_WAIT_S = 600.0
 REFRESH_EARLY_S = 120.0
 # The site answered, but has no sign-in for SMTV yet (404): the network is fine, so no VPN hint (owner, 21.11).
-NOT_OPEN = "StreamMoment answers, but sign-in for SMTV is not open on the site yet: try again later"
+NOT_OPEN = "StreamMoment answers, but sign-in for Clip It! is not open on the site yet: try again later"
 VPN_HINT = {
     "en": "The StreamMoment site cannot be reached. A VPN may be on: turn it off or add streammoment.tv to the VPN's exceptions.",
     "ru": "Сайт StreamMoment недоступен. Возможно, включён VPN — выключите его или добавьте streammoment.tv в исключения VPN.",
@@ -208,7 +208,7 @@ def _lock(timeout: float = 30.0):
                 break
             except OSError:
                 if time.monotonic() > deadline:
-                    raise AccountError("busy", "another SMTV process holds the account lock")
+                    raise AccountError("busy", "another Clip It! process holds the account lock")
                 time.sleep(0.1)
         try:
             yield
@@ -275,7 +275,7 @@ def authorized(method: str, path: str, body: dict | None = None, headers: dict |
 # --- sign-in ------------------------------------------------------------------------------------------------
 
 def _label() -> str:
-    return f"SMTV on {socket.gethostname()[:60]}"
+    return f"Clip It! on {socket.gethostname()[:60]}"
 
 
 def _pkce() -> tuple[str, str]:
@@ -284,7 +284,7 @@ def _pkce() -> tuple[str, str]:
     return verifier, challenge
 
 
-DONE_PAGE = ("<!doctype html><meta charset=utf-8><title>SMTV</title><body style='font:16px system-ui;padding:48px;text-align:center'>"
+DONE_PAGE = ("<!doctype html><meta charset=utf-8><title>Clip It!</title><body style='font:16px system-ui;padding:48px;text-align:center'>"
              "<h1>{title}</h1><p>{text}</p></body>")
 
 
@@ -311,8 +311,8 @@ class Login:
                 parsed = urllib.parse.urlparse(self.path)
                 query = dict(urllib.parse.parse_qsl(parsed.query))
                 ours = parsed.path == "/callback" and query.get("state") == state and query.get("code")
-                title, text = ("Готово", "Вернитесь в окно SMTV — вход завершается там. Эту вкладку можно закрыть.") if ours else \
-                    ("Не тот адрес", "Этот адрес ждёт только ответа StreamMoment. Нажмите «Войти» в окне SMTV ещё раз.")
+                title, text = ("Готово", "Вернитесь в окно Clip It! — вход завершается там. Эту вкладку можно закрыть.") if ours else \
+                    ("Не тот адрес", "Этот адрес ждёт только ответа StreamMoment. Нажмите «Войти» в окне Clip It! ещё раз.")
                 body = DONE_PAGE.format(title=title, text=text).encode("utf-8")
                 self.send_response(200 if ours else 400)
                 self.send_header("Content-Type", "text/html; charset=utf-8")

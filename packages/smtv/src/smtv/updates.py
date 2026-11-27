@@ -118,8 +118,8 @@ def install_kind() -> str:
     version is a new archive from the release page) or "none" (no way to update it from here)."""
     if os.environ.get("SMTV_DOCKER", "").strip() == "1":
         return "docker"
-    try:      # the desktop apps (install/app/build.py) write their kind (dmg, exe, zip) beside their Python
-        marked = (Path(sys.prefix) / KIND_MARKER).read_text(encoding="utf-8").strip()
+    try:      # the desktop apps (install/app/build.py) write their kind (dmg, exe, zip) into their own folder
+        marked = (paths.app_folder() / KIND_MARKER).read_text(encoding="utf-8").strip()
         if marked in APP_KINDS:
             return marked
         print(f"updates: {KIND_MARKER} says {marked[:40]!r}, not one of {APP_KINDS}: ignored", file=sys.stderr)
@@ -305,7 +305,7 @@ def install_steps(kind: str, tools: list[str], versions: dict[str, str], base: s
         if gone:
             steps.append([py, "-m", "pip", "uninstall", "-y", "--disable-pip-version-check", *gone])
         return steps
-    raise ValueError(f"this SMTV cannot be updated from its window ({kind})")
+    raise ValueError(f"this Clip It! cannot be updated from its window ({kind})")
 
 
 @dataclass
@@ -415,12 +415,13 @@ class Updates:
 
     def __init__(self, tools: Callable[[], list[str]], running: Callable[[], int], stop_jobs: Callable[[], None],
                  port: Callable[[], int], manifest=None, download=None, open_file=None, spawn=None, clock=time.time,
-                 kind: str | None = None):
+                 kind: str | None = None, replace_in_place=None):
         self.tools, self.running, self.stop_jobs, self.port = tools, running, stop_jobs, port
         # manifest(floor) -> the verified manifest (channel.load); download(files, folder) -> {name: path}, checked
         self.manifest = manifest or (lambda floor: channel.load(allowed_packages(), floor))
         self.download = download or download_files
         self.open_file = open_file or open_installer
+        self.replace_in_place = replace_in_place or _zip_update
         self.spawn, self.clock = spawn or start_updater, clock
         self.kind = kind or install_kind()
         self.quit: Callable[[], None] | None = None
@@ -531,7 +532,7 @@ class Updates:
                 if now - started < first or (looked is not None and now - looked < every):
                     continue
                 looked = now
-                if self.due() and self.kind in channel.KINDS:
+                if self.due() and self.kind in channel.METHOD:     # every kind with a way to update (the ZIP too)
                     self.check()
             except Exception as e:  # noqa: BLE001 — a failed check or a broken count of jobs is shown, never ends the thread
                 self.error = f"{type(e).__name__}: {e}"[:400]
@@ -541,9 +542,9 @@ class Updates:
     def ask(self, action: str, tool: str | None = None, now: bool = False) -> dict:
         """update | install <tool> | remove <tool>; waits while jobs run, unless now (jobs are paused first)."""
         if action in ("install", "remove") and tool not in CATALOG:   # a name from the page is only looked up
-            raise UpdateError("not_in_catalog", "SMTV installs only the plugins of its own list")
-        if self.kind not in ("uv", "pip") and not (action == "update" and channel.METHOD.get(self.kind) == "installer"):
-            raise UpdateError("cannot_update", "this SMTV was installed from source or without uv or pip: update it there")
+            raise UpdateError("not_in_catalog", "Clip It! installs only the plugins of its own list")
+        if self.kind not in ("uv", "pip") and not (action == "update" and channel.METHOD.get(self.kind) in ("installer", "archive")):
+            raise UpdateError("cannot_update", "this Clip It! was installed from source or without uv or pip: update it there")
         if updater_alive() or self.leaving:
             raise UpdateError("updating", "an update is already running")
         installed = installed_tools(self.tools())
@@ -582,6 +583,9 @@ class Updates:
         try:
             if channel.METHOD.get(self.kind) == "installer":   # the desktop apps: their own installer does the rest
                 self.open_file(self.fetch_files(channel.files_for(self.cache.get("manifest") or {}, self.kind))[0])
+            elif channel.METHOD.get(self.kind) == "archive":   # the Windows ZIP: replaces itself in place (zipupdate)
+                archive = self.fetch_files(channel.files_for(self.cache.get("manifest") or {}, self.kind))[0]
+                self.replace_in_place(Path(archive))
             else:
                 self.spawn(self.plan(p["action"], p["tool"]))
         except Exception as e:  # noqa: BLE001 — shown in the window and the log; this SMTV stays as it is
@@ -646,6 +650,14 @@ def update_files_folder(version: str) -> Path:
 
 def download_files(files: list[dict], folder: Path) -> list[Path]:
     return [channel.download(f, folder) for f in files]
+
+
+def _zip_update(archive: Path) -> None:
+    from . import zipupdate
+    top = paths.portable_top()
+    if top is None:
+        raise UpdateError("cannot_update", "this copy is not the Windows ZIP")
+    zipupdate.start(archive, top, os.getpid())
 
 
 def open_installer(path: str) -> None:

@@ -56,7 +56,7 @@ def _locked(file: Path):
     try:
         lock = _lock_of(file).__enter__()
     except LockTimeout as e:
-        raise VaultError(f"{file.name} is busy in another SMTV process: try again") from e
+        raise VaultError(f"{file.name} is busy in another Clip It! process: try again") from e
     try:
         yield
     finally:

@@ -10,7 +10,7 @@
 
 | Компьютериңиз | Жүктөп алуу | Көлөмү |
 |---|---|---|
-| **Windows 10 же 11** (64-биттик) | [Windows үчүн SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | болжол менен 130 МБ |
+| **Windows 10 же 11** (64-биттик) | [Windows үчүн SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) | болжол менен 130 МБ |
 | **Mac** — Apple silicon (M1 жана жаңыраагы) же Intel, macOS 13+ | [Mac үчүн SMTV](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | болжол менен 270 МБ |
 
 Бардык версиялар жана алардын текшерүү суммалары: [чыгаруу барагы](https://github.com/yuriti/clipit/releases/latest).

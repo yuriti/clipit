@@ -95,7 +95,7 @@ SMTV কথাকে লেখায় বদলায় নিজেই, আ�
 
 | আপনার কম্পিউটার | ডাউনলোড | সাইজ |
 |---|---|---|
-| **Windows 10 বা 11** (64-বিট) | [**Windows-এর জন্য SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) (ইনস্টলার) | প্রায় 130 MB |
+| **Windows 10 বা 11** (64-বিট) | [**Windows-এর জন্য SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) (ইনস্টলার) | প্রায় 130 MB |
 | **Mac** — Apple silicon (M1 আর নতুন) বা Intel, macOS 13+ | [**Mac-এর জন্য SMTV**](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | প্রায় 270 MB |
 
 সব Mac-এর জন্য একটাই ফাইল: SMTV আপনার Mac-এর প্রসেসরের জন্য বানানো ভার্সন নিজেই চালু করে। কিছু ইনস্টল না করে Windows-এ:

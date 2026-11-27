@@ -708,7 +708,7 @@ def test_doctor_a_crashing_or_broken_tool_gets_one_failed_row_under_its_name(tmp
     tool.checks = lambda s: (_ for _ in ()).throw(RuntimeError("boom"))
     d = serve.App([tool], [Broken("vodcut", "ImportError: x")]).doctor()
     groups = [r["group"] for r in d["rows"]]
-    assert groups[0] == "smtv" and "SMTV window" in [r["name"] for r in d["rows"] if r["group"] == "smtv"]
+    assert groups[0] == "smtv" and "Clip It! window" in [r["name"] for r in d["rows"] if r["group"] == "smtv"]
     demo = [r for r in d["rows"] if r["group"] == "demo"]
     assert len(demo) == 1 and demo[0]["status"] == "fail" and "boom" in demo[0]["detail"]
     broken = [r for r in d["rows"] if r["group"] == "vodcut"]

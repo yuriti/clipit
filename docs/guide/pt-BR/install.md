@@ -10,7 +10,7 @@ senha de administrador.
 
 | Seu computador | Download | Tamanho |
 |---|---|---|
-| **Windows 10 ou 11** (64 bits) | [SMTV para Windows](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows-setup.exe) | cerca de 130 MB |
+| **Windows 10 ou 11** (64 bits) | [SMTV para Windows](https://github.com/yuriti/clipit/releases/latest/download/SMTV-windows.zip) | cerca de 130 MB |
 | **Mac** — Apple silicon (M1 e mais novos) ou Intel, macOS 13+ | [SMTV para Mac](https://github.com/yuriti/clipit/releases/latest/download/SMTV-mac.dmg) | cerca de 270 MB |
 
 Todas as versões e suas somas de verificação: [a página da versão](https://github.com/yuriti/clipit/releases/latest).

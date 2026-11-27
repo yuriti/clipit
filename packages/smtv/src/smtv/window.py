@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import sys
 import threading
+from pathlib import Path
 
 from . import i18n
 
@@ -395,6 +396,32 @@ def _win_ask(running: int, lang: str) -> str:
 VIDEO_TYPES = ("Video (*.mp4;*.mkv;*.mov;*.webm;*.flv;*.ts;*.m4v;*.avi;*.mp3;*.m4a;*.wav;*.aac)", "All files (*.*)")
 
 
+def browser_profile() -> str | None:
+    """The Windows ZIP keeps the window's browser profile (WebView2) in its own data folder, not in %LOCALAPPDATA%."""
+    from smtv_core import paths
+    return str(paths.home() / "webview") if paths.portable_top() is not None else None
+
+
+def win_taskbar(app: Path | None = None, set_id=None):
+    """Windows: SMTV's taskbar id for this process (the window is one button with SMTV's shortcuts and the installer's
+    icons, not Python's) and the icon file for the window. SMTV.exe stays Python's own program byte for byte (Smart
+    App Control), so its icon is Python's: the window's comes from here. Neither failing stops the window."""
+    from . import launcher
+    try:
+        if set_id is None and sys.platform == "win32":
+            from .winlink import set_app_id
+            set_id = set_app_id
+        if set_id is not None:
+            set_id(launcher.APP_ID)
+    except Exception as e:  # noqa: BLE001 — the window groups under Python then
+        print(f"window: no taskbar id ({type(e).__name__}: {e})")
+    from smtv_core import paths
+    icon = launcher.window_icon(app or paths.app_folder(), paths.home())
+    if icon is None:
+        print("window: no icon file, Python's icon stays")
+    return icon
+
+
 class Window:
     """The one window of this SMTV process."""
 
@@ -508,7 +535,8 @@ class Window:
             return False
         webview.settings["ALLOW_DOWNLOADS"] = True                 # «Download» on a clip: a save dialog
         webview.settings["OPEN_EXTERNAL_LINKS_IN_BROWSER"] = True  # «Where to get a key» opens in the browser
-        window = webview.create_window("SMTV", "about:blank", width=WIDTH, height=HEIGHT, min_size=MIN_SIZE,
+        icon = win_taskbar() if sys.platform == "win32" else None
+        window = webview.create_window("Clip It!", "about:blank", width=WIDTH, height=HEIGHT, min_size=MIN_SIZE,
                                        background_color=BACKGROUND, hidden=True, text_select=True,
                                        js_api=WinBridge(self.win_theme) if sys.platform == "win32" else None)
         self.window = window
@@ -516,7 +544,8 @@ class Window:
         window.events.loaded += lambda: self.loaded.set()
         window.events.closing += self.on_closing
         try:
-            webview.start(self._setup, window, private_mode=False)
+            webview.start(self._setup, window, private_mode=False, icon=str(icon) if icon else None,
+                          storage_path=browser_profile())
         except Exception as e:  # noqa: BLE001 — no GUI here (Linux without WebKitGTK or Qt)
             print(f"no window: {type(e).__name__}: {e}")
             return False

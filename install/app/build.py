@@ -1,23 +1,25 @@
-"""The desktop apps (stage 30, part «build»; work В11): SMTV.app in a .dmg for macOS, a folder for the Windows installer.
+"""The desktop apps (stage 30, part «build»; work В11): SMTV.app in a .dmg for macOS, a portable ZIP for Windows.
 
     python install/app/build.py mac          # SMTV.app and SMTV-<version>-mac.dmg, one for every Mac (on a Mac)
-    python install/app/build.py win-x64      # the folder SMTV/ and SMTV-<version>-windows-x64.zip (on any system);
-                                             # on Windows with Inno Setup also SMTV-<version>-windows-x64-setup.exe
+    python install/app/build.py win-x64      # the folder ClipIt/ and SMTV-<version>-windows-x64.zip (on any system)
+
+No Windows installer since 0.1.1: Smart App Control blocks an unsigned one (Inno Setup's is-*.tmp), and the ZIP is
+portable (everything it writes stays in its folder: smtv_core.paths.portable_top) and updates itself (zipupdate.py).
 
 One SMTV.app for Apple silicon and Intel: it holds two Pythons (python-arm64, python-x86_64, each with its own ffmpeg
 and libraries) and a small universal program (launcher.c) that starts the one native to the Mac. Files that are the same
 in both (Python code, fonts, the window's page) are kept once: the Intel copy is a link to the Apple silicon one.
 
 What goes in: Python 3.12 (python-build-standalone: a relocatable build of CPython, the one uv itself installs), SMTV
-with every dependency at the versions of uv.lock (hashes checked), ffmpeg and ffprobe 9.1 with libass and libx264 (the
-captions and clips need both), the caption fonts (inside smtv-core). What stays out: the speech models (downloaded on
+with every dependency at the versions of uv.lock (hashes checked), ffmpeg 9.1 with libass and libx264 (the captions and
+clips need both; no ffprobe: SMTV asks ffmpeg itself), the caption fonts (inside smtv-core). What stays out: the speech models (downloaded on
 the first run, only for the person's language: «Check this computer → Fix»), a local AI model and yt-dlp (optional,
 as in every other install).
 
 Why not PyInstaller or Briefcase: SMTV starts its jobs as `python -m smtv …`, installs yt-dlp into its own Python and
 updates itself through it; a frozen program has no `python -m` and no pip. A real Python inside the app keeps every
 one of those paths the same as in a uv install. Nothing new is installed for the build: it needs uv (already the
-project's tool) and, for the Windows installer, Inno Setup (free; preinstalled on GitHub's Windows machines).
+project's tool).
 
 Every download is pinned with its SHA-256 below; a file that differs stops the build. Run from the repository root:
 the files land in build/app/ (git ignores build/).
@@ -26,6 +28,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 import os
 import plistlib
 import re
@@ -47,6 +50,18 @@ from smtv import launcher  # noqa: E402 — the icon files and Info.plist of `sm
 PY = "3.12"
 PBS = "https://github.com/astral-sh/python-build-standalone/releases/download/20261110/"
 RIEDL = "https://ffmpeg.martin-riedl.de/download/macos/"
+WIN_FOLDER = "ClipIt"     # the Windows app's folder (the ZIP's top); its program ClipIt.exe, Python's pythonw.exe
+APP_FOLDER = "app"        # paths.APP_FOLDER: the Windows app's own files, below ClipIt.exe
+WIN_PTH = f"python{PY.replace('.', '')}._pth"     # beside python312.dll: Python's paths, relative to the top folder
+WIN_PTH_LINES = f"{APP_FOLDER}\n{APP_FOLDER}\\DLLs\n{APP_FOLDER}\\Lib\n{APP_FOLDER}\\Lib\\site-packages\nimport site\n"
+HOW_TO = HERE / "how-to-start.txt"    # the one text a person reads in the folder, named by its own first line
+# .NET Framework (pythonnet, the bridge to the window on Windows) refuses an assembly that carries the download mark,
+# which Explorer's "Extract All" puts on every file of the ZIP: Python.Runtime.dll then fails to load and the window does
+# not start. This config beside ClipIt.exe lets it load them. Text, not a program: nothing new for Smart App
+# Control to judge.
+NET_CONFIG = ('<?xml version="1.0" encoding="utf-8"?>\n<configuration><runtime><loadFromRemoteSources enabled="true"/>'
+              '</runtime></configuration>\n')
+PARTS = "parts.json"                 # smtv_core.parts.MANIFEST: what the app downloads on first use
 KIND_MARKER = "smtv-install-kind"    # updates.KIND_MARKER: beside the app's Python, says how this SMTV takes updates
 INFO_KIND = "SMTVInstallKind"        # in SMTV.app's Info.plist: `smtv shortcut` never touches an app with it
 
@@ -67,7 +82,15 @@ class Target:
     ffmpeg: tuple[Download, ...]
     can_run: tuple[str, ...]       # (sys.platform, machine) pairs where this build's Python runs here (for .pyc)
     min_os: str = ""               # macOS: the oldest system the wheels of uv.lock run on (onnxruntime, av)
+    wheel_platforms: tuple[str, ...] = ()       # the platform tags of its wheels (for the parts downloaded later)
+    on_demand: tuple[str, ...] = ()            # packages left out: smtv_core.parts downloads them on first use
 
+
+# Whisper's engine, for the ~70 languages GigaAM and Parakeet do not know: ~140 MB the Windows app does not carry
+# (smtv_core.parts downloads these wheels of uv.lock on first use). The Mac app keeps them inside: its signature seals
+# what it loads. hf-xet: huggingface_hub's faster download path, not needed to fetch a model (9 MB).
+WHISPER_PART = ("av", "ctranslate2", "faster-whisper", "tokenizers")
+NOT_IN_APPS = ("hf-xet",)
 
 # ffmpeg: macOS — Martin Riedl's static builds (GPL, release 9.1, libass 0.17.5, x264); Windows — Gyan's «essentials»
 # build 9.1 (GPL, libass, x264, NVENC), the one `winget install Gyan.FFmpeg` gives too. Both are separate programs SMTV
@@ -78,18 +101,14 @@ TARGETS = {
         Download(PBS + "cpython-3.12.16%2B20261110-aarch64-apple-darwin-install_only.tar.gz",
                  "e956e60bc9465d577ef8062059aa05cd3a2665b4b8678a2ed24e432368330b8f"),
         (Download(RIEDL + "arm64/1795207104_9.1/ffmpeg.zip", "1f66e9a690a7f1c9e60b012379f8869c11818d1797f45b21dbb2f2564ba61ae1",
-                  (("ffmpeg", "ffmpeg"),)),
-         Download(RIEDL + "arm64/1795207104_9.1/ffprobe.zip", "6ef2df5f575042923a28537ab37adf936f28bf3e7b85de23a1447ed447ec1dbd",
-                  (("ffprobe", "ffprobe"),))),
+                  (("ffmpeg", "ffmpeg"),)),),
         (("darwin", "arm64"),), "14.0"),
     "mac-x64": Target(
         "mac-x64", "mac", "x86_64-apple-darwin",
         Download(PBS + "cpython-3.12.16%2B20261110-x86_64-apple-darwin-install_only.tar.gz",
                  "83f2922437e6d546d0fcdb8c11f150a8e52787e8d9ea8651b1974e20908eb1bc"),
         (Download(RIEDL + "amd64/1795212433_9.1/ffmpeg.zip", "35b3d82cccc2c1d644d49d15f5e57eb913a08ef68f798042c90eecec62c51f1e",
-                  (("ffmpeg", "ffmpeg"),)),
-         Download(RIEDL + "amd64/1795212433_9.1/ffprobe.zip", "41ca7b7cba7992e33f1da3f1bf54db8ec103a4d387b1bfac3162062e8b1074ad",
-                  (("ffprobe", "ffprobe"),))),
+                  (("ffmpeg", "ffmpeg"),)),),
         (("darwin", "x86_64"),), "13.0"),
     "win-x64": Target(
         "win-x64", "win", "x86_64-pc-windows-msvc",
@@ -98,14 +117,13 @@ TARGETS = {
         (Download("https://github.com/GyanD/codexffmpeg/releases/download/9.1/ffmpeg-9.1-essentials_build.zip",
                   "b9bbbb3acece000cbeec994f856649354e52c773807841e78908374b24d658fd",
                   (("ffmpeg-9.1-essentials_build/bin/ffmpeg.exe", "ffmpeg.exe"),
-                   ("ffmpeg-9.1-essentials_build/bin/ffprobe.exe", "ffprobe.exe"),
                    ("ffmpeg-9.1-essentials_build/LICENSE", "LICENSE.txt"))),),
-        (("win32", "AMD64"),)),
+        (("win32", "AMD64"),), wheel_platforms=("win_amd64",), on_demand=WHISPER_PART),
 }
 
-FFMPEG_NOTE = """ffmpeg and ffprobe {version} in this folder are separate programs that SMTV runs; they are not part of SMTV's
-own code. They are built by {builder} under the GNU General Public License (GPL) version 3: you may share and change
-them under its terms. The source code of this version: https://ffmpeg.org/releases/ffmpeg-{version}.tar.xz
+FFMPEG_NOTE = """ffmpeg {version} in this folder is a separate program that SMTV runs; it is not part of SMTV's
+own code. It is built by {builder} under the GNU General Public License (GPL) version 3: you may share and change
+it under its terms. The source code of this version: https://ffmpeg.org/releases/ffmpeg-{version}.tar.xz
 How it was built: {config}
 License text: https://www.gnu.org/licenses/gpl-3.0.html
 SMTV uses the first ffmpeg with captions it finds: put your own build into SMTV's folder bin/ to use it instead.
@@ -219,12 +237,45 @@ def wheels(out: Path, given: Path | None) -> list[Path]:
     return found
 
 
-def requirements(out: Path) -> Path:
-    """Every dependency of smtv[vodcut] at the versions and hashes of uv.lock; SMTV's own packages are added as wheels.
-    --locked: a lock that no longer matches pyproject.toml stops the build (a new dependency would be missing)."""
-    run([uv(), "export", "--locked", "--no-dev", "--no-emit-workspace", "--package", "smtv", "--extra", "vodcut",
+def requirements(out: Path, leave_out: tuple[str, ...] = ()) -> Path:
+    """Every dependency of smtv[vodcut] at the versions and hashes of uv.lock but `leave_out`; SMTV's own packages are
+    added as wheels. --locked: a lock that no longer matches pyproject.toml stops the build (a new dependency would be
+    missing)."""
+    skip = [a for name in leave_out for a in ("--no-emit-package", name)]
+    run([uv(), "export", "--locked", "--no-dev", "--no-emit-workspace", "--package", "smtv", "--extra", "vodcut", *skip,
          "--format", "requirements-txt", "--no-header", "--output-file", out], cwd=REPO, stdout=subprocess.DEVNULL)
     return out
+
+
+def wheel_fits(filename: str, t: Target) -> bool:
+    """Whether a wheel of uv.lock is the one `uv pip install --python-platform` takes for this target (CPython 3.12)."""
+    py, abi, plat = filename[:-4].split("-")[-3:]
+    plats = set(plat.split("."))
+    if not (plats & ({"any"} | set(t.wheel_platforms))):
+        return False
+    minor = int(PY.split(".")[1])
+    for tag in py.split("."):
+        if tag in ("py3", f"py3{minor}") or (tag == f"cp3{minor}" and abi in (f"cp3{minor}", "abi3", "none")):
+            return True
+        if abi == "abi3" and tag.startswith("cp3") and tag[3:].isdigit() and int(tag[3:]) <= minor:
+            return True
+    return False
+
+
+def part_spec(names: tuple[str, ...], t: Target, lock: Path = REPO / "uv.lock") -> dict:
+    """parts.json's entry for a part (smtv_core.parts): the wheels of `names` for this target from uv.lock."""
+    import tomllib
+    packages = {p["name"]: p for p in tomllib.loads(lock.read_text(encoding="utf-8"))["package"]}
+    wheels = []
+    for name in names:
+        p = packages[name]
+        fits = [w for w in p.get("wheels", []) if wheel_fits(w["url"].rsplit("/", 1)[-1], t)]
+        if len(fits) != 1:
+            raise SystemExit(f"uv.lock has {len(fits)} wheels of {name} {p['version']} for {t.name}, expected one")
+        w = fits[0]
+        wheels.append({"name": name, "version": p["version"], "url": w["url"], "sha256": w["hash"].split(":", 1)[1],
+                       "size": w["size"]})
+    return {"wheels": wheels}
 
 
 def install(site: Path, t: Target, reqs: Path, own: list[Path]) -> None:
@@ -247,9 +298,23 @@ def remove(paths) -> int:
     return freed
 
 
+SOURCE_SUFFIXES = (".c", ".cc", ".cpp", ".h", ".hpp", ".pyx", ".pxd", ".pxi")   # what a package was built from
+TEST_FOLDERS = ("tests", "test")       # the packages' own tests; nothing imports them at run time
+
+
+def leftovers(site: Path) -> list[Path]:
+    """What a person never runs from the installed packages: their C and Cython sources and headers, and their test
+    folders. License files stay, whatever they are named."""
+    found = [f for f in site.rglob("*") if f.is_file() and f.suffix.lower() in SOURCE_SUFFIXES]
+    found += [d for d in site.rglob("*") if d.is_dir() and d.name in TEST_FOLDERS
+              and not any(p.name in TEST_FOLDERS for p in d.parents if site in p.parents)]
+    return found
+
+
 def trim(python: Path, site: Path) -> int:
     freed = remove(python / p for p in TRIM_PYTHON)
     freed += remove(site / p for p in TRIM_SITE)
+    freed += remove(leftovers(site))
     freed += remove(p for p in python.rglob("__pycache__"))
     freed += remove(list(python.rglob("*.pdb")))      # Windows debug symbols: 80 MB nobody but a debugger reads
     return freed
@@ -347,6 +412,7 @@ def make_mac_app(pythons: dict[str, Path], out: Path, v: str) -> Path:
         shutil.copy2(py / "bin" / f"python{PY}", app / "Contents" / "MacOS" / f"smtv-python-{arch}")
     compile_launcher(app / "Contents" / "MacOS" / "SMTV")
     (app / "Contents" / "Info.plist").write_bytes(plistlib.dumps(mac_info(v)))
+    launcher.mac_names(app / "Contents" / "Resources")       # Finder shows «Clip It!»; the file stays SMTV.app
     (app / "Contents" / "Resources" / "smtv.icns").write_bytes(launcher.icns({
         "ic09": (ICONS / "icon-mac-512.png").read_bytes(), "ic10": (ICONS / "icon-mac-1024.png").read_bytes()}))
     if "arm64" in pythons and "x86_64" in pythons:
@@ -376,51 +442,57 @@ def make_dmg(app: Path, out: Path, name: str) -> Path:
     dmg = out / name
     dmg.unlink(missing_ok=True)
     # ULMO: LZMA, the smallest image format (macOS 10.15 and newer)
-    run(["hdiutil", "create", "-volname", "SMTV", "-srcfolder", stage, "-fs", "HFS+", "-format", "ULMO", "-ov", dmg],
+    run(["hdiutil", "create", "-volname", launcher.NAME, "-srcfolder", stage, "-fs", "HFS+", "-format", "ULMO", "-ov", dmg],
         stdout=subprocess.DEVNULL)
     shutil.rmtree(stage)
     return dmg
 
 
+def how_to_name() -> str:
+    return HOW_TO.read_text(encoding="utf-8").splitlines()[0].strip() + ".txt"
+
+
 def make_win_folder(python: Path, out: Path) -> Path:
-    """SMTV/: the Python with everything inside, SMTV.exe (Python's windowless program under SMTV's name, so Task
-    Manager shows SMTV; a double click on it opens the window: double_click.py) and the icon. The installer copies this
-    folder. No script to start it: Smart App Control blocks a downloaded .cmd, and any program of our own."""
-    folder = out / "SMTV"
+    """SMTV/, laid out for a person who opens the folder: on top only ClipIt.exe (Python's windowless program under
+    SMTV's name; a double click on it opens the window: double_click.py), its .config (NET_CONFIG), the DLLs Windows
+    loads before any Python runs, the ._pth that tells Python where the rest is, and a how-to text. Everything else is
+    in app/ (paths.app_folder()), with the icon. Python's own python.exe and pythonw.exe are left out: ClipIt.exe is
+    pythonw.exe, and with output sent to a file or a pipe it prints like python.exe.
+    No script to start it: Smart App Control blocks a downloaded .cmd, and any program of our own."""
+    folder = out / WIN_FOLDER
     if folder.exists():
         shutil.rmtree(folder)
-    python.replace(folder)
-    shutil.copy2(folder / "pythonw.exe", folder / "SMTV.exe")
-    (folder / "smtv.ico").write_bytes(launcher.ico((ICONS / "icon-256.png").read_bytes()))
-    shutil.copy2(HERE / "double_click.py", folder / "Lib" / "site-packages" / "sitecustomize.py")
+    folder.mkdir(parents=True)
+    app = folder / APP_FOLDER
+    python.replace(app)
+    shutil.copy2(app / "pythonw.exe", folder / "ClipIt.exe")
+    for exe in ("python.exe", "pythonw.exe"):
+        (app / exe).unlink()
+    for dll in sorted(app.glob("*.dll")):          # python312.dll, python3.dll, vcruntime140*.dll: next to ClipIt.exe
+        dll.replace(folder / dll.name)
+    (folder / WIN_PTH).write_text(WIN_PTH_LINES, encoding="ascii", newline="\r\n")
+    (folder / "ClipIt.exe.config").write_text(NET_CONFIG, encoding="utf-8")
+    text = HOW_TO.read_text(encoding="utf-8")
+    (folder / how_to_name()).write_text(text, encoding="utf-8-sig", newline="\r\n")   # a BOM: Notepad reads it right
+    (app / "smtv.ico").write_bytes(launcher.win_ico())
+    shutil.copy2(HERE / "double_click.py", app / "Lib" / "site-packages" / "sitecustomize.py")
     return folder
 
 
 def zip_folder(folder: Path, dest: Path, kind: str) -> Path:
-    """The ZIP without installation: the same folder, marked "zip" (it does not update from the window)."""
+    """The ZIP: the same folder, marked "zip" (portable; it updates itself in place: zipupdate.py)."""
     dest.unlink(missing_ok=True)
-    if not (folder / KIND_MARKER).is_file():
-        raise SystemExit(f"{folder / KIND_MARKER} is missing: the ZIP would not know it is the ZIP")
+    if not (folder / APP_FOLDER / KIND_MARKER).is_file():
+        raise SystemExit(f"{folder / APP_FOLDER / KIND_MARKER} is missing: the ZIP would not know it is the ZIP")
     with zipfile.ZipFile(dest, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
         for f in sorted(folder.rglob("*")):
             if f.is_file():
-                arc = Path("SMTV") / f.relative_to(folder)
-                if f.name == KIND_MARKER and f.parent == folder:
+                arc = Path(WIN_FOLDER) / f.relative_to(folder)
+                if f.name == KIND_MARKER and f.parent == folder / APP_FOLDER:
                     z.writestr(str(arc).replace("\\", "/"), kind + "\n")
                 else:
                     z.write(f, str(arc).replace("\\", "/"))
     return dest
-
-
-def inno_setup(folder: Path, out: Path, v: str) -> Path | None:
-    iscc = shutil.which("iscc") or next((str(p) for p in (Path(os.environ.get("ProgramFiles(x86)", "C:/Program Files (x86)")) / "Inno Setup 6" / "ISCC.exe",
-                                                          Path(os.environ.get("LOCALAPPDATA", "C:/")) / "Programs" / "Inno Setup 6" / "ISCC.exe")
-                                          if p.is_file()), None)
-    if not iscc:
-        log("no Inno Setup here: the .exe installer is made on Windows (GitHub Actions or `winget install JRSoftware.InnoSetup`)")
-        return None
-    run([iscc, "/Qp", f"/DAppVersion={v}", f"/DSourceDir={folder}", f"/DOutputDir={out}", HERE / "smtv.iss"])
-    return out / f"SMTV-{v}-windows-x64-setup.exe"
 
 
 def prepare(t: Target, work: Path, cache: Path, own: list[Path], require_pyc: bool) -> Path:
@@ -428,13 +500,34 @@ def prepare(t: Target, work: Path, cache: Path, own: list[Path], require_pyc: bo
     work.mkdir(parents=True, exist_ok=True)
     python = unpack_python(fetch(t.python, cache), work / "python")
     site = site_packages(python, t)
-    install(site, t, requirements(work / "requirements.txt"), own)
+    install(site, t, requirements(work / "requirements.txt", NOT_IN_APPS + t.on_demand), own)
     log(f"{t.name}: trimmed {trim(python, site) / 1e6:.0f} MB")
     add_ffmpeg(python, t, cache)
-    (python / KIND_MARKER).write_text(("dmg" if t.system == "mac" else "exe") + "\n", encoding="utf-8")
+    (python / KIND_MARKER).write_text(("dmg" if t.system == "mac" else "zip") + "\n", encoding="utf-8")
+    if t.on_demand:
+        (python / PARTS).write_text(json.dumps({"whisper": part_spec(t.on_demand, t)}, indent=1) + "\n", encoding="utf-8")
     if not compile_pyc(python, t) and require_pyc:
         raise SystemExit(f"the {t.name} Python does not run here, so no .pyc and no check: build it where it runs")
     return python
+
+
+def folder_sizes(folder: Path, depth: int = 4) -> list[tuple[str, int]]:
+    """Bytes under each folder `depth` levels down (and the files at the top), the largest first: where the size is."""
+    sizes: dict[str, int] = {}
+    for f in folder.rglob("*"):
+        if f.is_file() and not f.is_symlink():
+            rel = f.relative_to(folder).parts
+            key = "/".join(rel[:depth]) if len(rel) > depth else "/".join(rel[:-1]) or "(top files)"
+            sizes[key] = sizes.get(key, 0) + f.stat().st_size
+    return sorted(sizes.items(), key=lambda kv: -kv[1])
+
+
+def report_size(folder: Path) -> int:
+    total = sum(f.stat().st_size for f in folder.rglob("*") if f.is_file() and not f.is_symlink())
+    log(f"{folder.name}: {total / 1e6:.0f} MB unpacked; the largest parts:")
+    for name, size in folder_sizes(folder)[:20]:
+        log(f"  {size / 1e6:7.1f} MB  {name}")
+    return total
 
 
 def build(target: str, out: Path, cache: Path, given_wheels: Path | None = None, require_pyc: bool = False) -> list[Path]:
@@ -446,16 +539,15 @@ def build(target: str, out: Path, cache: Path, given_wheels: Path | None = None,
         pythons = {arch: prepare(TARGETS[name], work / name, cache, own, require_pyc) for arch, name in MAC_SLICES.items()}
         app = make_mac_app(pythons, work, v)
         sign_adhoc(app)
+        report_size(app)
         made.append(make_dmg(app, out, f"SMTV-{v}-mac.dmg"))
     else:
         t = TARGETS[target]
         work = out / t.name
         python = prepare(t, work, cache, wheels(work / "wheels", given_wheels), require_pyc)
         folder = make_win_folder(python, work)
+        report_size(folder)
         made.append(zip_folder(folder, out / f"SMTV-{v}-windows-x64.zip", "zip"))
-        setup = inno_setup(folder, out, v)
-        if setup:
-            made.append(setup)
     for f in made:
         log(f"{f}  {f.stat().st_size / 1e6:.0f} MB  sha256 {sha256(f)}")
     return made
@@ -470,13 +562,11 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--out", type=Path, default=REPO / "build" / "app")
     ap.add_argument("--cache", type=Path, default=REPO / "build" / "app-cache", help="downloads, kept between builds")
     ap.add_argument("--wheels", type=Path, help="a folder with SMTV's wheels already built (the release workflow)")
-    ap.add_argument("--release", action="store_true", help="for a release: the .pyc must be made and, on Windows, the installer too")
+    ap.add_argument("--release", action="store_true", help="for a release: the .pyc must be made")
     a = ap.parse_args(argv)
     if a.target == "mac" and sys.platform != "darwin":
         raise SystemExit("SMTV.app and the .dmg are made on a Mac (hdiutil, codesign)")
-    made = build(a.target, a.out.resolve(), a.cache.resolve(), a.wheels.resolve() if a.wheels else None, require_pyc=a.release)
-    if a.release and a.target == "win-x64" and not any(f.suffix == ".exe" for f in made):
-        raise SystemExit("--release: no Inno Setup here, so no installer was made")
+    build(a.target, a.out.resolve(), a.cache.resolve(), a.wheels.resolve() if a.wheels else None, require_pyc=a.release)
     return 0
 
 

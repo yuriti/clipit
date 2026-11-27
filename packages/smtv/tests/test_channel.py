@@ -261,16 +261,21 @@ def test_each_kind_of_install_takes_its_own_files():
     m = channel.parse(json.dumps(manifest(kinds={
         "uv": manifest()["kinds"]["uv"],
         "dmg": {"files": [{"name": "SMTV-0.2.0.dmg", "url": "https://github.com/a/SMTV-0.2.0.dmg", "size": 9, "sha256": "1" * 64}]},
-        "exe": {"files": [{"name": "SMTV-0.2.0-setup.exe", "url": "https://github.com/a/s.exe", "size": 9, "sha256": "2" * 64}]},
+        "exe": {"files": [{"name": "SMTV-0.2.0-setup.exe", "url": "https://github.com/a/s.exe", "size": 9, "sha256": "2" * 64},
+                          {"name": "SMTV-0.2.0-windows-x64.zip", "url": "https://github.com/a/s.zip", "size": 9, "sha256": "3" * 64,
+                           "arch": "x64"}]},
     })).encode(), ALLOWED)
     assert [f["name"] for f in channel.files_for(m, "uv", ["smtv"])] == ["smtv-0.2.0-py3-none-any.whl"]
     assert [f["name"] for f in channel.files_for(m, "dmg")] == ["SMTV-0.2.0.dmg"]
-    assert [f["name"] for f in channel.files_for(m, "exe")] == ["SMTV-0.2.0-setup.exe"]
+    # the Windows ZIP reads its file from "exe" (0.1.0 knows no "zip" kind): only a .zip
+    assert [f["name"] for f in channel.files_for(m, "zip", arch="x64")] == ["SMTV-0.2.0-windows-x64.zip"]
     for kind, packages in (("uv", ["vodcut"]), ("pip", ["smtv"]), ("docker", None)):    # nothing for them in this manifest
         with pytest.raises(channel.ChannelError) as e:
             channel.files_for(m, kind, packages)
         assert e.value.code == "not_for_this_install"
-    assert channel.METHOD == {"uv": "packages", "pip": "packages", "docker": "command", "dmg": "installer", "exe": "installer"}
+    assert channel.METHOD == {"uv": "packages", "pip": "packages", "docker": "command", "dmg": "installer", "exe": "installer",
+                              "zip": "archive"}
+    assert "zip" not in channel.KINDS and channel.LISTED_AS == {"zip": "exe"}
 
 
 def test_a_desktop_app_knows_its_kind_from_its_marker(tmp_path, monkeypatch):
@@ -350,6 +355,25 @@ def test_a_desktop_app_updates_by_its_checked_installer_and_docker_only_hears_of
     with pytest.raises(updates.UpdateError) as e:
         d.ask("update")
     assert e.value.code == "cannot_update" and spawned == []
+
+
+def test_the_windows_zip_updates_in_place_from_the_checked_zip_listed_as_exe(keys, monkeypatch):
+    secret, public = keys
+    names = {"smtv": "0.1.0", "smtv-core": "0.1.0", "vodcut": "0.1.0"}
+    monkeypatch.setattr(updates, "version_of", lambda n: names.get(n))
+    archive = b"a zip"
+    url = "https://github.com/a/SMTV-0.2.0-windows-x64.zip"
+    m = manifest(kinds={"exe": {"files": [{"name": "SMTV-0.2.0-windows-x64.zip", "url": url, "size": len(archive),
+                                           "sha256": hashlib.sha256(archive).hexdigest(), "arch": "x64"}]}})
+    replaced, opened = [], []
+    load = lambda floor: channel.load(ALLOWED, floor, opener=host_for(m, secret), key=public)  # noqa: E731
+    monkeypatch.setattr(channel, "machine", lambda: "x64")
+    u = updates.Updates(tools=lambda: ["vodcut"], running=lambda: 0, stop_jobs=lambda: None, port=lambda: 8650, kind="zip",
+                        manifest=load, open_file=opened.append, replace_in_place=replaced.append, spawn=pytest.fail,
+                        download=lambda files, folder: [channel.download(f, folder, opener=Host({url: archive})) for f in files])
+    assert u.check()["available"]["version"] == "0.2.0"
+    u.ask("update")
+    assert opened == [] and len(replaced) == 1 and replaced[0].read_bytes() == archive and u.leaving
 
 
 def test_the_release_names_every_package_smtv_updates():

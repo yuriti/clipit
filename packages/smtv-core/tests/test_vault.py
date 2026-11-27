@@ -162,7 +162,7 @@ def test_a_keys_file_held_too_long_by_another_process_is_an_error_not_a_lost_key
                 "try:\n    vault.Vault(pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2])).set('a', 'b')\n"
                 "except vault.VaultError as e:\n    print('refused:', e)\n")
         out = subprocess.run([sys.executable, "-c", code, str(file), str(key_file)], capture_output=True, text=True, timeout=30)
-        assert "refused: secrets.json is busy in another SMTV process" in out.stdout and not file.exists()
+        assert "refused: secrets.json is busy in another Clip It! process" in out.stdout and not file.exists()
     finally:
         filelock.file_unlock(held)
 

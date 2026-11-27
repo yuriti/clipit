@@ -3,7 +3,8 @@
 What it makes, for the person who is signed in (no administrator rights anywhere):
 - macOS: `~/Applications/SMTV.app`, whose script hands over to `smtv app` (SMTV's own window, `window.py`): the process
   is SMTV.app's, with its name and icon in the Dock, and a second click brings the running window forward.
-- Windows: `SMTV.lnk` on the desktop and in the Start menu, running `pythonw` (no console window).
+- Windows: `SMTV.lnk` on the desktop and in the Start menu, running `pythonw` (no console window; in the ZIP of the
+  desktop app its `SMTV.exe`), with SMTV's taskbar id (`APP_ID`, `winlink.py`).
 - Linux: `smtv.desktop` in the applications menu and on the desktop.
 
 Everything that touches the system goes through `System` (files under `home`, helper commands), so the tests check what
@@ -11,7 +12,6 @@ would be written without writing it.
 """
 from __future__ import annotations
 
-import base64
 import os
 import plistlib
 import shlex
@@ -21,16 +21,20 @@ import subprocess
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable
+from typing import Any, Callable
 
 from smtv_core import paths, proc
 
-NAME = "SMTV"
+NAME = "Clip It!"     # the program's name a person sees (the repository's); the command, packages and folders stay smtv
+MAC_FILE = "SMTV"     # SMTV.app keeps its file name (updates, the Dock's place, links); Finder shows NAME (mac_names)
+OLD_NAMES = ("SMTV",)    # what the shortcuts were called before 0.1.1: replaced, never left beside the new ones
 ENTRY = "smtv"
 BUNDLE_ID = "tv.streammoment.smtv"
+APP_ID = "ClipIt.ClipIt"     # Windows' taskbar id (AppUserModelID): the window, the shortcuts and the installer's icons share it
+WIN_ICON_SIZES = (16, 24, 32, 48, 64, 256)   # icon-<size>.png (scripts/make_icons.py): «C!» up to 32 px, the logo above
 ICONS = Path(__file__).parent / "web" / "icons"
 LSREGISTER = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
-MAC_EXEC = NAME
+MAC_EXEC = MAC_FILE
 MARK = "Made by `smtv shortcut`; `smtv shortcut --remove` deletes it."
 
 
@@ -52,14 +56,18 @@ class System:
     run: Callable[[list[str]], int] = _run
     desktop: Path | None = None      # Linux: the desktop folder, if there is one
     made: list[str] = field(default_factory=list)
+    win: Any = None                  # Windows: winlink (shortcuts through the shell); the tests give a fake
 
 
 def this_system() -> System:
     platform = sys.platform
     python = sys.executable
     if platform == "win32":
-        windowless = Path(sys.executable).with_name("pythonw.exe")
-        python = str(windowless if windowless.exists() else Path(sys.executable))
+        # the desktop app's SMTV.exe (pythonw under SMTV's name), else the environment's pythonw
+        windowless = next((p for p in (Path(sys.executable).with_name(n) for n in ("ClipIt.exe", "SMTV.exe", "pythonw.exe"))
+                           if p.exists()),
+                          Path(sys.executable))
+        python = str(windowless)
     env = {}
     if platform != "win32":
         env["PATH"] = os.environ.get("PATH", "/usr/bin:/bin")
@@ -78,6 +86,33 @@ def _linux_desktop(home: Path) -> Path | None:
         out = ""
     folder = Path(out) if out else home / "Desktop"
     return folder if folder.is_dir() and folder != home else None
+
+
+def own_shortcut(kind: str) -> bool:
+    """Whether SMTV makes its icon itself (`updates.install_kind()`): installs from uv or pip. The desktop apps never:
+    SMTV.app is its own icon, and the Windows ZIP is portable: nothing of it outside its folder."""
+    from .updates import APP_KINDS
+    return kind not in APP_KINDS
+
+
+def hide_parts(top: Path, hide: Callable[[str], None] | None = None, names: tuple[str, ...] = ()) -> list[str]:
+    """The Windows ZIP, unpacked by hand: hides what its top holds that a person never opens (the DLLs Windows loads
+    before Python, the ._pth; or `names`: data), so Explorer shows ClipIt.exe, the how-to text, app and Clips. Never
+    ClipIt.exe, the text or Clips. Returns what it hid; one it cannot mark stays as it is."""
+    if hide is None and sys.platform == "win32":
+        from .winlink import hide as mark
+        hide = mark
+    if hide is None:
+        return []
+    hidden = []
+    for f in sorted(top.iterdir()):
+        if (f.name in names) if names else (f.is_file() and f.suffix.lower() in (".dll", "._pth")):
+            try:
+                hide(str(f))
+                hidden.append(f.name)
+            except OSError:
+                continue
+    return hidden
 
 
 def launch_args(system: System, python: str | None = None) -> list[str]:
@@ -110,7 +145,7 @@ def _framework_app_python(python: str) -> str | None:
 
 def _named_python_place(s: System) -> Path:
     venv = Path(s.python).parent.parent
-    return (venv if (venv / "pyvenv.cfg").exists() else s.data / "launcher") / NAME
+    return (venv if (venv / "pyvenv.cfg").exists() else s.data / "launcher") / MAC_FILE
 
 
 def named_python(s: System) -> tuple[str, dict[str, str]] | None:
@@ -153,16 +188,45 @@ def icns(pngs: dict[str, bytes]) -> bytes:
     return b"icns" + struct.pack(">I", len(body) + 8) + body
 
 
-def ico(png: bytes, size: int = 256) -> bytes:
-    """A Windows .ico with one PNG entry (Windows Vista and later read PNG inside .ico)."""
-    side = 0 if size >= 256 else size
-    return struct.pack("<HHH", 0, 1, 1) + struct.pack("<BBBBHHII", side, side, 0, 0, 1, 32, len(png), 22) + png
+def ico(pngs: dict[int, bytes]) -> bytes:
+    """A Windows .ico of PNG entries, one per size (Windows Vista and later read PNG inside .ico)."""
+    head = struct.pack("<HHH", 0, 1, len(pngs))
+    offset = len(head) + 16 * len(pngs)
+    entries, body = b"", b""
+    for size, png in sorted(pngs.items()):
+        side = 0 if size >= 256 else size
+        entries += struct.pack("<BBBBHHII", side, side, 0, 0, 1, 32, len(png), offset + len(body))
+        body += png
+    return head + entries + body
+
+
+def win_ico() -> bytes:
+    """SMTV's Windows icon in every size Windows asks for."""
+    return ico({size: (ICONS / f"icon-{size}.png").read_bytes() for size in WIN_ICON_SIZES})
+
+
+def window_icon(app: Path, data: Path) -> Path | None:
+    """The icon file for SMTV's window on Windows: the desktop app's own smtv.ico (`paths.app_folder()`), else one made
+    in SMTV's folder (kept apart from the shortcut's, whose presence says the shortcut is made). None when it cannot be
+    written."""
+    beside = app / "smtv.ico"
+    if beside.is_file():
+        return beside
+    icon = data / "launcher" / "window.ico"
+    try:
+        body = win_ico()
+        if not icon.is_file() or icon.read_bytes() != body:
+            icon.parent.mkdir(parents=True, exist_ok=True)
+            icon.write_bytes(body)
+    except OSError:
+        return None
+    return icon
 
 
 # --- macOS ---------------------------------------------------------------------------------------------------------
 
 def _mac_app(s: System) -> Path:
-    return s.home / "Applications" / f"{NAME}.app"
+    return s.home / "Applications" / f"{MAC_FILE}.app"
 
 
 APP_KIND = "SMTVInstallKind"    # in the Info.plist of SMTV.app from the .dmg (install/app/build.py)
@@ -200,11 +264,24 @@ def mac_script(s: System, named: tuple[str, dict[str, str]] | None = None) -> st
 def mac_info(s: System) -> dict:
     from . import __version__
     return {
-        "CFBundleIdentifier": BUNDLE_ID, "CFBundleName": NAME, "CFBundleDisplayName": NAME, "CFBundleExecutable": MAC_EXEC,
+        "CFBundleIdentifier": BUNDLE_ID, "CFBundleName": NAME, "CFBundleDisplayName": MAC_FILE, "LSHasLocalizedDisplayName": True,
+        "CFBundleExecutable": MAC_EXEC,
         "CFBundleIconFile": "smtv", "CFBundlePackageType": "APPL", "CFBundleShortVersionString": __version__.split(".dev")[0],
         "CFBundleInfoDictionaryVersion": "6.0", "LSMinimumSystemVersion": "11.0", "NSHighResolutionCapable": True,
         "LSApplicationCategoryType": "public.app-category.video",
     }
+
+
+MAC_LANGUAGES = ("en", "ru", "Base")
+
+
+def mac_names(resources: Path) -> None:
+    """Finder, Launchpad and the Dock show «Clip It!» while the file stays SMTV.app: Info.plist names the file
+    (CFBundleDisplayName must match it) and says the name is localized; each language's InfoPlist.strings gives NAME."""
+    text = f'"CFBundleDisplayName" = "{NAME}";\n"CFBundleName" = "{NAME}";\n'
+    for lang in MAC_LANGUAGES:
+        (resources / f"{lang}.lproj").mkdir(parents=True, exist_ok=True)
+        (resources / f"{lang}.lproj" / "InfoPlist.strings").write_text(text, encoding="utf-8")
 
 
 def _mac_install(s: System) -> None:
@@ -216,6 +293,7 @@ def _mac_install(s: System) -> None:
     (app / "Contents" / "MacOS").mkdir(parents=True)
     (app / "Contents" / "Resources").mkdir()
     (app / "Contents" / "Info.plist").write_bytes(plistlib.dumps(mac_info(s)))
+    mac_names(app / "Contents" / "Resources")
     script = app / "Contents" / "MacOS" / MAC_EXEC
     script.write_text(mac_script(s, mac_python(s, app)), encoding="utf-8")
     script.chmod(0o755)
@@ -247,61 +325,48 @@ def _win_icon(s: System) -> Path:
     return s.data / "launcher" / "smtv.ico"
 
 
-def _ps(text: str) -> str:
-    return "'" + text.replace("'", "''") + "'"
+def _winlink(s: System) -> Any:
+    if s.win is None:
+        from . import winlink
+        s.win = winlink
+    return s.win
 
 
-def lnk_script(s: System, remove: bool = False) -> str:
-    """PowerShell that makes (or deletes) SMTV.lnk on the desktop and in the Start menu, in the person's own folders
-    (wherever Windows keeps them, OneDrive included)."""
-    folders = "@([Environment]::GetFolderPath('Desktop'), [Environment]::GetFolderPath('Programs'))"
-    if remove:   # only a shortcut SMTV made (it starts `-m smtv`): another program's SMTV.lnk stays
-        return "\n".join([
-            "$ErrorActionPreference = 'Stop'",
-            "$w = New-Object -ComObject WScript.Shell",
-            f"foreach ($d in {folders}) {{",
-            f"  $p = Join-Path $d '{NAME}.lnk'",
-            "  if (Test-Path -LiteralPath $p) {",
-            "    $l = $w.CreateShortcut($p)",
-            "    if ($l.Arguments -like '*-m smtv*') { Remove-Item -LiteralPath $p -Force }",
-            "  }",
-            "}",
-        ])
-    args = subprocess.list2cmdline(launch_args(s)[1:])
-    return "\n".join([
-        "$ErrorActionPreference = 'Stop'",
-        "$w = New-Object -ComObject WScript.Shell",
-        f"foreach ($d in {folders}) {{",
-        f"  $l = $w.CreateShortcut((Join-Path $d '{NAME}.lnk'))",
-        f"  $l.TargetPath = {_ps(s.python)}",
-        f"  $l.Arguments = {_ps(args)}",
-        "  $l.WorkingDirectory = $env:USERPROFILE",
-        f"  $l.IconLocation = {_ps(str(_win_icon(s)) + ',0')}",
-        f"  $l.Description = {_ps(NAME)}",
-        "  $l.Save()",
-        "}",
-    ])
+def _lnk_paths(s: System, names: tuple[str, ...] = (NAME,)) -> list[Path]:
+    return [Path(folder) / f"{name}.lnk" for folder in _winlink(s).folders() if folder for name in names]
 
 
-def powershell(script: str) -> list[str]:
-    return ["powershell.exe", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass",
-            "-EncodedCommand", base64.b64encode(script.encode("utf-16-le")).decode("ascii")]
+def _remove_ours(s: System, names: tuple[str, ...]) -> None:
+    """Only a shortcut SMTV made (it starts `-m smtv`): another program's shortcut of that name stays."""
+    for lnk in _lnk_paths(s, names):
+        if lnk.exists() and "-m smtv" in _winlink(s).arguments(str(lnk)):
+            lnk.unlink()
 
 
 def _win_install(s: System) -> None:
     icon = _win_icon(s)
     icon.parent.mkdir(parents=True, exist_ok=True)
-    icon.write_bytes(ico((ICONS / "icon-256.png").read_bytes()))
-    if s.run(powershell(lnk_script(s))) != 0:
-        raise RuntimeError("could not make SMTV.lnk (PowerShell failed)")
-    s.made.append("SMTV.lnk on the desktop and in the Start menu")
+    icon.write_bytes(win_ico())
+    args = subprocess.list2cmdline(launch_args(s)[1:])
+    paths_ = _lnk_paths(s)
+    if not paths_:
+        raise RuntimeError(f"could not make {NAME}.lnk: Windows named no desktop or Start menu folder")
+    try:
+        for lnk in paths_:
+            _winlink(s).save(str(lnk), s.python, args, str(s.home), str(icon), APP_ID, NAME)
+        _remove_ours(s, OLD_NAMES)                 # 0.1.0's «SMTV» shortcuts: the new ones replace them
+    except OSError as e:
+        raise RuntimeError(f"could not make {NAME}.lnk ({e})") from e
+    s.made.append(f"{NAME}.lnk on the desktop and in the Start menu")
 
 
 def _win_remove(s: System) -> None:
-    if s.run(powershell(lnk_script(s, remove=True))) != 0:
-        raise RuntimeError("could not remove SMTV.lnk (PowerShell failed)")
+    try:
+        _remove_ours(s, (NAME, *OLD_NAMES))
+    except OSError as e:
+        raise RuntimeError(f"could not remove {NAME}.lnk ({e})") from e
     _win_icon(s).unlink(missing_ok=True)
-    s.made.append("SMTV.lnk")
+    s.made.append(f"{NAME}.lnk")
 
 
 # --- Linux ---------------------------------------------------------------------------------------------------------

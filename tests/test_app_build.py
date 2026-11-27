@@ -1,4 +1,4 @@
-"""The desktop apps (work В11): install/app/build.py, smoke.py, smtv.iss, the release workflow, and what SMTV does
+"""The desktop apps (work В11): install/app/build.py, smoke.py, the release workflow, and what SMTV does
 differently when it runs as the app (dmg, exe, zip). Nothing here downloads or builds a whole app: the downloads are
 local files, the Python is a tiny fake archive. The real build and its check run in .github/workflows/apps.yml."""
 import base64
@@ -16,7 +16,7 @@ from pathlib import Path
 import pytest
 
 from smtv import channel, cli, ed25519, launcher, uninstall, updates
-from smtv_core import checks
+from smtv_core import checks, paths
 
 REPO = Path(__file__).resolve().parents[1]
 APP = REPO / "install" / "app"
@@ -59,7 +59,7 @@ def test_every_download_is_pinned_by_https_and_sha256_and_versions_agree():
         assert "cpython-3.12." in t.python.url and t.python.url.split("/")[-1].startswith("cpython-")
         names = {name for d in t.ffmpeg for _, name in d.members}
         exe = ".exe" if t.system == "win" else ""
-        assert {f"ffmpeg{exe}", f"ffprobe{exe}"} <= names        # SMTV needs both, or it finds no ffmpeg at all
+        assert f"ffmpeg{exe}" in names and not any("ffprobe" in n for n in names)   # proc.probe asks ffmpeg itself
         assert all("9.1" in d.url for d in t.ffmpeg)            # the version FFMPEG_NOTE names
     assert {t.min_os for t in build.TARGETS.values() if t.system == "mac"} == {"13.0", "14.0"}
 
@@ -191,47 +191,93 @@ def test_the_dmg_readme_explains_the_warning_honestly_in_both_languages():
     text = (APP / "dmg-readme.txt").read_text(encoding="utf-8")
     for must in ("Конфиденциальность и безопасность", "Всё равно открыть", "Privacy & Security", "Open Anyway",
                  "Подпись появится при первой возможности", "It will get one as soon as possible", "Исправить", "Fix",
-                 "Один SMTV для любого Mac", "One SMTV for every Mac"):
+                 "Один Clip It! для любого Mac", "One Clip It! for every Mac"):
         assert must in text, must
 
 
 # --- Windows ---------------------------------------------------------------------------------------------------------
 
-def test_the_windows_folder_has_smtv_exe_the_icon_and_the_zip_is_marked_zip(tmp_path):
+def win_python(tmp_path):
+    """python-build-standalone's Windows folder, in small."""
     py = tmp_path / "python"
-    py.mkdir()
-    (py / "pythonw.exe").write_bytes(b"MZ windowless")
     (py / "Lib" / "site-packages").mkdir(parents=True)
+    (py / "DLLs").mkdir()
+    (py / "DLLs" / "_ssl.pyd").write_bytes(b"MZ ssl")
+    (py / "pythonw.exe").write_bytes(b"MZ windowless")
+    (py / "python.exe").write_bytes(b"MZ console")
+    for dll in ("python312.dll", "python3.dll", "vcruntime140.dll", "vcruntime140_1.dll"):
+        (py / dll).write_bytes(b"MZ " + dll.encode())
+    (py / "LICENSE.txt").write_text("PSF", encoding="utf-8")
     (py / build.KIND_MARKER).write_text("exe\n", encoding="utf-8")
-    folder = build.make_win_folder(py, tmp_path)
-    # Smart App Control: SMTV.exe is pythonw.exe byte for byte, and no program or script of our own is added
-    assert (folder / "SMTV.exe").read_bytes() == b"MZ windowless"
-    assert sorted(f.name for f in folder.rglob("*") if f.suffix.lower() in (".exe", ".dll", ".pyd", ".cmd", ".bat")) \
-        == ["SMTV.exe", "pythonw.exe"]
-    assert (folder / "smtv.ico").read_bytes()[:4] == b"\x00\x00\x01\x00"
-    # the double click on SMTV.exe opens the window: every Python of the folder reads this on start
-    site = folder / "Lib" / "site-packages" / "sitecustomize.py"
+    return py
+
+
+def test_the_windows_folder_shows_one_program_a_how_to_and_app_with_the_rest(tmp_path):
+    folder = build.make_win_folder(win_python(tmp_path), tmp_path)
+    how_to = build.how_to_name()
+    assert how_to.endswith(" Clip It!.txt")         # its first line: «how to start Clip It!» in Russian
+    assert sorted(f.name for f in folder.iterdir()) == sorted([
+        "ClipIt.exe", "ClipIt.exe.config", "app", how_to, "python312._pth",
+        "python312.dll", "python3.dll", "vcruntime140.dll", "vcruntime140_1.dll"])
+    app = folder / "app"
+    assert sorted(f.name for f in app.iterdir()) == sorted([
+        "DLLs", "LICENSE.txt", "Lib", build.KIND_MARKER, "smtv.ico"])
+    # Smart App Control: ClipIt.exe is pythonw.exe byte for byte, and no program or script of our own is added; Python's
+    # python.exe and pythonw.exe are gone (they would not even start in app\ without the DLLs beside them)
+    assert (folder / "ClipIt.exe").read_bytes() == b"MZ windowless"
+    assert sorted(f.name for f in folder.rglob("*") if f.suffix.lower() in (".exe", ".cmd", ".bat")) == ["ClipIt.exe"]
+    # Python finds everything in app\ through the ._pth beside python312.dll (ASCII, as Python reads it)
+    assert (folder / "python312._pth").read_bytes() == \
+        b"app\r\napp\\DLLs\r\napp\\Lib\r\napp\\Lib\\site-packages\r\nimport site\r\n"
+    # the text a person reads: Russian first, then English; with a BOM, so Notepad shows it right on any Windows
+    text = (folder / how_to).read_bytes()
+    assert text.startswith(b"\xef\xbb\xbf") and b"\r\n" in text
+    body = text.decode("utf-8-sig")
+    assert body.index("ClipIt.exe") < body.index("How to start Clip It!") and "app" in body
+    assert (app / "smtv.ico").read_bytes()[:4] == b"\x00\x00\x01\x00"
+    assert paths.app_folder(str(folder)) == app                   # where SMTV looks for ffmpeg, its kind and icon
+    # the double click on ClipIt.exe opens the window: Python reads this on every start
+    site = app / "Lib" / "site-packages" / "sitecustomize.py"
     assert site.read_text(encoding="utf-8") == (APP / "double_click.py").read_text(encoding="utf-8")
+    # .NET loads pythonnet's files even when Explorer marked them as downloaded (Extract All)
+    config = (folder / "ClipIt.exe.config").read_text(encoding="utf-8")
+    assert '<loadFromRemoteSources enabled="true"/>' in config and config.startswith("<?xml")
+    assert smoke.win_layout(folder) == []
     z = build.zip_folder(folder, tmp_path / "SMTV.zip", "zip")
     with zipfile.ZipFile(z) as f:
         names = f.namelist()
-        assert f.read(f"SMTV/{build.KIND_MARKER}").decode().strip() == "zip"
-    assert "SMTV/SMTV.exe" in names and all(n.startswith("SMTV/") and "\\" not in n for n in names)
-    assert (folder / build.KIND_MARKER).read_text(encoding="utf-8").strip() == "exe"   # the installer's copy stays exe
+        assert f.read(f"ClipIt/app/{build.KIND_MARKER}").decode().strip() == "zip"
+        assert f.getinfo(f"ClipIt/{how_to}").flag_bits & 0x800       # its Russian name is marked UTF-8 for Explorer
+    assert folder.name == "ClipIt" and "ClipIt/ClipIt.exe" in names
+    assert all(n.startswith("ClipIt/") and "\\" not in n for n in names)
+    assert (app / build.KIND_MARKER).read_text(encoding="utf-8").strip() == "exe"   # the installer's copy stays exe
 
 
-def test_the_installer_is_per_user_keeps_its_id_and_names_its_file_as_the_release_expects():
-    iss = (APP / "smtv.iss").read_text(encoding="utf-8")
-    assert "PrivilegesRequired=lowest" in iss and r"DefaultDirName={localappdata}\Programs\SMTV" in iss
-    assert "AppId={{6F0B7E52-6C1D-4E57-9C4B-3B7D2B1E5A10}" in iss          # never change: Windows finds SMTV by it
-    assert "OutputBaseFilename=SMTV-{#AppVersion}-windows-x64-setup" in iss
-    assert ("exe", "x64", "SMTV-{v}-windows-x64-setup.exe") in release_manifest.APPS
-    assert r'Name: "{autoprograms}\SMTV"; Filename: "{app}\SMTV.exe"; Parameters: "-m smtv app"' in iss
-    assert "Excludes:" not in iss and "[UninstallDelete]" in iss
-    # ISCC is 32-bit: the compressor runs apart, in 64 bits, with few threads (4 threads ran out of memory, v0.1.0)
-    assert "LZMAUseSeparateProcess=yes" in iss and int(re.search(r"LZMANumBlockThreads=(\d+)", iss)[1]) <= 2
-    # the file build.py looks for after ISCC is the one smtv.iss writes
-    assert "SMTV-{v}-windows-x64-setup.exe" in (APP / "build.py").read_text(encoding="utf-8")
+def test_smoke_names_what_does_not_belong_at_the_top(tmp_path):
+    folder = build.make_win_folder(win_python(tmp_path), tmp_path)
+    (folder / "python.exe").write_bytes(b"MZ")
+    (folder / "unins000.exe").write_bytes(b"MZ")          # the installer's own uninstaller belongs there
+    (folder / "ClipIt.exe.config").write_text("<configuration/>", encoding="utf-8")
+    failed = smoke.win_layout(folder)
+    assert len(failed) == 2 and "python.exe" in failed[0] and "loadFromRemoteSources" in failed[1]
+
+
+def test_paths_app_folder_is_the_prefix_everywhere_but_the_windows_app(tmp_path):
+    assert paths.app_folder(str(tmp_path)) == tmp_path            # a uv tool, a Mac app, a venv
+    (tmp_path / "app").mkdir()                                     # a folder of that name alone is not the layout
+    assert paths.app_folder(str(tmp_path)) == tmp_path
+    (tmp_path / "app" / "Lib" / "site-packages").mkdir(parents=True)
+    assert paths.app_folder(str(tmp_path)) == tmp_path / "app"
+
+
+def test_there_is_no_windows_installer_any_more():
+    # Smart App Control blocks Inno Setup's unsigned is-*.tmp; the ZIP is portable and updates itself
+    assert not (APP / "smtv.iss").exists()
+    built = (APP / "build.py").read_text(encoding="utf-8")
+    assert "iscc" not in built.lower() and "setup.exe" not in built
+    for wf in ("apps.yml", "release.yml", "smart-app-control.yml"):
+        assert "setup.exe" not in (REPO / ".github" / "workflows" / wf).read_text(encoding="utf-8"), wf
+    assert ("exe", "x64", "SMTV-{v}-windows-x64.zip") in release_manifest.APPS
 
 
 # --- the release ---------------------------------------------------------------------------------------------------
@@ -259,10 +305,14 @@ def test_the_release_puts_every_app_in_the_signed_manifest_with_its_processor(tm
     assert [(f["name"], f["arch"]) for f in m["kinds"]["dmg"]["files"]] == [("SMTV-0.2.0-mac.dmg", None)]
     for cpu in ("arm64", "x64"):                                # one .dmg for every Mac
         assert channel.files_for(m, "dmg", arch=cpu)[0]["name"] == "SMTV-0.2.0-mac.dmg"
+    # the Windows ZIP is listed as "exe": 0.1.0 refuses a list with a kind it does not know. Its installed copies get
+    # the ZIP; the ZIP takes the same file to replace itself in place
     exe = channel.files_for(m, "exe", arch="x64")[0]
-    assert exe["sha256"] == hashlib.sha256(b"SMTV-{v}-windows-x64-setup.exe").hexdigest()
-    assert channel.files_for(m, "exe", arch="arm64") == [exe]  # Windows on ARM: the x64 installer, which it emulates
-    assert "zip" not in m["kinds"]                            # the ZIP does not update itself
+    assert exe["name"] == "SMTV-0.2.0-windows-x64.zip"
+    assert exe["sha256"] == hashlib.sha256(b"SMTV-{v}-windows-x64.zip").hexdigest()
+    assert channel.files_for(m, "exe", arch="arm64") == [exe]  # Windows on ARM: the x64 build, which it emulates
+    assert channel.files_for(m, "zip", arch="x64") == [exe]
+    assert set(m["kinds"]) <= {"uv", "pip", "dmg", "exe"}      # 0.1.0's own list of kinds
 
 
 def test_a_manifest_with_an_unknown_processor_is_refused():
@@ -287,7 +337,7 @@ def test_the_release_workflow_publishes_nothing_before_every_app_passed_its_chec
     assert "workflow_call:" in apps
     for target in ("mac", "win-x64"):
         assert f"build.py {target}" in apps
-    assert apps.count("smoke.py") >= 3 and "unins000.exe" in apps and "/VERYSILENT" in apps
+    assert apps.count("smoke.py") >= 2 and "setup.exe" not in apps and "/VERYSILENT" not in apps   # no installer
     assert "|| true" not in apps and "not started" not in apps          # the Intel app is never released unchecked
     assert apps.count("--release") == 2 and "hdiutil attach" in apps and "Expand-Archive" in apps
     assert "--arch arm64" in apps and "--arch x86_64" in apps                 # both Pythons of the one app
@@ -358,12 +408,13 @@ def test_a_zip_without_its_marker_is_not_made(tmp_path):
 
 def test_the_window_says_how_the_app_updates_and_is_removed():
     js = (REPO / "packages" / "smtv" / "src" / "smtv" / "web" / "app.js").read_text(encoding="utf-8")
-    assert 'isApp(u) ? h("p.hint", t("p_app"))' in js and 'u.kind === "zip"' in js
-    assert 'r.program === "app"' in js and 'p.program === "app"' in js
+    assert 'isApp(u) ? h("p.hint", t("p_app"))' in js and '["dmg", "exe", "zip"].includes(u.kind)' in js   # it updates
+    assert 'r.program === "app"' in js and 'p.program === "app"' in js and 'p.program === "folder"' in js
     assert 'r.id === "speech" && r.status === "warn" && r.recipe' in js          # the first run offers the speech model
     for lang in ("en", "ru"):
         words = json.loads((REPO / "packages" / "smtv" / "src" / "smtv" / "web" / "i18n" / f"{lang}.json").read_text(encoding="utf-8"))
-        for key in ("remove_app_mac", "remove_app_win", "upd_zip", "upd_zip_link", "p_app", "ob_speech"):
+        for key in ("remove_app_mac", "remove_app_win", "remove_folder", "portable_readonly", "portable_migrate", "p_app",
+                    "ob_speech"):
             assert words.get(key), (lang, key)
 
 
@@ -374,8 +425,7 @@ def test_the_apps_ffmpeg_comes_after_a_persons_own_and_before_anything_else(tmp_
     assert before[:2] == [checks.paths.home() / "bin", prefix / checks.APP_FFMPEG]
     for d in before[:2]:
         d.mkdir(parents=True, exist_ok=True)
-        for n in ("ffmpeg", "ffprobe"):
-            (d / checks._exe(n)).write_text("", encoding="utf-8")
+        (d / checks._exe("ffmpeg")).write_text("", encoding="utf-8")
     monkeypatch.setattr(checks, "has_libass", lambda folder: folder == str(prefix / checks.APP_FFMPEG))
     assert checks.find_ffmpeg() == (str(prefix / checks.APP_FFMPEG), True)   # a person's bin without captions loses
 
@@ -388,7 +438,7 @@ def test_the_smoke_check_runs_the_apps_python_with_a_clean_environment(tmp_path,
     assert env["PYTHONHOME"].endswith(os.path.join("Contents", "Resources", "python-arm64"))
     intel, ienv = smoke.app_python(tmp_path / "SMTV.app", "x86_64")
     assert intel[:2] == ["/usr/bin/arch", "-x86_64"] and ienv["PYTHONHOME"].endswith("python-x86_64")
-    assert smoke.app_python(tmp_path / "SMTV")[0] == [str(tmp_path / "SMTV" / "python.exe")]
+    assert smoke.app_python(tmp_path / "SMTV")[0] == [str(tmp_path / "SMTV" / "ClipIt.exe")]   # no python.exe in it
     monkeypatch.setenv("PYTHONPATH", "/somewhere")
     monkeypatch.setenv("PATH", "/opt/homebrew/bin:/usr/bin")
     clean = smoke.clean_env(tmp_path / "home", {"PYTHONHOME": "x"})
@@ -419,25 +469,27 @@ def test_the_build_scripts_print_any_character_on_a_console_without_it(tmp_path)
 
 
 @pytest.mark.parametrize("exe, argv, starts", [
-    (r"C:\SMTV\SMTV.exe", [r"C:\SMTV\SMTV.exe"], True),                 # a double click, from Explorer
-    (r"C:\SMTV\smtv.EXE", ["smtv"], True),
-    (r"C:\SMTV\SMTV.exe", [r"C:\SMTV\SMTV.exe", "-m", "smtv", "app"], False),   # the installer's icon, every job
-    (r"C:\SMTV\SMTV.exe", [r"C:\SMTV\SMTV.exe", "-c", "print(1)"], False),
+    (r"C:\SMTV\ClipIt.exe", [r"C:\SMTV\ClipIt.exe"], True),                 # a double click, from Explorer
+    (r"C:\SMTV\smtv.EXE", ["smtv"], True),                                  # an SMTV.exe from before 0.1.1
+    (r"C:\ClipIt\clipit.exe", ["clipit"], True),
+    (r"C:\ClipIt\Clip It!.exe", ["Clip It!"], False),                       # only the two names the app was given
+    (r"C:\SMTV\ClipIt.exe", [r"C:\SMTV\ClipIt.exe", "-m", "smtv", "app"], False),   # the installer's icon, every job
+    (r"C:\SMTV\ClipIt.exe", [r"C:\SMTV\ClipIt.exe", "-c", "print(1)"], False),
     (r"C:\SMTV\pythonw.exe", [r"C:\SMTV\pythonw.exe"], False),
     (r"C:\SMTV\python.exe", [r"C:\SMTV\python.exe"], False),           # an interactive Python stays one
 ])
-def test_only_smtv_exe_with_nothing_after_it_opens_the_window(exe, argv, starts):
+def test_only_clipit_exe_or_smtv_exe_with_nothing_after_it_opens_the_window(exe, argv, starts):
     exe, argv = exe.replace("\\", "/"), [a.replace("\\", "/") for a in argv]
     assert double_click.command(exe, argv) == ([exe, "-m", "smtv", "app"] if starts else None)
 
 
 def test_the_double_click_starts_the_window_apart_and_ends_or_never_stops_python(monkeypatch):
     started, ended = [], []
-    monkeypatch.setattr(double_click.sys, "executable", "/a/SMTV.exe")
-    monkeypatch.setattr(double_click.sys, "orig_argv", ["/a/SMTV.exe"], raising=False)
+    monkeypatch.setattr(double_click.sys, "executable", "/a/ClipIt.exe")
+    monkeypatch.setattr(double_click.sys, "orig_argv", ["/a/ClipIt.exe"], raising=False)
     monkeypatch.delenv("SMTV_LAUNCH_CHECK", raising=False)
     double_click.main(start=lambda argv, **k: started.append(argv), end=ended.append)
-    assert started == [["/a/SMTV.exe", "-m", "smtv", "app"]] and ended == [0]
+    assert started == [["/a/ClipIt.exe", "-m", "smtv", "app"]] and ended == [0]
 
     def broken(argv, **k):
         raise OSError("blocked")
@@ -450,7 +502,7 @@ def test_a_real_python_named_smtv_opens_the_window_only_without_arguments(tmp_pa
     site = tmp_path / "site"
     site.mkdir()
     (site / "sitecustomize.py").write_text((APP / "double_click.py").read_text(encoding="utf-8"), encoding="utf-8")
-    name = "SMTV.exe" if os.name == "nt" else "smtv"
+    name = "ClipIt.exe" if os.name == "nt" else "smtv"
     exe = tmp_path / name
     try:
         exe.symlink_to(sys.executable)
@@ -466,7 +518,7 @@ def test_a_real_python_named_smtv_opens_the_window_only_without_arguments(tmp_pa
 
 
 def test_smoke_checks_the_double_click_without_opening_a_window(tmp_path):
-    exe = tmp_path / "SMTV.exe"
+    exe = tmp_path / "ClipIt.exe"
     try:
         exe.symlink_to(sys.executable)
     except OSError:
@@ -489,5 +541,71 @@ def test_the_build_sources_are_ascii_named_and_have_their_callers():
     sac = (REPO / ".github" / "workflows" / "smart-app-control.yml").read_text(encoding="utf-8")
     assert "install/app/sac_check.py" in sac
     built = (APP / "build.py").read_text(encoding="utf-8")
-    for name in ("smtv.iss", "dmg-readme.txt", "double_click.py", "launcher.c"):
+    for name in ("dmg-readme.txt", "double_click.py", "launcher.c", "how-to-start.txt"):
         assert name in built
+
+
+# --- the size of the Windows app (0.1.1: 549 MB → about 290) -----------------------------------------------------------
+
+def test_the_windows_app_leaves_whisper_s_engine_to_first_use_with_pinned_pypi_wheels():
+    win = build.TARGETS["win-x64"]
+    assert win.on_demand == build.WHISPER_PART == ("av", "ctranslate2", "faster-whisper", "tokenizers")
+    assert all(not t.on_demand for t in build.TARGETS.values() if t.system == "mac")     # its signature seals what it loads
+    spec = build.part_spec(win.on_demand, win)
+    assert [w["name"] for w in spec["wheels"]] == list(win.on_demand)
+    lock = (REPO / "uv.lock").read_text(encoding="utf-8")
+    for w in spec["wheels"]:
+        assert w["url"].startswith("https://files.pythonhosted.org/") and w["url"].endswith(".whl")
+        assert re.fullmatch(r"[0-9a-f]{64}", w["sha256"]) and f"sha256:{w['sha256']}" in lock and w["size"] > 0
+        name = w["url"].rsplit("/", 1)[-1]
+        assert "win_amd64" in name or name.endswith("-none-any.whl"), name
+    assert 30 < sum(w["size"] for w in spec["wheels"]) / 1e6 < 200        # the download, compressed
+    # smoke and pip check know what is left out on purpose
+    assert set(smoke.LEFT_OUT) == set(build.WHISPER_PART + build.NOT_IN_APPS)
+
+
+@pytest.mark.parametrize(("name", "fits"), [
+    ("av-16.0.1-cp312-cp312-win_amd64.whl", True), ("tokenizers-0.23.3-cp310-abi3-win_amd64.whl", True),
+    ("faster_whisper-1.2.1-py3-none-any.whl", True), ("av-16.0.1-cp313-cp313-win_amd64.whl", False),
+    ("av-16.0.1-cp312-cp312-macosx_11_0_arm64.whl", False), ("x-1-cp313-abi3-win_amd64.whl", False),
+    ("ctranslate2-4.6.0-cp312-cp312-win32.whl", False)])
+def test_a_part_takes_the_wheel_uv_would_install_for_the_target(name, fits):
+    assert build.wheel_fits(name, build.TARGETS["win-x64"]) is fits
+
+
+def test_the_build_leaves_out_packages_through_uv_export(monkeypatch, tmp_path):
+    ran = []
+    monkeypatch.setattr(build, "run", lambda argv, **k: ran.append([str(a) for a in argv]))
+    build.requirements(tmp_path / "r.txt", ("hf-xet", "av"))
+    (argv,) = ran
+    assert argv[argv.index("hf-xet") - 1] == "--no-emit-package" and argv[argv.index("av") - 1] == "--no-emit-package"
+
+
+def test_sources_headers_and_tests_of_packages_go_but_licenses_stay(tmp_path):
+    site = tmp_path / "site-packages"
+    for f in ("numpy/_core/include/numpy/x.h", "av/_core.pyx", "av/x.pxd", "lib/tests/test_a.py", "lib/tests/data/t.bin",
+              "lib/test/b.py", "lib/LICENSE.txt", "lib/core.py", "lib/latest.py", "lib.libs/x.dll", "src/x.c"):
+        (site / f).parent.mkdir(parents=True, exist_ok=True)
+        (site / f).write_text("x", encoding="utf-8")
+    build.remove(build.leftovers(site))
+    left = sorted(str(f.relative_to(site)).replace("\\", "/") for f in site.rglob("*") if f.is_file())
+    assert left == ["lib.libs/x.dll", "lib/LICENSE.txt", "lib/core.py", "lib/latest.py"]
+
+
+def test_the_build_says_where_the_size_is_and_smoke_holds_the_limit(tmp_path, capsys):
+    (tmp_path / "app" / "Lib" / "site-packages" / "big").mkdir(parents=True)
+    (tmp_path / "app" / "Lib" / "site-packages" / "big" / "x.bin").write_bytes(b"x" * 3_000_000)
+    (tmp_path / "ClipIt.exe").write_bytes(b"x" * 1_000)
+    sizes = dict(build.folder_sizes(tmp_path))
+    assert sizes == {"app/Lib/site-packages/big": 3_000_000, "(top files)": 1_000}
+    assert smoke.win_size(tmp_path, limit_mb=5) == []
+    (failed,) = smoke.win_size(tmp_path, limit_mb=2)
+    assert "over its limit of 2 MB" in failed and "WIN_LIMIT_MB" in failed
+    assert smoke.WIN_LIMIT_MB == 320
+
+
+def test_pip_check_complains_only_about_what_was_not_left_out_on_purpose():
+    out = ("vodcut 0.1.1 requires faster-whisper, which is not installed.\n"
+           "huggingface-hub 1.2.0 requires hf-xet, which is not installed.\n"
+           "onnx-asr 0.12 requires numpy, which is not installed.\n")
+    assert smoke.unexpected_pip_check(out) == ["onnx-asr 0.12 requires numpy, which is not installed."]

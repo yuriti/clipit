@@ -136,7 +136,7 @@ class Box:
         return {"version": version, "published": "", "packages": {n: version for n in names},
                 "changes": [c for p in self.packages.values() for c in p.get("changes") or []],
                 "kinds": {"uv": {"files": files}, "pip": {"files": files},
-                          "dmg": {"files": [{"package": None, "name": f"SMTV-{version}.dmg", "url": "https://github.com/x/a.dmg",
+                          "dmg": {"files": [{"package": None, "name": f"Clip It!-{version}.dmg", "url": "https://github.com/x/a.dmg",
                                              "size": 1, "sha256": "0" * 64}]}}}
 
     def download(self, files, folder):
@@ -620,7 +620,7 @@ def test_nothing_is_installed_while_the_old_smtv_still_runs(tmp_path, monkeypatc
             "previous": {"version": "1"}, "wait_pid": 1, "port": 1, "home": str(tmp_path), "status": str(tmp_path / "s.json"), "log": "l"}
     assert updater.update(plan, runner=lambda argv, **k: ran.append(argv), popen=lambda argv, **k: ran.append(argv)) == "failed"
     assert ran == [["smtv", "app"]]          # no install; started again, unchanged, once it was gone
-    assert json.loads((tmp_path / "s.json").read_text(encoding="utf-8"))["why"] == "SMTV did not quit"
+    assert json.loads((tmp_path / "s.json").read_text(encoding="utf-8"))["why"] == "Clip It! did not quit"
 
 
 def test_a_crash_inside_the_updater_still_brings_smtv_back(tmp_path, monkeypatch):
